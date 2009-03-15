@@ -10,12 +10,15 @@ module Frozenplague
       # Examples:
       # Post.by_month(1)
       # => <Posts for January>
+      #
       # Post.by_month("January")
       # => <Posts for January>
+      #
+      # Post.by_month("January", 2008)
+      # => <Posts for January 2008>
       # Post.by_month(Time.local(2008,1,16))
-      # => <Posts for January>
-      # Post.by_month("January", 2008, { :include => "tags", :conditions => ["tags.name = ?" } )
-      def by_month(value, year=Time.now.year, options={}, field="created_at")
+      # => <Posts for January 2008>
+      def by_month(value, year=Time.now.year, options={}, field="created_at", &block)
         if value.class == Fixnum
           month = value
         elsif value.class == Time
@@ -31,7 +34,10 @@ module Frozenplague
         # Cheat a little to get the end of the month
         end_of_month = beginning_of_month.end_of_month
         # And since timestamps in the database are UTC by default, assume noone's changed it.
-        find(:all, {:conditions => ["#{}{field} >= ? AND #{field} <= ?" + options(:conditions).first, beginning_of_month.utc, end_of_month.utc] + options(:conditions)[1..-1]}.merge(options.delete(:conditions)))
+        # Merging in conditions 
+        with_scope(:conditions => ["{#self.table_name}.#{field} >= ? AND #{self.table_name}#{field} <= ?" beginning_of_month.utc, end_of_month.utc] do
+          block.call
+        end
       end
     end
     
