@@ -1,9 +1,6 @@
 # Inspiration gained from Thinking Sphinx's test suite.
 # Pat Allan is a genius.
 
-require 'yaml'
-require 'activerecord'
-
 class TestHelper
   attr_accessor :host, :username, :password
   attr_reader   :path
@@ -13,13 +10,6 @@ class TestHelper
     @username = "root"
     @password = ""
 
-    if File.exist?("spec/fixtures/database.yml")
-      config    = YAML.load(File.open("spec/fixtures/database.yml"))
-      @host     = config["host"]
-      @username = config["username"]
-      @password = config["password"]
-    end
-    
     @path = File.expand_path(File.dirname(__FILE__))
   end
   
@@ -38,11 +28,13 @@ class TestHelper
       ActiveRecord::Base.connection.execute table
     }
     
-    File.open("spec/fixtures/data.sql") { |f|
-      while line = f.gets
-        ActiveRecord::Base.connection.execute line
+    for month in 1..12
+      month.times do
+        Post.create(:text => "testing", :created_at => Time.local(Time.now.year, month, 1))
       end
-    }
+    end
+    post = Post.create(:text => "testing", :created_at => Time.local(Time.now.year-1, 1, 1))
+    post.tags.create(:name => "ruby")
   end
   
 end

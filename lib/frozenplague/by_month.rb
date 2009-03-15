@@ -36,6 +36,7 @@ module Frozenplague
           month = value
         elsif value.class == Time
           month = value.month
+          opts[:year] = value.year
         elsif value.class == String
           month = Date::MONTHNAMES.index(value)
         else

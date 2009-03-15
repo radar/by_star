@@ -4,8 +4,10 @@
 $:.unshift File.dirname(__FILE__) + '/../lib'
 
 require 'rubygems'
-require 'spec/test_helper'
+require 'activerecord'
 require 'frozenplague/by_month'
+require 'spec/fixtures/models'
+require 'spec/test_helper'
 
 FileUtils.mkdir_p "#{Dir.pwd}/tmp"
 
@@ -15,7 +17,5 @@ Spec::Runner.configure do |config|
   
   test = TestHelper.new
   test.setup_mysql
-  
-  require 'spec/fixtures/models'
   
 end
