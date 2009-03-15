@@ -14,6 +14,7 @@ module Frozenplague
       # => <Posts for January>
       # Post.by_month(Time.local(2008,1,16))
       # => <Posts for January>
+      # Post.by_month("January", 2008, { :include => "tags", :conditions => ["tags.name = ?" } )
       def by_month(value, year=Time.now.year, options={}, field="created_at")
         if value.class == Fixnum
           month = value
@@ -30,7 +31,7 @@ module Frozenplague
         # Cheat a little to get the end of the month
         end_of_month = beginning_of_month.end_of_month
         # And since timestamps in the database are UTC by default, assume noone's changed it.
-        find(:all, {:conditions => ["#{field} >= ? AND #{field} <= ?", beginning_of_month.utc, end_of_month.utc]}.merge(options))
+        find(:all, {:conditions => ["#{}{field} >= ? AND #{field} <= ?" + options(:conditions).first, beginning_of_month.utc, end_of_month.utc] + options(:conditions)[1..-1]}.merge(options.delete(:conditions)))
       end
     end
     
