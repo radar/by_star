@@ -35,7 +35,7 @@ module Frozenplague
         end_of_month = beginning_of_month.end_of_month
         # And since timestamps in the database are UTC by default, assume noone's changed it.
         # Merging in conditions 
-        with_scope(:conditions => ["{#self.table_name}.#{field} >= ? AND #{self.table_name}#{field} <= ?", beginning_of_month.utc, end_of_month.utc]) do
+        with_scope(["{#self.table_name}.#{field} >= ? AND #{self.table_name}#{field} <= ?", beginning_of_month.utc, end_of_month.utc]) do
           block.call
         end
       end
