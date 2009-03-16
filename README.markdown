@@ -4,7 +4,7 @@
 by_* (byStar) is a plugin that allows you to find ActiveRecord objects by specifying an integer representing the position of a month within a year, the month name itself, or a time instance.
 It also allows you to do nested finds on the records returned.
 
-## by_month
+## By Month
 
 If you know the number of the month you want:
  
@@ -102,7 +102,7 @@ All `by_*` methods support this extra option.
 
 ## Scoping the find
 
-All the `by_*` methods takes a block which will then scope the find based on the options passed into it. The supported options are the same options that are supported by `ActiveRecord::Base.find`
+All the `by_*` methods takes a block which will then scope the find based on the options passed into it. The supported options are the same options that are supported by `ActiveRecord::Base.find`:
 
      Post.by_month(1) do
        { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
