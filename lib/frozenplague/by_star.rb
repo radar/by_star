@@ -75,7 +75,7 @@ module Frozenplague
       # Post.by_fortnight(18)
       # <Posts in the 18th week of the current year>
       #
-      # Post.by_night(18, 2004)
+      # Post.by_night(18, :year => 2004)
       # <Posts in the 18th fortnight of 2004>
       #
       # TODO: Get it to support a Time and Date object.
@@ -83,27 +83,44 @@ module Frozenplague
         opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
         # Dodgy!
         # Surely there's a method in Rails to do this.
-        start_time = Time.local(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
-        end_time   = start_time + 2.weeks
+        start_time = if value == Time || value == Date
+          (value.strftime("%U").to_i - 1).weeks
+          opts[:year] = value.year
+        elsif value == Fixnum && value <= 26
+          Time.local(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
+        else
+          raise ParseError, "by_fortnight takes only a Time object, or a Fixnum (less than 27)."
+        end
+        end_time = start_time + 2.weeks
         
         by_star(start_time, end_time, opts, &block)
       end
       
-      # Pass in the week number.
+      # Pass in the week number, or a time object.
       # Examples:
       # Post.by_week(36)
       # <Posts in the 36th week of the current year>
       #
-      # Post.by_week(36, 2004)
+      # Post.by_week(36, :year => 2004)
       # <Posts in the 36th week of 2004>
+      #
+      # Post.by_week(Time.local(2008, 1, 1))
+      # <Posts in the first week of 2008>
       #
       # TODO: Get it to support a Time and Date object.
       def by_week(value, opts={}, &block)
         opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
         # Dodgy!
         # Surely there's a method in Rails to do this.
-        start_time = Time.local(opts[:year], 1, 1) + (value.to_i - 1).weeks
-        end_time   = start_time + 1.week
+        start_time = if value == Time || value == Date
+          (value.strftime("%U").to_i - 1).weeks
+          opts[:year] = value.year
+        elsif value == Fixnum && value < 52
+          Time.local(opts[:year], 1, 1) + (value.to_i - 1).weeks
+        else
+          raise ParseError, "by_week takes only a Time object, or a Fixnum (less than 52)."
+        end
+        end_time = start_time + 1.week
         
         by_star(start_time, end_time, opts, &block)
       end
@@ -123,8 +140,6 @@ module Frozenplague
       alias_method :today, :by_day
       
     
-      
-      
       private
         # General finder method, takes start time and end time.
         # Excepts field as an option.

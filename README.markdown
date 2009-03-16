@@ -4,9 +4,7 @@
 by_* (byStar) is a plugin that allows you to find ActiveRecord objects by specifying an integer representing the position of a month within a year, the month name itself, or a time instance.
 It also allows you to do nested finds on the records returned.
 
-## Simple Examples
-
-### Numerical
+## by_month
 
 If you know the number of the month you want:
  
@@ -14,15 +12,11 @@ If you know the number of the month you want:
     
 This will return all posts in the first month (January) of the current year.
 
-### Words
-
 If you like being verbose:
 
     Post.by_month("January")
 
 This will return all posts created in January of the current year. 
-
-### Searching in the past
 
 If you want to find all posts in January of last year just do 
     
@@ -32,30 +26,89 @@ or
     
     Post.by_month("January", :year => 2007)
   
-    
-### Not using created_at? No worries!
-
-If your database uses something other than `created_at` for storing a timestamp, you can do:
-
-    Post.by_month("January", :year => 2007, :field => :something_else)
-  
 This will perform a find using the column you've specified.
-
-### Supports time objects too!
 
 If you have a Time object you can use it to find the posts:
 
-     t = Time.local(2008, 11, 24)
-     Post.by_month(t)
+     Post.by_month(Time.local(2008, 11, 24))
      
 This will find all the posts in November 2008.
 
-### Scoping the find
 
-`by_month` takes a block which will then scope the find based on the options passed into it. The supported options are the same options that are supported by `ActiveRecord::Base.find`
+## By Year
+
+To find records based on a year you can pass it a two or four digit number:
+    
+    Post.by_year(09)
+    
+This will return all posts in 2009, whereas:
+
+    Post.by_year(99)
+
+will return all the posts in the year 1999.
+
+## By Fortnight
+
+To find records based on a fortnight, you can pass in a number (representing the fortnight number) or a time object:
+
+    Post.by_fortnight(18)
+   
+This will return all posts in the 18th fortnight of the current year.
+
+    Post.by_fortnight(18, :year => 2008)
+    
+This will return all posts in the 18th fortnight week of 2008.
+
+    Post.by_fortnight(Time.local(2008,1,1))
+    
+This will return all posts from the first fortnight of 2008.
+
+## By Week
+
+To find records based on a week, you can pass in a number (representing the week number) or a time object:
+
+    Post.by_week(36)
+   
+This will return all posts in the 36th week of the current year.
+
+    Post.by_week(36, :year => 2008)
+    
+This will return all posts in the 36th week of 2008.
+
+    Post.by_week(Time.local(2008,1,1))
+    
+This will return all posts from the first week of 2008.
+   
+## By Day
+
+To find records based on a week, you can pass in a number (representing the week number) or a time object:
+
+    Post.by_week(36)
+   
+This will return all posts in the 36th week of the current year.
+
+    Post.by_week(36, :year => 2008)
+    
+This will return all posts in the 36th week of 2008.
+
+    Post.by_week(Time.local(2008,1,1))
+    
+This will return all posts from the first week of 2008.
+
+## Not using created_at? No worries!
+
+If your database uses something other than `created_at` for storing a timestamp, you can specify the field option like this:
+
+    Post.by_month("January", :field => :something_else)
+    
+All `by_*` methods support this extra option.
+
+## Scoping the find
+
+All the `by_*` methods takes a block which will then scope the find based on the options passed into it. The supported options are the same options that are supported by `ActiveRecord::Base.find`
 
      Post.by_month(1) do
        { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
      end
      
-This will find all posts created in January that have the tag 'ruby'.
+If you have suggestions, please contact me at radarlistener@gmail.com
