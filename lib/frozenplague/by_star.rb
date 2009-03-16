@@ -83,10 +83,10 @@ module Frozenplague
         opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
         # Dodgy!
         # Surely there's a method in Rails to do this.
-        start_time = if value == Time || value == Date
+        start_time = if value.class == Time || value.class == Date
           (value.strftime("%U").to_i - 1).weeks
           opts[:year] = value.year
-        elsif value == Fixnum && value <= 26
+        elsif value.to_i.class == Fixnum && value <= 26
           Time.local(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
         else
           raise ParseError, "by_fortnight takes only a Time object, or a Fixnum (less than 27)."
@@ -112,10 +112,10 @@ module Frozenplague
         opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
         # Dodgy!
         # Surely there's a method in Rails to do this.
-        start_time = if value == Time || value == Date
+        start_time = if value.class == Time || value.class == Date
           (value.strftime("%U").to_i - 1).weeks
           opts[:year] = value.year
-        elsif value == Fixnum && value < 52
+        elsif value.to_i.class == Fixnum && value < 52
           Time.local(opts[:year], 1, 1) + (value.to_i - 1).weeks
         else
           raise ParseError, "by_week takes only a Time object, or a Fixnum (less than 52)."
