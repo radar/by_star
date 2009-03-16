@@ -81,19 +81,16 @@ This will return all posts from the first week of 2008.
    
 ## By Day
 
-To find records based on a week, you can pass in a number (representing the week number) or a time object:
+To find records for today:
+    
+    Post.by_day
+    Post.today
+    
+To find records for a certain day:
 
-    Post.by_week(36)
+    Post.by_day(Time.local(2008, 1, 1))
    
-This will return all posts in the 36th week of the current year.
-
-    Post.by_week(36, :year => 2008)
-    
-This will return all posts in the 36th week of 2008.
-
-    Post.by_week(Time.local(2008,1,1))
-    
-This will return all posts from the first week of 2008.
+This will return all posts for the given day.
 
 ## Not using created_at? No worries!
 
