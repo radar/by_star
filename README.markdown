@@ -1,7 +1,7 @@
-# ByMonth
+# by_*
 
 
-ByMonth is a plugin that allows you to find ActiveRecord objects by specifying an integer representing the position of a month within a year, the month name itself, or a time instance.
+by_* (byStar) is a plugin that allows you to find ActiveRecord objects by specifying an integer representing the position of a month within a year, the month name itself, or a time instance.
 It also allows you to do nested finds on the records returned.
 
 ## Simple Examples

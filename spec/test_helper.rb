@@ -33,6 +33,8 @@ class TestHelper
         Post.create(:text => "testing", :created_at => Time.local(Time.now.year, month, 1))
       end
     end
+    post = Post.create!(:text => "Today's post")
+    puts post.created_at
     post = Post.create(:text => "testing", :created_at => Time.local(Time.now.year-1, 1, 1))
     post.tags.create(:name => "ruby")
   end

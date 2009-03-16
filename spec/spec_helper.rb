@@ -5,7 +5,7 @@ $:.unshift File.dirname(__FILE__) + '/../lib'
 
 require 'rubygems'
 require 'activerecord'
-require 'frozenplague/by_month'
+require 'frozenplague/by_star'
 require 'spec/fixtures/models'
 require 'spec/test_helper'
 

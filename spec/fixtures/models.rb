@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  include Frozenplague::ByMonth
+  include Frozenplague::ByStar
   has_and_belongs_to_many :tags
 end
 
