@@ -130,7 +130,7 @@ module Frozenplague
       # => <Posts for today>
       # Post.by_day(Time.yesterday)
       # => <Posts for yesterday>
-      def by_day(value=Time.now.utc, opts={}, &block)
+      def by_day(value=Time.now, opts={}, &block)
         start_time = value.beginning_of_day.utc
         end_time   = value.end_of_day.utc
         by_star(start_time, end_time, opts, &block)
