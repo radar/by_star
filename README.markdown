@@ -102,7 +102,7 @@ All `by_*` methods support this extra option.
 
 ## Scoping the find
 
-All the `by_*` methods takes a block which will then scope the find based on the options passed into it. The supported options are the same options that are supported by `ActiveRecord::Base.find`
+All the `by_*` methods takes a block which will then scope the find based on the options passed into it. The supported options are the same options that are supported by `ActiveRecord::Base.find`:
 
      Post.by_month(1) do
        { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
