@@ -114,6 +114,7 @@ Unfortunately I forget who exactly prompted me to write the plugin, but I would 
 
 * August Lilleas (leethal)
 * gte351s
+* Thomase Sinclair (anathematic)
      
 ## Suggestions?
 If you have suggestions, please contact me at radarlistener@gmail.com
