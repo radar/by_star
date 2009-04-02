@@ -125,7 +125,7 @@ module Frozenplague
         by_star(start_time, end_time, opts, &block)
       end
       
-      # Pass in a time object.
+      # Pass in nothing or a time object.
       # Post.by_day
       # => <Posts for today>
       # Post.by_day(Time.yesterday)
@@ -139,11 +139,50 @@ module Frozenplague
       # Cheating a little more.
       alias_method :today, :by_day
       
+      # Pass in nothing or a time object.
+      # Post.yesterday
+      # => <Posts from yesterday>
+      # Post.yesterday(Time.yesterday)
+      # => <Posts from 2 days ago>
+      def yesterday(value=Time.now-1.day, opts={}, &block)
+        by_day(value, opts, &block)
+      end
+      
+      # Pass in nothing or a time object.
+      # Post.tomorrow
+      # => <Posts from tomorrow>
+      # Post.tomorrow(Time.tomorrow)
+      # => <Posts from 2 days from now>
+      def tomorrow(value=Time.now+1.day, opts={}, &block)
+        by_day(value, opts, &block)
+      end
+      
+      # Find items created in the past
+      def past(value=Time.now, opts={}, &block)
+        by_direction("<", value, opts, &block)
+      end
+      
+      def future(value=Time.now, opts={}, &block)
+        by_direction(">", value, opts, &block)
+      end
     
       private
+      
+        def by_direction(conditions, value=Time.now, opts={}, &block)
+          opts[:field] ||= "created_at"
+          with_scope(:find => { :conditions => ["#{self.table_name}.#{opts[:field]} #{conditions} ?", value] }) do
+            if block_given?
+              with_scope(:find => block.call) do
+                find(:all)
+              end
+            else
+              find(:all)
+            end
+          end
+        end
         # General finder method, takes start time and end time.
         # Excepts field as an option.
-        def by_star(start_time, end_time, opts, &block)
+        def by_star(start_time, end_time, opts, direction=false, &block)
           opts[:field] ||= "created_at"
           with_scope(:find => { :conditions => [
                      "#{self.table_name}.#{opts[:field]} >= ? AND
