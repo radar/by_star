@@ -1,8 +1,25 @@
 # by_*
 
 
-by_* (byStar) is a plugin that allows you to find ActiveRecord objects by specifying an integer representing the position of a month within a year, the month name itself, or a time instance.
-It also allows you to do nested finds on the records returned.
+by_* (byStar) is a plugin that allows you to find ActiveRecord objects given certain date objects. This was originally crafted for only finding objects within a given month, but now has extended out to much more. It now supports finding objects for:
+
+* A given year
+* A given month
+* A given fortnight
+* A given week
+* A given day
+* Between certain times
+* As of a certain time
+* Up to a certain time
+
+
+It also allows you to do nested finds on the records returned which I personally think is the coolest feature of the whole plugin:
+   
+    Post.by_month(1) do
+      { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
+    end
+    
+If you're not using the standard `created_at` field: don't worry! I've covered that scenario too.
 
 ## By Month
 
@@ -92,6 +109,26 @@ To find records for a certain day:
    
 This will return all posts for the given day.
 
+## Between
+
+To find records between two times:
+
+    Post.between(time1, time2)
+    
+## As of
+
+To find records as of a certain date up until the current time:
+    
+    Post.as_of_2_weeks_ago
+    
+This uses the Chronic "human mind reading" (read: it's really good at determining what time you mean using written English) library to work it out.
+
+## Up to
+
+To find records up to a certain time from the current time:
+
+    Post.up_to_6_weeks_from_now
+
 ## Not using created_at? No worries!
 
 If your database uses something other than `created_at` for storing a timestamp, you can specify the field option like this:
@@ -115,6 +152,8 @@ Unfortunately I forget who exactly prompted me to write the plugin, but I would 
 * August Lilleas (leethal)
 * gte351s
 * Thomase Sinclair (anathematic)
+* The dude(s) who created Chronic
      
 ## Suggestions?
+
 If you have suggestions, please contact me at radarlistener@gmail.com

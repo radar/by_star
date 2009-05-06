@@ -77,10 +77,7 @@ describe Post do
       Post.by_day.size.should eql(1)
     end
   end
-  
-  
-  # We should the map and should include because, due to our fixtures, we may have two posts on this date
-  # and it may be hard to determine which one is the correct one.
+
   describe Post, "today" do
     it "should show the post for today" do
       Post.today.map(&:text).should include("Today's post")
@@ -101,16 +98,48 @@ describe Post do
   
   describe Post, "past" do
     it "should show the correct number of posts in the past" do
-      Post.past.size.should eql((1..(Time.now.month)).to_a.sum + 2)
+      Post.past.size.should eql(Post.count(:conditions => ["created_at < ?", Time.now]))
     end
   end
   
   describe Post, "future" do
-    # VOLITILE: Will change when the month changes.
-    it "should show the correct number of posts in the past" do
-      Post.future.size.should eql(69)
+    it "should show the correct number of posts in the future" do
+      Post.future.size.should eql(Post.count(:conditions => ["created_at > ?", Time.now]))
     end
   end
+  
+  describe Post, "as of" do
+    it "should be able to find posts as of 2 weeks ago" do
+      year = Time.now.year
+      Time.stub!(:now).and_return("07-09-#{year}".to_time)
+      Post.as_of_2_weeks_ago.size.should eql(9)
+    end
+    
+    it "should not do anything if given an invalid date" do
+      lambda { Post.as_of_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, "Chronic couldn't work out what you meant by 'Ryans birthday', please be more precise.")
+    end
+  end
+  
+  describe Post, "up to" do
+    it "should be able to find posts up to 2 weeks from now" do
+      year = Time.now.year
+      Time.stub!(:now).and_return("07-09-#{year}".to_time)
+      Post.up_to_6_weeks_from_now.size.should eql(10)
+    end
+    
+    it "should not do anything if given an invalid date" do
+      lambda { Post.up_to_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, "Chronic couldn't work out what you meant by 'Ryans birthday', please be more precise.")
+    end
+      
+  end
+  
+  # Because we override method_missing, we ensure that it still works as it should with this test.
+  describe Post, "find_by_text" do
+    it "should still work" do
+      Post.find_by_text("Today's post").should_not be_nil
+    end
+  end
+    
   
   
   describe Post, "nested find" do

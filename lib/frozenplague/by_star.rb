@@ -1,3 +1,5 @@
+require 'chronic'
+
 module Frozenplague
   module ByStar
     
@@ -131,8 +133,9 @@ module Frozenplague
       # Post.by_day(Time.yesterday)
       # => <Posts for yesterday>
       def by_day(value=Time.now, opts={}, &block)
-        start_time = value.beginning_of_day.utc
-        end_time   = value.end_of_day.utc
+        value = value.utc
+        start_time = value.beginning_of_day
+        end_time   = value.end_of_day
         by_star(start_time, end_time, opts, &block)
       end
       
@@ -145,7 +148,7 @@ module Frozenplague
       # Post.yesterday(Time.yesterday)
       # => <Posts from 2 days ago>
       def yesterday(value=Time.now-1.day, opts={}, &block)
-        by_day(value, opts, &block)
+        by_day(value.utc, opts, &block)
       end
       
       # Pass in nothing or a time object.
@@ -154,16 +157,25 @@ module Frozenplague
       # Post.tomorrow(Time.tomorrow)
       # => <Posts from 2 days from now>
       def tomorrow(value=Time.now+1.day, opts={}, &block)
-        by_day(value, opts, &block)
+        by_day(value.utc, opts, &block)
       end
       
       # Find items created in the past
+      # Takes a time or date object as the first argument
       def past(value=Time.now, opts={}, &block)
         by_direction("<", value, opts, &block)
       end
       
+      # Find items created in the future
+      # Takes a time or date object as first argument
       def future(value=Time.now, opts={}, &block)
         by_direction(">", value, opts, &block)
+      end
+      
+      # Find items created between two dates or times
+      # Takes time or date objects as the first two arguments
+      def between(start_time=Time.now, end_time=Time.now, opts={}, &block)
+        by_star(start_time, end_time, opts, &block)
       end
     
       private
@@ -182,7 +194,7 @@ module Frozenplague
         end
         # General finder method, takes start time and end time.
         # Excepts field as an option.
-        def by_star(start_time, end_time, opts, direction=false, &block)
+        def by_star(start_time, end_time, opts, &block)
           opts[:field] ||= "created_at"
           with_scope(:find => { :conditions => [
                      "#{self.table_name}.#{opts[:field]} >= ? AND
@@ -209,6 +221,24 @@ module Frozenplague
           else
             value
           end.to_i
+        end
+        
+        def method_missing(method, *args)
+          method = method.to_s
+          
+          if method =~ /^as_of_(.*?)$/ || method =~ /^up_to_(.*?)$/
+            time = Chronic.parse($1.humanize)
+          end
+          
+          raise ParseError, "Chronic couldn't work out what you meant by '#{$1.humanize}', please be more precise." if time.nil?
+          
+          objects = if method =~ /^as_of_(.*?)$/
+            between(time, Time.now.utc)
+          elsif method =~ /^up_to_(.*?)$/
+            between(Time.now.utc, time)
+          else
+            super(method, *args)
+          end
         end
     end
     
