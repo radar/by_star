@@ -8,19 +8,17 @@ module Frozenplague
     end
     
     module ClassMethods
-      
       # Pass in the numeric value of the year, either 4 digit or 2 digit. 
       # Examples:
       # Post.by_year(2009)
       # => <Posts for 2009>
-      def by_year(value=Time.now.year, opts={}, &block)
-        value = work_out_year(value)
-        opts[:year] ||= if value == Time || value == Date
-          value.year
-        end
-        start_time = Time.local(value, 1, 1)
+      def by_year(value = Time.now.year, options = {})
+        year = (Time === value or Date === value) ? value.year : value
+        year = work_out_year(year)
+        
+        start_time = Time.utc(year, 1, 1)
         end_time = start_time.end_of_year
-        by_star(start_time, end_time, opts, &block)
+        by_star(start_time, end_time, options)
       end
       
       # Pass in the number of a month, the month name, or a time object to execute a find for that month.
@@ -46,14 +44,14 @@ module Frozenplague
       #   { :include => "tags", :conditions => ["tags.name = ?", "ruby"] }
       # end
       # => <Posts in January with a tag called 'ruby'> 
-      def by_month(value=Time.now.month, opts={}, &block)
-        opts[:year] ||= Time.now.year
+      def by_month(value = Time.now.month, options = {})
+        year = options[:year] || Time.now.year
         
         # Work out what actual month is.
         month = if value.class == Fixnum && value >= 1 && value <= 12
           value
         elsif value.class == Time || value.class == Date
-          opts[:year] = value.year
+          year = value.year
           value.month
         elsif value.class == String && Date::MONTHNAMES.include?(value)
           Date::MONTHNAMES.index(value)
@@ -61,15 +59,10 @@ module Frozenplague
           raise ParseError, "Value is not an integer (between 1 and 12), time object or string (make sure you typed the name right)."
         end
         
-        # Get the local time of the beginning of the month
-        start_time = Time.local(opts[:year], month, 1)
-        
-        # Cheat a little to get the end of the month
+        start_time = Time.utc(year, month, 1)
         end_time = start_time.end_of_month
 
-        # And since timestamps in the database are UTC by default, assume noone's changed it.
-          by_star(start_time, end_time, opts, &block)
-        # end
+        by_star(start_time, end_time, options)
       end
       
       # Pass in the fortnight. Accepts the year option.
@@ -81,21 +74,21 @@ module Frozenplague
       # <Posts in the 18th fortnight of 2004>
       #
       # TODO: Get it to support a Time and Date object.
-      def by_fortnight(value, opts={}, &block)
-        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
+      def by_fortnight(value, options = {})
+        year = work_out_year(options[:year] || Time.now.year)
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
           (value.strftime("%U").to_i - 1).weeks
-          opts[:year] = value.year
+          year = value.year
         elsif value.to_i.class == Fixnum && value <= 26
-          Time.local(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
+          Time.utc(year, 1, 1) + ((value.to_i - 1) * 2).weeks
         else
           raise ParseError, "by_fortnight takes only a Time object, or a Fixnum (less than 27)."
         end
         end_time = start_time + 2.weeks
         
-        by_star(start_time, end_time, opts, &block)
+        by_star(start_time, end_time, options)
       end
       
       # Pass in the week number, or a time object.
@@ -110,21 +103,21 @@ module Frozenplague
       # <Posts in the first week of 2008>
       #
       # TODO: Get it to support a Time and Date object.
-      def by_week(value, opts={}, &block)
-        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
+      def by_week(value, options = {})
+        year = work_out_year(options[:year] || Time.now.year)
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
           (value.strftime("%U").to_i - 1).weeks
-          opts[:year] = value.year
+          year = value.year
         elsif value.to_i.class == Fixnum && value < 52
-          Time.local(opts[:year], 1, 1) + (value.to_i - 1).weeks
+          Time.utc(year, 1, 1) + (value.to_i - 1).weeks
         else
           raise ParseError, "by_week takes only a Time object, or a Fixnum (less than 52)."
         end
         end_time = start_time + 1.week
         
-        by_star(start_time, end_time, opts, &block)
+        by_star(start_time, end_time, options)
       end
       
       # Pass in nothing or a time object.
@@ -132,14 +125,9 @@ module Frozenplague
       # => <Posts for today>
       # Post.by_day(Time.yesterday)
       # => <Posts for yesterday>
-      def by_day(value=Time.now, opts={}, &block)
-        value = value.utc
-        start_time = value.beginning_of_day
-        end_time   = value.end_of_day
-        by_star(start_time, end_time, opts, &block)
+      def by_day(time = Time.now, options = {})
+        by_star(time.beginning_of_day, time.end_of_day, options)
       end
-      
-      # Cheating a little more.
       alias_method :today, :by_day
       
       # Pass in nothing or a time object.
@@ -147,8 +135,8 @@ module Frozenplague
       # => <Posts from yesterday>
       # Post.yesterday(Time.yesterday)
       # => <Posts from 2 days ago>
-      def yesterday(value=Time.now-1.day, opts={}, &block)
-        by_day(value.utc, opts, &block)
+      def yesterday(time = Time.now, options = {})
+        by_day(time.advance(:days => -1), options)
       end
       
       # Pass in nothing or a time object.
@@ -156,20 +144,20 @@ module Frozenplague
       # => <Posts from tomorrow>
       # Post.tomorrow(Time.tomorrow)
       # => <Posts from 2 days from now>
-      def tomorrow(value=Time.now+1.day, opts={}, &block)
-        by_day(value.utc, opts, &block)
+      def tomorrow(time = Time.now, options = {})
+        by_day(time.advance(:days => 1), options)
       end
       
       # Find items created in the past
       # Takes a time or date object as the first argument
-      def past(value=Time.now, opts={}, &block)
-        by_direction("<", value, opts, &block)
+      def past(time = Time.now, options = {})
+        by_direction("<", time, options)
       end
       
       # Find items created in the future
       # Takes a time or date object as first argument
-      def future(value=Time.now, opts={}, &block)
-        by_direction(">", value, opts, &block)
+      def future(time = Time.now, options = {})
+        by_direction(">", time, options)
       end
       
       private
