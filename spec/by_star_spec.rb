@@ -1,6 +1,4 @@
-require 'spec/spec_helper'
-require 'frozenplague/by_star'
-include Frozenplague::ByStar
+require 'spec_helper'
 
 # Used in a couple of tests, sometimes changes when we add new data.
 TOTAL_POSTS = 82

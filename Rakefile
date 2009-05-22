@@ -14,7 +14,9 @@ task :default => :spec
 desc "Run the specs under spec"
 Spec::Rake::SpecTask.new do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
+  t.libs = %w(lib spec)
   t.spec_opts << "-c"
+  t.ruby_opts << "-rubygems"
 end
 
 desc 'Generate documentation for the by_star plugin.'
