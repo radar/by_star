@@ -191,13 +191,14 @@ module Frozenplague
         
         # This will work for the next 30 years (written in 2009)
         def work_out_year(value)
-          value = if value < 39
-            "20#{value}"
-          elsif value > 39 && value <= 99
-            "19#{value}"
+          case value
+          when 0..39
+            2000 + value
+          when 40..99
+            1900 + value
           else
             value
-          end.to_i
+          end
         end
         
         def method_missing(method, *args)
