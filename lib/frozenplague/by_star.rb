@@ -172,45 +172,22 @@ module Frozenplague
         by_direction(">", value, opts, &block)
       end
       
-      # Find items created between two dates or times
-      # Takes time or date objects as the first two arguments
-      def between(start_time=Time.now, end_time=Time.now, opts={}, &block)
-        by_star(start_time, end_time, opts, &block)
-      end
-    
       private
       
-        def by_direction(conditions, value=Time.now, opts={}, &block)
-          opts[:field] ||= "created_at"
-          with_scope(:find => { :conditions => ["#{self.table_name}.#{opts[:field]} #{conditions} ?", value] }) do
-            if block_given?
-              with_scope(:find => block.call) do
-                find(:all)
-              end
-            else
-              find(:all)
-            end
-          end
+        def by_direction(condition, time, options = {})
+          field = connection.quote_table_name(table_name)
+          field << "." << connection.quote_column_name(options[:field] || "created_at")
+          scoped :conditions => ["#{field} #{condition} ?", time.utc]
         end
-        # General finder method, takes start time and end time.
-        # Excepts field as an option.
-        def by_star(start_time, end_time, opts, &block)
-          opts[:field] ||= "created_at"
-          with_scope(:find => { :conditions => [
-                     "#{self.table_name}.#{opts[:field]} >= ? AND
-                      #{self.table_name}.#{opts[:field]} <= ?", 
-                      start_time.utc, end_time.utc]}) do
-                        
-            # Is there a cleaner way?
-            if block_given?
-              with_scope(:find => block.call) do
-                find(:all)
-              end
-            else
-              find(:all)
-            end
-          end
+        
+        # scopes results between start_time and end_time
+        def by_star(start_time, end_time, options = {})
+          field = options[:field] || "created_at"
+          scoped :conditions => { field => start_time.utc..end_time.utc }
         end
+        
+        alias :between :by_star
+        public :between
         
         # This will work for the next 30 years (written in 2009)
         def work_out_year(value)

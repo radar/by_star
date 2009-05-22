@@ -96,13 +96,13 @@ describe Post do
   
   describe Post, "past" do
     it "should show the correct number of posts in the past" do
-      Post.past.size.should eql(Post.count(:conditions => ["created_at < ?", Time.now]))
+      Post.past.size.should eql(Post.count(:conditions => ["created_at <= ?", Time.now]))
     end
   end
   
   describe Post, "future" do
     it "should show the correct number of posts in the future" do
-      Post.future.size.should eql(Post.count(:conditions => ["created_at > ?", Time.now]))
+      Post.future.size.should eql(Post.count(:conditions => ["created_at >= ?", Time.now]))
     end
   end
   
@@ -138,13 +138,11 @@ describe Post do
     end
   end
     
-  
-  
   describe Post, "nested find" do
     it "should be able to find a single post from January last year with the tag 'ruby'" do
-      Post.by_month("January", :year => Time.now.year - 1) do
-        { :include => :tags, :conditions => ["tags.name = ?", 'ruby']}
-      end.size.should eql(1)
+      month_scope = Post.by_month("January", :year => Time.now.year - 1)
+      result = month_scope.all(:include => :tags, :conditions => ["tags.name = ?", 'ruby'])
+      result.size.should eql(1)
     end
   end
   
