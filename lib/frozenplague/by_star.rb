@@ -224,20 +224,20 @@ module Frozenplague
         end
         
         def method_missing(method, *args)
-          method = method.to_s
-          
-          if method =~ /^as_of_(.*?)$/ || method =~ /^up_to_(.*?)$/
-            time = Chronic.parse($1.humanize)
-          end
-          
-          raise ParseError, "Chronic couldn't work out what you meant by '#{$1.humanize}', please be more precise." if time.nil?
-          
-          objects = if method =~ /^as_of_(.*?)$/
-            between(time, Time.now.utc)
-          elsif method =~ /^up_to_(.*?)$/
-            between(Time.now.utc, time)
+          if method.to_s =~ /^(as_of|up_to)_(.+)$/
+            method = $1
+            expr = $2.humanize
+            unless time = Chronic.parse(expr)
+              raise ParseError, "Chronic couldn't work out #{expr.inspect}; please be more precise"
+            end
+            
+            if "as_of" == method
+              between(time, Time.now.utc)
+            else
+              between(Time.now.utc, time)
+            end
           else
-            super(method, *args)
+            super
           end
         end
     end

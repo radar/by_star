@@ -114,7 +114,7 @@ describe Post do
     end
     
     it "should not do anything if given an invalid date" do
-      lambda { Post.as_of_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, "Chronic couldn't work out what you meant by 'Ryans birthday', please be more precise.")
+      lambda { Post.as_of_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, %(Chronic couldn't work out "Ryans birthday"; please be more precise))
     end
   end
   
@@ -126,7 +126,7 @@ describe Post do
     end
     
     it "should not do anything if given an invalid date" do
-      lambda { Post.up_to_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, "Chronic couldn't work out what you meant by 'Ryans birthday', please be more precise.")
+      lambda { Post.up_to_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, %(Chronic couldn't work out "Ryans birthday"; please be more precise))
     end
       
   end
@@ -146,6 +146,10 @@ describe Post do
         { :include => :tags, :conditions => ["tags.name = ?", 'ruby']}
       end.size.should eql(1)
     end
+  end
+  
+  it "should not completely hijack method_missing" do
+    lambda { Post.idontexist }.should raise_error(NoMethodError, %r(^undefined method `idontexist'))
   end
   
 end
