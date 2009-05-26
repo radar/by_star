@@ -162,10 +162,12 @@ module Frozenplague
               raise ParseError, "Chronic couldn't work out #{expr.inspect}; please be more precise"
             end
             
+            reference = args.first || Time.now
+            
             if "as_of" == method
-              between(time, Time.now.utc)
+              between(time, reference)
             else
-              between(Time.now.utc, time)
+              between(reference, time)
             end
           else
             super
