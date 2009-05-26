@@ -8,10 +8,12 @@ module Frozenplague
     end
     
     module ClassMethods
-      # Pass in the numeric value of the year, either 4 digit or 2 digit. 
       # Examples:
-      # Post.by_year(2009)
-      # => <Posts for 2009>
+      #   by_year(2010)
+      #   # 2-digit year:
+      #   by_year(10)
+      #   # Time or Date object:
+      #   by_year(time)
       def by_year(value = Time.now.year, options = {})
         year = (Time === value or Date === value) ? value.year : value
         year = work_out_year(year)
@@ -21,29 +23,11 @@ module Frozenplague
         by_star(start_time, end_time, options)
       end
       
-      # Pass in the number of a month, the month name, or a time object to execute a find for that month.
-      # Accepts a year option.
       # Examples:
-      # Post.by_month(1)
-      # => <Posts for January>
-      #
-      # Post.by_month("January")
-      # => <Posts for January>
-      #
-      # Post.by_month("January", :year => 2008)
-      # => <Posts for January 2008>
-      #
-      # Post.by_month(Time.local(2008,1,16))
-      # => <Posts for January 2008>
-      #
-      #
-      # Post.by_month("January", :field => "not_created_at")
-      # => <Posts for January 2008, using an alternative field>
-      #
-      # Post.by_month(1) do
-      #   { :include => "tags", :conditions => ["tags.name = ?", "ruby"] }
-      # end
-      # => <Posts in January with a tag called 'ruby'> 
+      #   by_month(1)
+      #   by_month("January")
+      #   by_month("January", :year => 2008)
+      #   by_month(time)
       def by_month(value = Time.now.month, options = {})
         year = options[:year] || Time.now.year
         
@@ -65,15 +49,9 @@ module Frozenplague
         by_star(start_time, end_time, options)
       end
       
-      # Pass in the fortnight. Accepts the year option.
       # Examples:
-      # Post.by_fortnight(18)
-      # <Posts in the 18th week of the current year>
-      #
-      # Post.by_night(18, :year => 2004)
-      # <Posts in the 18th fortnight of 2004>
-      #
-      # TODO: Get it to support a Time and Date object.
+      #   # 18th week of 2004
+      #   Post.by_fortnight(18, :year => 2004)
       def by_fortnight(value, options = {})
         year = work_out_year(options[:year] || Time.now.year)
         # Dodgy!
@@ -91,18 +69,11 @@ module Frozenplague
         by_star(start_time, end_time, options)
       end
       
-      # Pass in the week number, or a time object.
       # Examples:
-      # Post.by_week(36)
-      # <Posts in the 36th week of the current year>
-      #
-      # Post.by_week(36, :year => 2004)
-      # <Posts in the 36th week of 2004>
-      #
-      # Post.by_week(Time.local(2008, 1, 1))
-      # <Posts in the first week of 2008>
-      #
-      # TODO: Get it to support a Time and Date object.
+      #   # 36th week
+      #   Post.by_week(36)
+      #   Post.by_week(36, :year => 2004)
+      #   Post.by_week(time)
       def by_week(value, options = {})
         year = work_out_year(options[:year] || Time.now.year)
         # Dodgy!
@@ -120,42 +91,36 @@ module Frozenplague
         by_star(start_time, end_time, options)
       end
       
-      # Pass in nothing or a time object.
-      # Post.by_day
-      # => <Posts for today>
-      # Post.by_day(Time.yesterday)
-      # => <Posts for yesterday>
+      # Examples:
+      #   Post.by_day
+      #   Post.by_day(Time.yesterday)
       def by_day(time = Time.now, options = {})
         by_star(time.beginning_of_day, time.end_of_day, options)
       end
       alias_method :today, :by_day
       
-      # Pass in nothing or a time object.
-      # Post.yesterday
-      # => <Posts from yesterday>
-      # Post.yesterday(Time.yesterday)
-      # => <Posts from 2 days ago>
+      # Examples:
+      #   Post.yesterday
+      #   # 2 days ago:
+      #   Post.yesterday(Time.yesterday)
       def yesterday(time = Time.now, options = {})
         by_day(time.advance(:days => -1), options)
       end
       
-      # Pass in nothing or a time object.
-      # Post.tomorrow
-      # => <Posts from tomorrow>
-      # Post.tomorrow(Time.tomorrow)
-      # => <Posts from 2 days from now>
+      # Examples:
+      #   Post.tomorrow
+      #   # 2 days from now:
+      #   Post.tomorrow(Time.tomorrow)
       def tomorrow(time = Time.now, options = {})
         by_day(time.advance(:days => 1), options)
       end
       
-      # Find items created in the past
-      # Takes a time or date object as the first argument
+      # Scopes to records older than current or given time
       def past(time = Time.now, options = {})
         by_direction("<", time, options)
       end
       
-      # Find items created in the future
-      # Takes a time or date object as first argument
+      # Scopes to records newer than current or given time
       def future(time = Time.now, options = {})
         by_direction(">", time, options)
       end
