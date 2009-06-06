@@ -135,7 +135,7 @@ If your database uses something other than `created_at` for storing a timestamp,
 
     Post.by_month("January", :field => :something_else)
     
-All `by_*` methods support this extra option.
+All methods support this extra option.
 
 ## Scoping the find
 
