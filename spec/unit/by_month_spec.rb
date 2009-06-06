@@ -23,7 +23,6 @@ describe Post do
   end
   
   describe Post, "by month" do
-    
     it "should be able to find a post for the current month" do
       Post.by_month.size.should eql(Time.now.month+3)
     end
@@ -60,6 +59,11 @@ describe Post do
     it "should be able to find posts in the 1st fortnight" do
       Post.by_fortnight(1).size.should eql(1)
     end
+    
+    it "should be able to find posts for a fortnight ago" do
+      Time.stub!(:now).and_return("15-05-2009".to_time)
+      Post.by_fortnight(2.weeks.ago).size.should eql(5)
+    end
   end
   
   describe Post, "by week" do
@@ -69,6 +73,11 @@ describe Post do
     
     it "should be able to find posts in the 1st week of last year" do
       Post.by_week(1, :year => Time.now.year-1).size.should eql(1)
+    end
+    
+    it "should be able to find posts in the current week" do  
+      Time.stub!(:now).and_return("15-05-2009".to_time)
+      Post.by_week(1.week.ago).size.should eql(5)
     end
   end
   
@@ -111,8 +120,8 @@ describe Post do
   describe Post, "as of" do
     it "should be able to find posts as of 2 weeks ago" do
       year = Time.now.year
-      Time.stub!(:now).and_return("07-09-#{year}".to_time)
-      Post.as_of_2_weeks_ago.size.should eql(9)
+      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      Post.as_of_2_weeks_ago.size.should eql(5)
     end
     
     it "should not do anything if given an invalid date" do
@@ -123,8 +132,8 @@ describe Post do
   describe Post, "up to" do
     it "should be able to find posts up to 2 weeks from now" do
       year = Time.now.year
-      Time.stub!(:now).and_return("07-09-#{year}".to_time)
-      Post.up_to_6_weeks_from_now.size.should eql(10)
+      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      Post.up_to_6_weeks_from_now.size.should eql(9)
     end
     
     it "should not do anything if given an invalid date" do

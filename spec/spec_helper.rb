@@ -8,6 +8,7 @@ require 'activerecord'
 require 'frozenplague/by_star'
 require 'spec/fixtures/models'
 require 'spec/test_helper'
+require 'shoulda'
 
 FileUtils.mkdir_p "#{Dir.pwd}/tmp"
 

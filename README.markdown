@@ -152,7 +152,7 @@ Unfortunately I forget who exactly prompted me to write the plugin, but I would 
 * August Lilleas (leethal)
 * gte351s
 * Thomase Sinclair (anathematic)
-* The dude(s) who created Chronic
+* The dude(s) & gal(s) who created Chronic
      
 ## Suggestions?
 

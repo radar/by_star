@@ -77,7 +77,7 @@ module Frozenplague
       # Post.by_fortnight(18)
       # <Posts in the 18th week of the current year>
       #
-      # Post.by_night(18, :year => 2004)
+      # Post.by_fortnight(18, :year => 2004)
       # <Posts in the 18th fortnight of 2004>
       #
       # TODO: Get it to support a Time and Date object.
@@ -86,12 +86,12 @@ module Frozenplague
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
-          (value.strftime("%U").to_i - 1).weeks
           opts[:year] = value.year
+          Time.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value <= 26
           Time.local(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
         else
-          raise ParseError, "by_fortnight takes only a Time object, or a Fixnum (less than 27)."
+          raise ParseError, "by_fortnight takes only a Time or Date object, or a Fixnum (less than or equal to 26)."
         end
         end_time = start_time + 2.weeks
         
@@ -115,15 +115,14 @@ module Frozenplague
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
-          (value.strftime("%U").to_i - 1).weeks
           opts[:year] = value.year
+          Time.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value < 52
           Time.local(opts[:year], 1, 1) + (value.to_i - 1).weeks
         else
           raise ParseError, "by_week takes only a Time object, or a Fixnum (less than 52)."
         end
         end_time = start_time + 1.week
-        
         by_star(start_time, end_time, opts, &block)
       end
       
@@ -225,6 +224,9 @@ module Frozenplague
         
         def method_missing(method, *args)
           method = method.to_s
+          
+          # Go straight to find_by methods!
+          return super(method, *args) if method =~ /^find_by/
           
           if method =~ /^as_of_(.*?)$/ || method =~ /^up_to_(.*?)$/
             time = Chronic.parse($1.humanize)
