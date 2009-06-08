@@ -148,13 +148,12 @@ describe Post do
       Post.find_by_text("Today's post").should_not be_nil
     end
   end
-    
   
   
   describe Post, "nested find" do
     it "should be able to find a single post from January last year with the tag 'ruby'" do
       Post.by_month("January", :year => Time.now.year - 1) do
-        { :include => :tags, :conditions => ["tags.name = ?", 'ruby']}
+        { :include => :tags, :conditions => ["tags.name = ?", 'ruby'] }
       end.size.should eql(1)
     end
   end
