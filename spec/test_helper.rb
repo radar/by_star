@@ -24,6 +24,9 @@ class TestHelper
       end
     end
     
+    puts "*" * 50
+    puts Time.now.inspect
+    
     # Today's fixture
     Post.create!(:text => "Today's post")
     
