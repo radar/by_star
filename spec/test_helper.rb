@@ -22,6 +22,8 @@ class TestHelper
     structure.split(';').each { |table|
       ActiveRecord::Base.connection.execute table
     }
+    ActiveRecord::Base.default_timezone = :utc
+    Time.zone = :utc
     
     for month in 1..12
       month.times do
