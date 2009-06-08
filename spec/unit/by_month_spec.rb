@@ -8,6 +8,8 @@ describe Post do
   
   
   it "should find all posts" do
+    puts Time.zone.now
+    puts Time.zone
     Post.count.should eql(TOTAL_POSTS)
   end
   
