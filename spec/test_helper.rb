@@ -1,12 +1,5 @@
 # Inspiration gained from Thinking Sphinx's test suite.
 # Pat Allan is a genius.
-
-class Time
-  def now
-    Time.local(2009, 05, 15)
-  end
-end
-
 class TestHelper
   attr_accessor :host, :username, :password
   attr_reader   :path
