@@ -8,7 +8,6 @@ describe Post do
   
   
   it "should find all posts" do
-    puts Time.zone
     Post.count.should eql(TOTAL_POSTS)
   end
   
@@ -19,13 +18,13 @@ describe Post do
     end
     
     it "should be able to find a single post from last year" do
-      Post.by_year(Time.now.year-1).size.should eql(1)
+      Post.by_year(Time.zone.now.year-1).size.should eql(1)
     end
   end
   
   describe Post, "by month" do
     it "should be able to find a post for the current month" do
-      Post.by_month.size.should eql(Time.now.month+3)
+      Post.by_month.size.should eql(Time.zone.now.month+3)
     end
   
     it "should be able to find a single post for January" do
@@ -40,11 +39,11 @@ describe Post do
       # Hack... if we're running this test during march there's going to be more posts than usual.
       # This is due to the #today, #yesterday and #tomorrow methods.
       
-      Post.by_month(Time.local(Time.now.year, 3, 1)).size.should eql(3)
+      Post.by_month(Time.local(Time.zone.now.year, 3, 1)).size.should eql(3)
     end
   
     it "should be able to find a single post from January last year" do
-      Post.by_month("January", :year => Time.now.year - 1).size.should eql(1)
+      Post.by_month("January", :year => Time.zone.now.year - 1).size.should eql(1)
     end
     
     it "should fail when given incorrect months" do
@@ -73,18 +72,27 @@ describe Post do
     end
     
     it "should be able to find posts in the 1st week of last year" do
-      Post.by_week(1, :year => Time.now.year-1).size.should eql(1)
+      Post.by_week(1, :year => Time.zone.now.year-1).size.should eql(1)
     end
     
     it "should be able to find posts in the current week" do  
       Time.stub!(:now).and_return("15-05-2009".to_time)
       Post.by_week(1.week.ago).size.should eql(5)
     end
+    
+    it "should be able to find posts by a given date" do
+      Time.stub!(:now).and_return("15-05-2009".to_time)
+      Post.by_week(1.week.ago.to_date).size.should eql(5)
+    end
   end
   
   describe Post, "by day" do
     it "should be able to find a post for today" do
       Post.by_day.size.should eql(1)
+    end
+    
+    it "should be able to find a post by a given date" do
+      Post.by_day(Date.today).size.should eql(1)
     end
   end
 
@@ -94,9 +102,23 @@ describe Post do
     end
   end
   
+  describe Post, "today, in another timezone" do
+    before do
+      Time.zone = "Brisbane"
+    end
+    
+    it "should show the post for today" do
+      Post.today.map(&:text).should include("Today's post")
+    end
+  end
+  
   describe Post, "yesterday" do
     it "should show the post for yesterday" do
       Post.yesterday.map(&:text).should include("Yesterday's post")
+    end
+    
+    it "should be able find yesterday, given a Date" do
+      Post.yesterday(Date.today-1).map(&:text).should include("Yesterday's post")
     end
   end
   
@@ -104,23 +126,27 @@ describe Post do
     it "should show the post for tomorrow" do
       Post.tomorrow.map(&:text).should include("Tomorrow's post")
     end
+    
+    it "should be able find tomorrow, given a Date" do
+      Post.tomorrow(Date.today+1).map(&:text).should include("Tomorrow's post")
+    end
   end
   
   describe Post, "past" do
     it "should show the correct number of posts in the past" do
-      Post.past.size.should eql(Post.count(:conditions => ["created_at < ?", Time.now]))
+      Post.past.size.should eql(Post.count(:conditions => ["created_at < ?", Time.zone.now]))
     end
   end
   
   describe Post, "future" do
     it "should show the correct number of posts in the future" do
-      Post.future.size.should eql(Post.count(:conditions => ["created_at > ?", Time.now]))
+      Post.future.size.should eql(Post.count(:conditions => ["created_at > ?", Time.zone.now]))
     end
   end
   
   describe Post, "as of" do
     it "should be able to find posts as of 2 weeks ago" do
-      year = Time.now.year
+      year = Time.zone.now.year
       Time.stub!(:now).and_return("15-05-#{year}".to_time)
       Post.as_of_2_weeks_ago.size.should eql(5)
     end
@@ -132,7 +158,7 @@ describe Post do
   
   describe Post, "up to" do
     it "should be able to find posts up to 2 weeks from now" do
-      year = Time.now.year
+      year = Time.zone.now.year
       Time.stub!(:now).and_return("15-05-#{year}".to_time)
       Post.up_to_6_weeks_from_now.size.should eql(9)
     end
@@ -153,7 +179,7 @@ describe Post do
   
   describe Post, "nested find" do
     it "should be able to find a single post from January last year with the tag 'ruby'" do
-      Post.by_month("January", :year => Time.now.year - 1) do
+      Post.by_month("January", :year => Time.zone.now.year - 1) do
         { :include => :tags, :conditions => ["tags.name = ?", 'ruby'] }
       end.size.should eql(1)
     end

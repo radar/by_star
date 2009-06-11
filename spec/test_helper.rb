@@ -1,5 +1,6 @@
 # Inspiration gained from Thinking Sphinx's test suite.
 # Pat Allan is a genius.
+
 class TestHelper
   attr_accessor :host, :username, :password
   attr_reader   :path
@@ -15,30 +16,28 @@ class TestHelper
     structure.split(';').each { |table|
       ActiveRecord::Base.connection.execute table
     }
-    ActiveRecord::Base.default_timezone = :utc
-    Time.zone = :utc
     
     for month in 1..12
       month.times do
-        Post.create(:text => "testing", :created_at => Time.local(Time.now.year, month, 1))
+        Post.create(:text => "testing", :created_at => Time.local(Time.zone.now.year, month, 1))
       end
     end
     
-    puts "*" * 50
-    puts Time.now.inspect
+    
     
     # Today's fixture
-    Post.create!(:text => "Today's post")
+    Post.create!(:text => "Today's post", :created_at => Time.zone.now)
     
     # Yesterday's fixture
-    Post.create!(:text => "Yesterday's post", :created_at => Time.now-1.day)
+    Post.create!(:text => "Yesterday's post", :created_at => Time.zone.now-1.day)
     
     # Tomorrow's fixture
-    Post.create!(:text => "Tomorrow's post", :created_at => Time.now+1.day)
+    Post.create!(:text => "Tomorrow's post", :created_at => Time.zone.now+1.day)
     
     # Tag test
-    post = Post.create(:text => "testing", :created_at => Time.local(Time.now.year-1, 1, 1))
+    post = Post.create(:text => "testing", :created_at => Time.local(Time.zone.now.year-1, 1, 1))
     post.tags.create(:name => "ruby")
+  
   end
   
 end

@@ -4,9 +4,17 @@
 $:.unshift File.dirname(__FILE__) + '/../lib'
 
 require 'rubygems'
+require 'activesupport'
 require 'activerecord'
 require 'frozenplague/by_star'
+require 'spec'
 require 'spec/fixtures/models'
+
+# Define time zone before loading test_helper
+zone = "UTC"
+Time.zone = zone
+ActiveRecord::Base.default_timezone = zone
+
 require 'spec/test_helper'
 
 FileUtils.mkdir_p "#{Dir.pwd}/tmp"

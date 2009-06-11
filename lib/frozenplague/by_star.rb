@@ -13,11 +13,8 @@ module Frozenplague
       # Examples:
       # Post.by_year(2009)
       # => <Posts for 2009>
-      def by_year(value=Time.now.year, opts={}, &block)
+      def by_year(value=Time.zone.now.year, opts={}, &block)
         value = work_out_year(value)
-        opts[:year] ||= if value == Time || value == Date
-          value.year
-        end
         start_time = Time.local(value, 1, 1)
         end_time = start_time.end_of_year
         by_star(start_time, end_time, opts, &block)
@@ -46,8 +43,8 @@ module Frozenplague
       #   { :include => "tags", :conditions => ["tags.name = ?", "ruby"] }
       # end
       # => <Posts in January with a tag called 'ruby'> 
-      def by_month(value=Time.now.month, opts={}, &block)
-        opts[:year] ||= Time.now.year
+      def by_month(value=Time.zone.now.month, opts={}, &block)
+        opts[:year] ||= Time.zone.now.year
         
         # Work out what actual month is.
         month = if value.class == Fixnum && value >= 1 && value <= 12
@@ -82,12 +79,12 @@ module Frozenplague
       #
       # TODO: Get it to support a Time and Date object.
       def by_fortnight(value, opts={}, &block)
-        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
+        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.zone.now.year
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
           opts[:year] = value.year
-          Time.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
+          Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value <= 26
           Time.local(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
         else
@@ -111,12 +108,12 @@ module Frozenplague
       #
       # TODO: Get it to support a Time and Date object.
       def by_week(value, opts={}, &block)
-        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.now.year
+        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.zone.now.year
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
           opts[:year] = value.year
-          Time.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
+          Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value < 52
           Time.local(opts[:year], 1, 1) + (value.to_i - 1).weeks
         else
@@ -131,8 +128,8 @@ module Frozenplague
       # => <Posts for today>
       # Post.by_day(Time.yesterday)
       # => <Posts for yesterday>
-      def by_day(value=Time.now, opts={}, &block)
-        value = value.utc
+      def by_day(value=Time.zone.now, opts={}, &block) 
+        value = value.to_time if value.is_a?(Date)
         start_time = value.beginning_of_day
         end_time   = value.end_of_day
         by_star(start_time, end_time, opts, &block)
@@ -146,8 +143,8 @@ module Frozenplague
       # => <Posts from yesterday>
       # Post.yesterday(Time.yesterday)
       # => <Posts from 2 days ago>
-      def yesterday(value=Time.now-1.day, opts={}, &block)
-        by_day(value.utc, opts, &block)
+      def yesterday(value=Time.zone.now-1.day, opts={}, &block)
+        by_day(value, opts, &block)
       end
       
       # Pass in nothing or a time object.
@@ -155,31 +152,31 @@ module Frozenplague
       # => <Posts from tomorrow>
       # Post.tomorrow(Time.tomorrow)
       # => <Posts from 2 days from now>
-      def tomorrow(value=Time.now+1.day, opts={}, &block)
-        by_day(value.utc, opts, &block)
+      def tomorrow(value=Time.zone.now+1.day, opts={}, &block)
+        by_day(value, opts, &block)
       end
       
       # Find items created in the past
       # Takes a time or date object as the first argument
-      def past(value=Time.now, opts={}, &block)
+      def past(value=Time.zone.now, opts={}, &block)
         by_direction("<", value, opts, &block)
       end
       
       # Find items created in the future
       # Takes a time or date object as first argument
-      def future(value=Time.now, opts={}, &block)
+      def future(value=Time.zone.now, opts={}, &block)
         by_direction(">", value, opts, &block)
       end
       
       # Find items created between two dates or times
       # Takes time or date objects as the first two arguments
-      def between(start_time=Time.now, end_time=Time.now, opts={}, &block)
+      def between(start_time=Time.zone.now, end_time=Time.zone.now, opts={}, &block)
         by_star(start_time, end_time, opts, &block)
       end
     
       private
       
-        def by_direction(conditions, value=Time.now, opts={}, &block)
+        def by_direction(conditions, value=Time.zone.now, opts={}, &block)
           opts[:field] ||= "created_at"
           with_scope(:find => { :conditions => ["#{self.table_name}.#{opts[:field]} #{conditions} ?", value] }) do
             if block_given?
