@@ -12,7 +12,7 @@ describe Post do
   end
   
   
-  describe Post, "by year" do
+  describe "by year" do
     it "should be able to find all the posts in the current year" do
       Post.by_year.size.should eql(TOTAL_POSTS - 1)
     end
@@ -22,7 +22,7 @@ describe Post do
     end
   end
   
-  describe Post, "by month" do
+  describe "by month" do
     it "should be able to find a post for the current month" do
       Post.by_month.size.should eql(Time.zone.now.month+3)
     end
@@ -55,7 +55,7 @@ describe Post do
     
   end
   
-  describe Post, "by fortnight" do
+  describe "by fortnight" do
     it "should be able to find posts in the 1st fortnight" do
       Post.by_fortnight(1).size.should eql(1)
     end
@@ -66,7 +66,7 @@ describe Post do
     end
   end
   
-  describe Post, "by week" do
+  describe "by week" do
     it "should be able to find posts in the 1st week" do
       Post.by_week(1).size.should eql(1)
     end
@@ -86,7 +86,7 @@ describe Post do
     end
   end
   
-  describe Post, "by day" do
+  describe "by day" do
     it "should be able to find a post for today" do
       Post.by_day.size.should eql(1)
     end
@@ -96,13 +96,13 @@ describe Post do
     end
   end
 
-  describe Post, "today" do
+  describe "today" do
     it "should show the post for today" do
       Post.today.map(&:text).should include("Today's post")
     end
   end
   
-  describe Post, "today, in another timezone" do
+  describe "today, in another timezone" do
     before do
       Time.zone = "Brisbane"
     end
@@ -112,7 +112,7 @@ describe Post do
     end
   end
   
-  describe Post, "yesterday" do
+  describe "yesterday" do
     it "should show the post for yesterday" do
       Post.yesterday.map(&:text).should include("Yesterday's post")
     end
@@ -122,7 +122,7 @@ describe Post do
     end
   end
   
-  describe Post, "tomorrow" do
+  describe "tomorrow" do
     it "should show the post for tomorrow" do
       Post.tomorrow.map(&:text).should include("Tomorrow's post")
     end
@@ -132,19 +132,19 @@ describe Post do
     end
   end
   
-  describe Post, "past" do
+  describe "past" do
     it "should show the correct number of posts in the past" do
       Post.past.size.should eql(Post.count(:conditions => ["created_at < ?", Time.zone.now]))
     end
   end
   
-  describe Post, "future" do
+  describe "future" do
     it "should show the correct number of posts in the future" do
       Post.future.size.should eql(Post.count(:conditions => ["created_at > ?", Time.zone.now]))
     end
   end
   
-  describe Post, "as of" do
+  describe "as of" do
     it "should be able to find posts as of 2 weeks ago" do
       year = Time.zone.now.year
       Time.stub!(:now).and_return("15-05-#{year}".to_time)
@@ -156,7 +156,7 @@ describe Post do
     end
   end
   
-  describe Post, "up to" do
+  describe "up to" do
     it "should be able to find posts up to 2 weeks from now" do
       year = Time.zone.now.year
       Time.stub!(:now).and_return("15-05-#{year}".to_time)
@@ -170,14 +170,14 @@ describe Post do
   end
   
   # Because we override method_missing, we ensure that it still works as it should with this test.
-  describe Post, "find_by_text" do
+  describe "find_by_text" do
     it "should still work" do
       Post.find_by_text("Today's post").should_not be_nil
     end
   end
   
   
-  describe Post, "nested find" do
+  describe "nested find" do
     it "should be able to find a single post from January last year with the tag 'ruby'" do
       Post.by_month("January", :year => Time.zone.now.year - 1) do
         { :include => :tags, :conditions => ["tags.name = ?", 'ruby'] }
