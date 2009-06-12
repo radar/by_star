@@ -8,49 +8,33 @@ module Frozenplague
     end
     
     module ClassMethods
-      
-      # Pass in the numeric value of the year, either 4 digit or 2 digit. 
       # Examples:
-      # Post.by_year(2009)
-      # => <Posts for 2009>
-      def by_year(value=Time.zone.now.year, opts={}, &block)
-        value = work_out_year(value)
-        start_time = Time.utc(value, 1, 1)
+      #   by_year(2010)
+      #   # 2-digit year:
+      #   by_year(10)
+      #   # Time or Date object:
+      #   by_year(time)
+      def by_year(value=Time.zone.now.year, options={}, &block)
+        year = (Time === value or Date === value) ? value.year : value
+        year = work_out_year(year)
+        
+        start_time = Time.utc(year, 1, 1)
         end_time = start_time.end_of_year
-        by_star(start_time, end_time, opts, &block)
+        by_star(start_time, end_time, options)
       end
       
-      # Pass in the number of a month, the month name, or a time object to execute a find for that month.
-      # Accepts a year option.
       # Examples:
-      # Post.by_month(1)
-      # => <Posts for January>
-      #
-      # Post.by_month("January")
-      # => <Posts for January>
-      #
-      # Post.by_month("January", :year => 2008)
-      # => <Posts for January 2008>
-      #
-      # Post.by_month(Time.local(2008,1,16))
-      # => <Posts for January 2008>
-      #
-      #
-      # Post.by_month("January", :field => "not_created_at")
-      # => <Posts for January 2008, using an alternative field>
-      #
-      # Post.by_month(1) do
-      #   { :include => "tags", :conditions => ["tags.name = ?", "ruby"] }
-      # end
-      # => <Posts in January with a tag called 'ruby'> 
-      def by_month(value=Time.zone.now.month, opts={}, &block)
-        opts[:year] ||= Time.zone.now.year
-        
+      #   by_month(1)
+      #   by_month("January")
+      #   by_month("January", :year => 2008)
+      #   by_month(time)
+      def by_month(value=Time.zone.now.month, options={}, &block)
+        year = options[:year] ||= Time.zone.now.year
         # Work out what actual month is.
         month = if value.class == Fixnum && value >= 1 && value <= 12
           value
         elsif value.class == Time || value.class == Date
-          opts[:year] = value.year
+          year = value.year
           value.month
         elsif value.class == String && Date::MONTHNAMES.include?(value)
           Date::MONTHNAMES.index(value)
@@ -58,69 +42,49 @@ module Frozenplague
           raise ParseError, "Value is not an integer (between 1 and 12), time object or string (make sure you typed the name right)."
         end
         
-        # Get the local time of the beginning of the month
-        start_time = Time.utc(opts[:year], month, 1)
-        
-        # Cheat a little to get the end of the month
+        start_time = Time.utc(year, month, 1)
         end_time = start_time.end_of_month
 
-        # And since timestamps in the database are UTC by default, assume noone's changed it.
-          by_star(start_time, end_time, opts, &block)
-        # end
+        by_star(start_time, end_time, options)
       end
       
-      # Pass in the fortnight. Accepts the year option.
       # Examples:
-      # Post.by_fortnight(18)
-      # <Posts in the 18th week of the current year>
-      #
-      # Post.by_fortnight(18, :year => 2004)
-      # <Posts in the 18th fortnight of 2004>
-      #
-      # TODO: Get it to support a Time and Date object.
-      def by_fortnight(value, opts={}, &block)
-        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.zone.now.year
+      #   # 18th fortnight of 2004
+      #   Post.by_fortnight(18, :year => 2004)
+      def by_fortnight(value, options = {}, &block)
+        year = work_out_year(options[:year] || Time.zone.now.year)
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
-          opts[:year] = value.year
           Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value <= 26
-          Time.utc(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
+          Time.utc(year, 1, 1) + ((value.to_i - 1) * 2).weeks
         else
           raise ParseError, "by_fortnight takes only a Time or Date object, or a Fixnum (less than or equal to 26)."
         end
         end_time = start_time + 2.weeks
         
-        by_star(start_time, end_time, opts, &block)
+        by_star(start_time, end_time, options)
       end
       
-      # Pass in the week number, or a time object.
       # Examples:
-      # Post.by_week(36)
-      # <Posts in the 36th week of the current year>
-      #
-      # Post.by_week(36, :year => 2004)
-      # <Posts in the 36th week of 2004>
-      #
-      # Post.by_week(Time.local(2008, 1, 1))
-      # <Posts in the first week of 2008>
-      #
-      # TODO: Get it to support a Time and Date object.
-      def by_week(value, opts={}, &block)
-        opts[:year] = !opts[:year].nil? ? work_out_year(opts[:year]) : Time.zone.now.year
+      #   # 36th week
+      #   Post.by_week(36)
+      #   Post.by_week(36, :year => 2004)
+      #   Post.by_week(time)
+      def by_week(value, options = {}, &block)
+        year = work_out_year(options[:year] || Time.now.year)
         # Dodgy!
         # Surely there's a method in Rails to do this.
         start_time = if value.class == Time || value.class == Date
-          opts[:year] = value.year
           Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value < 52
-          Time.utc(opts[:year], 1, 1) + (value.to_i - 1).weeks
+          Time.utc(year, 1, 1) + (value.to_i - 1).weeks
         else
           raise ParseError, "by_week takes only a Time object, or a Fixnum (less than 52)."
         end
         end_time = start_time + 1.week
-        by_star(start_time, end_time, opts, &block)
+        by_star(start_time, end_time, options, &block)
       end
       
       # Pass in nothing or a time object.
@@ -128,57 +92,53 @@ module Frozenplague
       # => <Posts for today>
       # Post.by_day(Time.yesterday)
       # => <Posts for yesterday>
-      def by_day(value=Time.zone.now, opts={}, &block) 
+      def by_day(value=Time.zone.now, options={}, &block) 
         value = value.to_time if value.is_a?(Date)
         start_time = value.beginning_of_day
         end_time   = value.end_of_day
-        by_star(start_time, end_time, opts, &block)
+        by_star(start_time, end_time, options, &block)
       end
       
-      # Cheating a little more.
+      # Examples:
+      #   Post.by_day
+      #   Post.by_day(Time.yesterday)
+      def by_day(time = Time.zone.now, options = {}, &block)
+        by_star(time.beginning_of_day, time.end_of_day, options, &block)
+      end
       alias_method :today, :by_day
       
-      # Pass in nothing or a time object.
-      # Post.yesterday
-      # => <Posts from yesterday>
-      # Post.yesterday(Time.yesterday)
-      # => <Posts from 2 days ago>
-      def yesterday(value=Time.zone.now-1.day, opts={}, &block)
-        by_day(value, opts, &block)
+      # Examples:
+      #   Post.yesterday
+      #   # 2 days ago:
+      #   Post.yesterday(Time.yesterday)
+      def yesterday(time = Time.zone.now, options = {}, &block)
+        by_day(time.advance(:days => -1), options, &block)
       end
       
-      # Pass in nothing or a time object.
-      # Post.tomorrow
-      # => <Posts from tomorrow>
-      # Post.tomorrow(Time.tomorrow)
-      # => <Posts from 2 days from now>
-      def tomorrow(value=Time.zone.now+1.day, opts={}, &block)
-        by_day(value, opts, &block)
+      # Examples:
+      #   Post.tomorrow
+      #   # 2 days from now:
+      #   Post.tomorrow(Time.tomorrow)
+      def tomorrow(time = Time.zone.now, options = {}, &block)
+        by_day(time.advance(:days => 1), options, &block)
       end
       
-      # Find items created in the past
-      # Takes a time or date object as the first argument
-      def past(value=Time.zone.now, opts={}, &block)
-        by_direction("<", value, opts, &block)
+      # Scopes to records older than current or given time
+      def past(time = Time.now, options = {}, &block)
+        by_direction("<", time, options, &block)
       end
       
-      # Find items created in the future
-      # Takes a time or date object as first argument
-      def future(value=Time.zone.now, opts={}, &block)
-        by_direction(">", value, opts, &block)
+      # Scopes to records newer than current or given time
+      def future(time = Time.now, options = {}, &block)
+        by_direction(">", time, options, &block)
       end
       
-      # Find items created between two dates or times
-      # Takes time or date objects as the first two arguments
-      def between(start_time=Time.zone.now, end_time=Time.zone.now, opts={}, &block)
-        by_star(start_time, end_time, opts, &block)
-      end
-    
       private
       
-        def by_direction(conditions, value=Time.zone.now, opts={}, &block)
-          opts[:field] ||= "created_at"
-          with_scope(:find => { :conditions => ["#{self.table_name}.#{opts[:field]} #{conditions} ?", value] }) do
+        def by_direction(condition, time, options = {}, &block)
+          field = connection.quote_table_name(table_name)
+          field << "." << connection.quote_column_name(options[:field] || "created_at")
+          with_scope(:find => { :conditions => ["#{field} #{condition} ?", time.utc] }) do
             if block_given?
               with_scope(:find => block.call) do
                 find(:all)
@@ -188,16 +148,11 @@ module Frozenplague
             end
           end
         end
-        # General finder method, takes start time and end time.
-        # Excepts field as an option.
-        def by_star(start_time, end_time, opts, &block)
-          opts[:field] ||= "created_at"
-          with_scope(:find => { :conditions => [
-                     "#{self.table_name}.#{opts[:field]} >= ? AND
-                      #{self.table_name}.#{opts[:field]} <= ?", 
-                      start_time.utc, end_time.utc]}) do
-                        
-            # Is there a cleaner way?
+        
+        # scopes results between start_time and end_time
+        def by_star(start_time, end_time, options = {})
+          field = options[:field] || "created_at"
+          with_scope(:find => { :conditions => { field => start_time.utc..end_time.utc } }) do
             if block_given?
               with_scope(:find => block.call) do
                 find(:all)
@@ -207,36 +162,39 @@ module Frozenplague
             end
           end
         end
+        
+        alias :between :by_star
+        public :between
         
         # This will work for the next 30 years (written in 2009)
         def work_out_year(value)
-          value = if value < 39
-            "20#{value}"
-          elsif value > 39 && value <= 99
-            "19#{value}"
+          case value
+          when 0..39
+            2000 + value
+          when 40..99
+            1900 + value
           else
             value
-          end.to_i
+          end
         end
         
         def method_missing(method, *args)
-          method = method.to_s
-          
-          # Go straight to find_by methods!
-          return super(method, *args) if method =~ /^find_by/
-          
-          if method =~ /^as_of_(.*?)$/ || method =~ /^up_to_(.*?)$/
-            time = Chronic.parse($1.humanize)
-          end
-          
-          raise ParseError, "Chronic couldn't work out what you meant by '#{$1.humanize}', please be more precise." if time.nil?
-          
-          objects = if method =~ /^as_of_(.*?)$/
-            between(time, Time.now.utc)
-          elsif method =~ /^up_to_(.*?)$/
-            between(Time.now.utc, time)
+          if method.to_s =~ /^(as_of|up_to)_(.+)$/
+            method = $1
+            expr = $2.humanize
+            unless time = Chronic.parse(expr)
+              raise ParseError, "Chronic couldn't work out #{expr.inspect}; please be more precise."
+            end
+            
+            reference = args.first || Time.now
+            
+            if "as_of" == method
+              between(time, reference)
+            else
+              between(reference, time)
+            end
           else
-            super(method, *args)
+            super
           end
         end
     end

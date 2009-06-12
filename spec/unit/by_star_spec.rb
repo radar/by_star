@@ -102,23 +102,13 @@ describe Post do
     end
   end
   
-  describe "today, in another timezone" do
-    before do
-      Time.zone = "Brisbane"
-    end
-    
-    it "should show the post for today" do
-      Post.today.map(&:text).should include("Today's post")
-    end
-  end
-  
   describe "yesterday" do
     it "should show the post for yesterday" do
       Post.yesterday.map(&:text).should include("Yesterday's post")
     end
     
     it "should be able find yesterday, given a Date" do
-      Post.yesterday(Date.today-1).map(&:text).should include("Yesterday's post")
+      Post.yesterday(Date.today+1.day).map(&:text).should include("Yesterday's post")
     end
   end
   
@@ -152,7 +142,7 @@ describe Post do
     end
     
     it "should not do anything if given an invalid date" do
-      lambda { Post.as_of_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, "Chronic couldn't work out what you meant by 'Ryans birthday', please be more precise.")
+      lambda { Post.as_of_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
     end
   end
   
@@ -164,7 +154,7 @@ describe Post do
     end
     
     it "should not do anything if given an invalid date" do
-      lambda { Post.up_to_ryans_birthday }.should raise_error(Frozenplague::ByStar::ParseError, "Chronic couldn't work out what you meant by 'Ryans birthday', please be more precise.")
+      lambda { Post.up_to_ryans_birthday }.should raise_error(Frozenplague::By"Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
     end
       
   end
