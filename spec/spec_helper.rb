@@ -8,7 +8,7 @@ ActiveRecord::Base.establish_connection(
 require 'rubygems'
 require 'activesupport'
 require 'activerecord'
-require 'frozenplague/by_star'
+require 'by_star'
 require 'spec'
 
 # Define time zone before loading test_helper

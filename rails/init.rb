@@ -1,2 +1,2 @@
-require 'frozenplague/by_star'
-ActiveRecord::Base.send :include, Frozenplague::ByStar
+require 'by_star'
+ActiveRecord::Base.send :include, ByStar
