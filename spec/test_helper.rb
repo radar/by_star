@@ -1,9 +1,6 @@
 # Inspiration gained from Thinking Sphinx's test suite.
 # Pat Allan is a genius.
 
-puts Time.zone.inspect
-puts Time.zone.now.inspect 
-
 class TestHelper
   attr_accessor :host, :username, :password
   attr_reader   :path
@@ -41,9 +38,6 @@ class TestHelper
     post = Post.create(:text => "testing", :created_at => Time.local(Time.zone.now.year-1, 1, 1))
     post.tags.create(:name => "ruby")
     
-    
-    puts Post.count
-    puts Post.all.inspect.gsub("<", "&lt;").gsub(">", "&;gt;")
   end
   
 end
