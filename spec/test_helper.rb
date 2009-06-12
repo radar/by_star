@@ -1,9 +1,6 @@
 # Inspiration gained from Thinking Sphinx's test suite.
 # Pat Allan is a genius.
 
-puts "WTF STILL BROKEN"
-puts Time.zone
-
 class TestHelper
   attr_accessor :host, :username, :password
   attr_reader   :path
