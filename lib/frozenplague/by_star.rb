@@ -15,7 +15,7 @@ module Frozenplague
       # => <Posts for 2009>
       def by_year(value=Time.zone.now.year, opts={}, &block)
         value = work_out_year(value)
-        start_time = Time.local(value, 1, 1).utc.beginning_of_year
+        start_time = Time.utc(value, 1, 1)
         end_time = start_time.end_of_year
         by_star(start_time, end_time, opts, &block)
       end
@@ -59,7 +59,7 @@ module Frozenplague
         end
         
         # Get the local time of the beginning of the month
-        start_time = Time.local(opts[:year], month, 1).utc.beginning_of_month
+        start_time = Time.utc(opts[:year], month, 1)
         
         # Cheat a little to get the end of the month
         end_time = start_time.end_of_month
@@ -86,7 +86,7 @@ module Frozenplague
           opts[:year] = value.year
           Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value <= 26
-          Time.local(opts[:year], 1, 1).utc.beginning_of_year + ((value.to_i - 1) * 2).weeks
+          Time.utc(opts[:year], 1, 1) + ((value.to_i - 1) * 2).weeks
         else
           raise ParseError, "by_fortnight takes only a Time or Date object, or a Fixnum (less than or equal to 26)."
         end
@@ -115,7 +115,7 @@ module Frozenplague
           opts[:year] = value.year
           Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
         elsif value.to_i.class == Fixnum && value < 52
-          Time.local(opts[:year], 1, 1).utc.beginning_of_year + (value.to_i - 1).weeks
+          Time.utc(opts[:year], 1, 1) + (value.to_i - 1).weeks
         else
           raise ParseError, "by_week takes only a Time object, or a Fixnum (less than 52)."
         end
