@@ -7,7 +7,6 @@ ActiveRecord::Base.establish_connection(
 
 require 'rubygems'
 require 'activesupport'
-require 'activerecord'
 require 'by_star'
 require 'spec'
 

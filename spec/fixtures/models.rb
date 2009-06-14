@@ -22,8 +22,8 @@ year = Time.now.year
 end
 
 Post.factory "Today's post"
-Post.factory "Yesterday's post", 1.day.ago
-Post.factory "Tomorrow's post", 1.day.from_now
+Post.factory "Yesterday's post", 1.day.ago.utc
+Post.factory "Tomorrow's post", 1.day.from_now.utc
 
 post = Post.factory "Last year", Time.local(year - 1, 1, 1)
 post.tags.create(:name => "ruby")

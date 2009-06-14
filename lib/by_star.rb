@@ -51,7 +51,7 @@ module ByStar
     # Examples:
     #   # 18th fortnight of 2004
     #   Post.by_fortnight(18, :year => 2004)
-    def by_fortnight(value, options = {}, &block)
+    def by_fortnight(value=Time.zone.now, options = {}, &block)
       year = work_out_year(options[:year] || Time.zone.now.year)
       # Dodgy!
       # Surely there's a method in Rails to do this.
@@ -72,7 +72,7 @@ module ByStar
     #   Post.by_week(36)
     #   Post.by_week(36, :year => 2004)
     #   Post.by_week(time)
-    def by_week(value, options = {}, &block)
+    def by_week(value=Time.zone.now, options = {}, &block)
       year = work_out_year(options[:year] || Time.now.year)
       # Dodgy!
       # Surely there's a method in Rails to do this.
@@ -87,16 +87,17 @@ module ByStar
       by_star(start_time, end_time, options, &block)
     end
     
-    # Pass in nothing or a time object.
-    # Post.by_day
-    # => <Posts for today>
-    # Post.by_day(Time.yesterday)
-    # => <Posts for yesterday>
-    def by_day(value=Time.zone.now, options={}, &block) 
-      value = value.to_time if value.is_a?(Date)
-      start_time = value.beginning_of_day
-      end_time   = value.end_of_day
-      by_star(start_time, end_time, options, &block)
+    def by_weekend(value=Time.zone.now, options = {}, &block)
+      now = Time.zone.now
+      start_time = case value.wday
+      when 0
+        now.advance(:days => -1) 
+      when 6
+        now
+      else
+        now.beginning_of_week.advance(:days => 5)
+      end
+      by_star(start_time, (start_time + 1.day).end_of_day)
     end
     
     # Examples:

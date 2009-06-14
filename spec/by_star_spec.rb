@@ -65,7 +65,8 @@ describe Post do
     end
     
     it "should be able to find posts for a fortnight ago" do
-      Time.stub!(:now).and_return("15-05-2009".to_time)
+      year = Time.zone.now.year
+      Time.stub!(:now).and_return("15-05-#{year}".to_time)
       find(2.weeks.ago).size.should eql(5)
     end
     
@@ -84,17 +85,27 @@ describe Post do
     end
     
     it "should be able to find posts in the current week" do  
-      Time.stub!(:now).and_return("15-05-2009".to_time)
+      year = Time.zone.now.year
+      Time.stub!(:now).and_return("15-05-#{year}".to_time)
       find(1.week.ago).size.should eql(5)
     end
     
     it "should be able to find posts by a given date" do
-      Time.stub!(:now).and_return("15-05-2009".to_time)
+      year = Time.zone.now.year
+      Time.stub!(:now).and_return("15-05-#{year}".to_time)
       find(1.week.ago.to_date).size.should eql(5)
     end
     
     it "should raise an error when given an invalid argument" do
       lambda { find(54) }.should raise_error(ByStar::ParseError, "by_week takes only a Time or Date object, or a Fixnum (less than or equal to 53).")
+    end
+  end
+  
+  describe "by weekend" do
+    it "should be able to find the posts on the weekend of the 1st May" do
+      year = Time.zone.now.year
+      Time.stub!(:now).and_return("1-08-#{year}".to_time)
+      find.size.should eql(8)
     end
   end
   
