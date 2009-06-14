@@ -7,6 +7,7 @@ by_* (byStar) is a plugin that allows you to find ActiveRecord objects given cer
 * A given month
 * A given fortnight
 * A given week
+* A given weekend
 * A given day
 * Between certain times
 * As of a certain time
@@ -20,6 +21,19 @@ It also allows you to do nested finds on the records returned which I personally
     end
     
 If you're not using the standard `created_at` field: don't worry! I've covered that scenario too.
+
+
+## By Year
+
+To find records based on a year you can pass it a two or four digit number:
+    
+    Post.by_year(09)
+    
+This will return all posts in 2009, whereas:
+
+    Post.by_year(99)
+
+will return all the posts in the year 1999.
 
 ## By Month
 
@@ -51,21 +65,12 @@ If you have a Time object you can use it to find the posts:
      
 This will find all the posts in November 2008.
 
-
-## By Year
-
-To find records based on a year you can pass it a two or four digit number:
-    
-    Post.by_year(09)
-    
-This will return all posts in 2009, whereas:
-
-    Post.by_year(99)
-
-will return all the posts in the year 1999.
-
 ## By Fortnight
 
+To find records from the current fortnight:
+    
+    Post.by_fortnight
+    
 To find records based on a fortnight, you can pass in a number (representing the fortnight number) or a time object:
 
     Post.by_fortnight(18)
@@ -82,7 +87,27 @@ This will return all posts from the first fortnight of 2008.
 
 ## By Week
 
+To find records from the current week:
+
+    Post.by_week
+    
 To find records based on a week, you can pass in a number (representing the week number) or a time object:
+
+    Post.by_week(36)
+   
+This will return all posts in the 36th week of the current year.
+
+    Post.by_week(36, :year => 2008)
+    
+This will return all posts in the 36th week of 2008.
+
+    Post.by_week(Time.local(2008,1,1))
+    
+This will return all posts from the first week of 2008.
+
+## By Weekend
+
+To find records based on a weekend.
 
     Post.by_week(36)
    

@@ -5,6 +5,11 @@ require 'by_star'
 TOTAL_POSTS = 82
 describe Post do
   
+  def stub_time
+    year = Time.zone.now.year
+    Time.stub!(:now).and_return("15-05-#{year}".to_time)
+  end
+  
   def find(*args)
     method = description_args.first.sub(' ', '_')
     Post.send(method, *args)
@@ -60,13 +65,19 @@ describe Post do
   end
   
   describe "by fortnight" do
+    
+    it "should be able to find posts in the current fortnight" do
+      year = Time.zone.now.year
+      Time.stub!(:now).and_return("1-08-#{year}".to_time)
+      find.size.should eql(8)
+    end
+    
     it "should be able to find posts in the 1st fortnight" do
       find(1).size.should eql(1)
     end
     
     it "should be able to find posts for a fortnight ago" do
-      year = Time.zone.now.year
-      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      stub_time
       find(2.weeks.ago).size.should eql(5)
     end
     
@@ -76,6 +87,13 @@ describe Post do
   end
   
   describe "by week" do
+    
+    it "should be able to find posts in the current week" do
+      year = Time.zone.now.year
+      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      find.size.should eql(0)
+    end
+    
     it "should be able to find posts in the 1st week" do
       find(1).size.should eql(1)
     end
@@ -85,14 +103,12 @@ describe Post do
     end
     
     it "should be able to find posts in the current week" do  
-      year = Time.zone.now.year
-      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      stub_time
       find(1.week.ago).size.should eql(5)
     end
     
     it "should be able to find posts by a given date" do
-      year = Time.zone.now.year
-      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      stub_time
       find(1.week.ago.to_date).size.should eql(5)
     end
     

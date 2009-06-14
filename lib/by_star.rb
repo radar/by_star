@@ -13,7 +13,7 @@ module ByStar
     #   # Time or Date object:
     #   by_year(time)
     def by_year(value=Time.zone.now.year, options={}, &block)
-      year = (Time === value or Date === value) ? value.year : value
+      year = valid_time_or_date?(value) ? value.year : value
       year = work_out_year(year)
       
       start_time = Time.utc(year, 1, 1)
@@ -33,7 +33,7 @@ module ByStar
       # Work out what actual month is.
       month = if value.class == Fixnum && value >= 1 && value <= 12
         value
-      elsif value.class == Time || value.class == Date
+      elsif valid_time_or_date?(value )
         year = value.year
         value.month
       elsif value.class == String && Date::MONTHNAMES.include?(value)
@@ -55,7 +55,7 @@ module ByStar
       year = work_out_year(options[:year] || Time.zone.now.year)
       # Dodgy!
       # Surely there's a method in Rails to do this.
-      start_time = if value.class == Time || value.class == Date
+      start_time = if valid_time_or_date?(value)
         Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
       elsif value.to_i.class == Fixnum && value <= 26
         Time.utc(year, 1, 1) + ((value.to_i - 1) * 2).weeks
@@ -76,7 +76,7 @@ module ByStar
       year = work_out_year(options[:year] || Time.now.year)
       # Dodgy!
       # Surely there's a method in Rails to do this.
-      start_time = if value.class == Time || value.class == Date
+      start_time = if valid_time_or_date?(value)
         Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
       elsif value.to_i.class == Fixnum && value < 53
         Time.utc(year, 1, 1) + (value.to_i - 1).weeks
@@ -178,6 +178,11 @@ module ByStar
         else
           value
         end
+      end
+      
+      # Checks if the object is a Time, Date or TimeWithZone object.
+      def valid_time_or_date?(value)
+        value.is_a?(Time) || value.is_a?(Date) || value.is_a?(ActiveSupport::TimeWithZone)
       end
       
       def method_missing(method, *args)
