@@ -174,7 +174,7 @@ All the `by_*` methods takes a block which will then scope the find based on the
   
 Unfortunately I forget who exactly prompted me to write the plugin, but I would like to thank #rubyonrails for their support and the following people:
 
-* Mislav Marhonic
+* Mislav Marohnic
 * August Lilleas (leethal)
 * gte351s
 * Thomase Sinclair (anathematic)
