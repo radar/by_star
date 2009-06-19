@@ -87,6 +87,9 @@ module ByStar
       by_star(start_time, end_time, options, &block)
     end
     
+    
+    # Examples:
+    # Post.by_weekend(Date.today)
     def by_weekend(value=Time.zone.now, options = {}, &block)
       now = Time.zone.now
       start_time = case value.wday

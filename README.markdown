@@ -107,19 +107,9 @@ This will return all posts from the first week of 2008.
 
 ## By Weekend
 
-To find records based on a weekend.
+If the time passed in (or the time now is a weekend) it will return posts from 12am Saturday to 11:59:59PM Sunday. If the time is a week day, it will show all posts for the coming weekend.
 
-    Post.by_week(36)
-   
-This will return all posts in the 36th week of the current year.
-
-    Post.by_week(36, :year => 2008)
-    
-This will return all posts in the 36th week of 2008.
-
-    Post.by_week(Time.local(2008,1,1))
-    
-This will return all posts from the first week of 2008.
+    Post.by_weekend(Time.now)
    
 ## By Day
 
