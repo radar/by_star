@@ -156,8 +156,8 @@ module ByStar
       
       # scopes results between start_time and end_time
       def by_star(start_time, end_time, options = {})
-        start_time = start_time.to_time if start_time.is_a?(Date)
-        end_time = end_time.to_time if end_time.is_a?(Date)
+        start_time = start_time.to_time(:utc) if start_time.is_a?(Date)
+        end_time = end_time.to_time(:utc) if end_time.is_a?(Date)
         
         start_time = parse(start_time) if start_time.is_a?(String)
         end_time = parse(end_time) if end_time.is_a?(String)
