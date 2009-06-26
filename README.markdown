@@ -130,6 +130,14 @@ To find records between two times:
 
     Post.between(time1, time2)
     
+Also works with dates:
+    
+    Post.between(date1, date2)
+    
+And with strings:
+
+    Post.between("last tuesday", "next wednesday")
+    
 ## As of
 
 To find records as of a certain date up until the current time:
