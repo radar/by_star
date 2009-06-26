@@ -195,7 +195,7 @@ describe Post do
     end
     
     it "should find between two dates" do
-      find(Date.today, Date.today + 5).size.should eql(2)
+      find(Date.today, Date.today + 5).size.should eql(9)
     end
   end
   
