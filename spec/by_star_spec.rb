@@ -181,7 +181,21 @@ describe Post do
     end
     
     it "should not do anything if given an invalid date" do
-      lambda { Post.as_of_ryans_birthday }.should raise_error(ByStar::ParseError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
+      lambda { Post.as_of_ryans_birthday }.should raise_error(RuntimeError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
+    end
+  end
+  
+  describe "between" do
+    it "should find posts between last tuesday and next tuesday" do
+      find("last tuesday", "next tuesday").size.should eql(3)
+    end
+    
+    it "should find  between two times" do
+      find(Time.now - 5.days, Time.now + 5.days).size.should eql(10)
+    end
+    
+    it "should find between two dates" do
+      find(Date.today, Date.today + 5).size.should eql(2)
     end
   end
   
@@ -189,11 +203,11 @@ describe Post do
     it "should be able to find posts up to 2 weeks from now" do
       year = Time.zone.now.year
       Time.stub!(:now).and_return("15-05-#{year}".to_time)
-      Post.up_to_6_weeks_from_now.size.should eql(9)
+      Post.up_to_6_weeks_from_now.size.should eql(7)
     end
     
     it "should not do anything if given an invalid date" do
-      lambda { Post.up_to_ryans_birthday }.should raise_error(ByStar::ParseError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
+      lambda { Post.up_to_ryans_birthday }.should raise_error(RuntimeError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
     end
       
   end

@@ -156,6 +156,12 @@ module ByStar
       
       # scopes results between start_time and end_time
       def by_star(start_time, end_time, options = {})
+        start_time = start_time.to_time if start_time.is_a?(Date)
+        end_time = end_time.to_time if end_time.is_a?(Date)
+        
+        start_time = parse(start_time) if start_time.is_a?(String)
+        end_time = parse(end_time) if end_time.is_a?(String)
+        
         field = options[:field] || "created_at"
         with_scope(:find => { :conditions => { field => start_time.utc..end_time.utc } }) do
           if block_given?
@@ -188,11 +194,17 @@ module ByStar
         value.is_a?(Time) || value.is_a?(Date) || value.is_a?(ActiveSupport::TimeWithZone)
       end
       
+      def parse(string)
+        o = Chronic.parse(string)
+        raise "Chronic couldn't work out #{string.inspect}; please be more precise." if o.nil?
+        o
+      end
+      
       def method_missing(method, *args)
         if method.to_s =~ /^(as_of|up_to)_(.+)$/
           method = $1
           expr = $2.humanize
-          unless time = Chronic.parse(expr)
+          unless time = parse(expr)
             raise ParseError, "Chronic couldn't work out #{expr.inspect}; please be more precise."
           end
           
