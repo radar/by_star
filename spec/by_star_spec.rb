@@ -203,7 +203,7 @@ describe Post do
     it "should be able to find posts up to 2 weeks from now" do
       year = Time.zone.now.year
       Time.stub!(:now).and_return("15-05-#{year}".to_time)
-      Post.up_to_6_weeks_from_now.size.should eql(7)
+      Post.up_to_6_weeks_from_now.size.should eql(6)
     end
     
     it "should not do anything if given an invalid date" do
