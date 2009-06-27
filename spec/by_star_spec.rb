@@ -1,4 +1,4 @@
-require 'spec_helper'
+require File.join(File.dirname(__FILE__), 'spec_helper')
 require 'by_star'
 
 # Used in a couple of tests, sometimes changes when we add new data.
@@ -153,6 +153,7 @@ describe Post do
     it "should be able find yesterday, given a Date" do
       find(Date.today).map(&:text).should include("Yesterday's post")
     end
+    
   end
   
   describe "tomorrow" do

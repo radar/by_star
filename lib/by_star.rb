@@ -77,7 +77,7 @@ module ByStar
       # Dodgy!
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(value)
-        Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
+        value.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
       elsif value.to_i.class == Fixnum && value < 53
         Time.utc(year, 1, 1) + (value.to_i - 1).weeks
       else
@@ -89,16 +89,19 @@ module ByStar
     
     
     # Examples:
-    # Post.by_weekend(Date.today)
-    def by_weekend(value=Time.zone.now, options = {}, &block)
-      now = Time.zone.now
-      start_time = case value.wday
+    # Post.by_weekend
+    # Post.by_weekend(Time.now + 5.days)
+    # Post.by_weekend(Date.today + 5)
+    # Post.by_weekend("next tuesday")
+    def by_weekend(time=Time.zone.now, options = {}, &block)
+      time = parse(time) if time.is_a?(String)
+      start_time = case time.wday
       when 0
-        now.advance(:days => -1) 
+        time.advance(:days => -1) 
       when 6
-        now
+        time
       else
-        now.beginning_of_week.advance(:days => 5)
+        time.beginning_of_week.advance(:days => 5)
       end
       by_star(start_time, (start_time + 1.day).end_of_day)
     end
@@ -108,8 +111,7 @@ module ByStar
     #   Post.by_day(Time.yesterday)
     #   Post.by_day("next tuesday")
     def by_day(time = Time.zone.now, options = {}, &block)
-      time = parse(time) if time.is_a?(String)
-      time = time.to_time(:utc) if time.is_a?(Date)
+      time = parse(time)
       by_star(time.beginning_of_day, time.end_of_day, options, &block)
     end
     alias_method :today, :by_day
@@ -118,7 +120,10 @@ module ByStar
     #   Post.yesterday
     #   # 2 days ago:
     #   Post.yesterday(Time.yesterday)
+    #   # day before next tuesday
+    #   Post.yesterday("next tuesday")
     def yesterday(time = Time.zone.now, options = {}, &block)
+      time = parse(time)
       by_day(time.advance(:days => -1), options, &block)
     end
     
@@ -126,17 +131,24 @@ module ByStar
     #   Post.tomorrow
     #   # 2 days from now:
     #   Post.tomorrow(Time.tomorrow)
+    #   # day after next tuesday
+    #   Post.tomorrow("next tuesday")
     def tomorrow(time = Time.zone.now, options = {}, &block)
+      time = parse(time)
       by_day(time.advance(:days => 1), options, &block)
     end
     
     # Scopes to records older than current or given time
+    # Post.past
+    # Post.past()
     def past(time = Time.now, options = {}, &block)
+      time = parse(time)
       by_direction("<", time, options, &block)
     end
     
     # Scopes to records newer than current or given time
     def future(time = Time.now, options = {}, &block)
+      time = parse(time)
       by_direction(">", time, options, &block)
     end
     
@@ -158,11 +170,8 @@ module ByStar
       
       # scopes results between start_time and end_time
       def by_star(start_time, end_time, options = {})
-        start_time = start_time.to_time(:utc) if start_time.is_a?(Date)
-        end_time = end_time.to_time(:utc) if end_time.is_a?(Date)
-        
-        start_time = parse(start_time) if start_time.is_a?(String)
-        end_time = parse(end_time) if end_time.is_a?(String)
+        start_time = parse(start_time) 
+        end_time = parse(end_time)
         
         field = options[:field] || "created_at"
         with_scope(:find => { :conditions => { field => start_time.utc..end_time.utc } }) do
@@ -196,10 +205,18 @@ module ByStar
         value.is_a?(Time) || value.is_a?(Date) || value.is_a?(ActiveSupport::TimeWithZone)
       end
       
-      def parse(string)
-        o = Chronic.parse(string)
-        raise "Chronic couldn't work out #{string.inspect}; please be more precise." if o.nil?
-        o
+      def parse(object)
+        object = case object.class.to_s
+        when "String"
+          o = object
+          Chronic.parse(object, :now => Time.zone.now)
+        when "Date"
+          object.to_time(:utc)
+        else
+          object
+        end
+        raise "Chronic couldn't work out #{o.inspect}; please be more precise." if object.nil?
+        object
       end
       
       def method_missing(method, *args)

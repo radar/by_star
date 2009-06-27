@@ -128,6 +128,67 @@ You can also pass a string:
    
 This will return all posts for the given day.
 
+
+## Tomorrow
+
+To find all posts from the day after the current date:
+
+    Post.tomorrow
+    
+To find all posts after a given Date or Time object:
+    
+    Post.tomorrow(Date.today + 2)
+    Post.tomorrow(Time.now + 5.days)
+    
+You can also pass a string:
+ 
+    Post.tomorrow("next tuesday")
+    
+## Yesterday
+
+To find all posts from the day before the current date:
+
+    Post.yesterday
+    
+To find all posts before a given Date or Time object:
+    
+    Post.yesterday(Date.today + 2)
+    Post.yesterday(Time.now + 5.days)
+    
+You can also pass a string:
+ 
+    Post.yesterday("next tuesday")
+    
+## Past
+
+To find all posts before the current time:
+
+    Post.past
+
+To find all posts before certain time or date:
+
+    Post.past(Date.today + 2)
+    Post.past(Time.now + 5.days)
+    
+You can also pass a string:
+
+    Post.past("next tuesday")
+
+## Future
+
+To find all posts after the current time:
+
+    Post.future
+
+To find all posts after certain time or date:
+
+    Post.future(Date.today + 2)
+    Post.future(Time.now + 5.days)
+    
+You can also pass a string:
+
+    Post.future("next tuesday")
+    
 ## Between
 
 To find records between two times:
