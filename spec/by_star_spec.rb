@@ -67,9 +67,8 @@ describe Post do
   describe "by fortnight" do
     
     it "should be able to find posts in the current fortnight" do
-      year = Time.zone.now.year
-      Time.stub!(:now).and_return("1-08-#{year}".to_time)
-      find.size.should eql(8)
+      stub_time
+      find.size.should eql(0)
     end
     
     it "should be able to find posts in the 1st fortnight" do
@@ -82,7 +81,7 @@ describe Post do
     end
     
     it "should raise an error when given an invalid argument" do
-      lambda { find(27) }.should raise_error(ByStar::ParseError, "by_fortnight takes only a Time or Date object, or a Fixnum (less than or equal to 26).")
+      lambda { find(27) }.should raise_error(ByStar::ParseError, "by_fortnight takes only a Time or Date object, a Fixnum (less than or equal to 26) or a Chronicable string.")
     end
   end
   
@@ -113,8 +112,9 @@ describe Post do
     end
     
     it "should raise an error when given an invalid argument" do
-      lambda { find(54) }.should raise_error(ByStar::ParseError, "by_week takes only a Time or Date object, or a Fixnum (less than or equal to 53).")
+      lambda { find(54) }.should raise_error(ByStar::ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string.")
     end
+    
   end
   
   describe "by weekend" do
@@ -167,14 +167,45 @@ describe Post do
   end
   
   describe "past" do
-    it "should show the correct number of posts in the past" do
-      find.size.should eql(Post.count(:conditions => ["created_at < ?", Time.zone.now]))
+    
+    before do
+      stub_time
     end
+    
+    it "should show the correct number of posts in the past" do
+      find.size.should eql(16)
+    end
+    
+    it "should find for a given time" do
+      find(Time.now - 2.days).size.should eql(16)
+    end
+    
+    it "should find for a given date" do
+      find(Date.today - 2).size.should eql(16)
+    end
+    
+    it "should find for a given string" do
+      find("next tuesday").size.should eql(16)
+    end
+    
+    
   end
   
   describe "future" do
+    before do
+      stub_time
+    end
+    
     it "should show the correct number of posts in the future" do
-      find.size.should eql(Post.count(:conditions => ["created_at > ?", Time.zone.now]))
+      find.size.should eql(66)
+    end
+    
+    it "should find for a given date" do
+      find(Date.today - 2).size.should eql(66)
+    end
+    
+    it "should find for a given string" do
+      find("next tuesday").size.should eql(66)
     end
   end
   
@@ -192,15 +223,18 @@ describe Post do
   
   describe "between" do
     it "should find posts between last tuesday and next tuesday" do
-      find("last tuesday", "next tuesday").size.should eql(3)
+      stub_time
+      find("last tuesday", "next tuesday").size.should eql(0)
     end
     
     it "should find  between two times" do
-      find(Time.now - 5.days, Time.now + 5.days).size.should eql(10)
+      stub_time
+      find(Time.now - 5.days, Time.now + 5.days).size.should eql(0)
     end
     
     it "should find between two dates" do
-      find(Date.today, Date.today + 5).size.should eql(9)
+      stub_time
+      find(Date.today, Date.today + 5).size.should eql(0)
     end
   end
   

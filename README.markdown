@@ -232,6 +232,9 @@ All the `by_*` methods takes a block which will then scope the find based on the
      Post.by_month(1) do
        { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
      end
+## "Chronicable string"
+
+This means a string that can be parsed with the Chronic gem.
      
 ## Collaborators
   

@@ -51,19 +51,26 @@ module ByStar
     # Examples:
     #   # 18th fortnight of 2004
     #   Post.by_fortnight(18, :year => 2004)
-    def by_fortnight(value=Time.zone.now, options = {}, &block)
-      year = work_out_year(options[:year] || Time.zone.now.year)
+    def by_fortnight(time=Time.zone.now, options = {}, &block)
+      time = parse(time)
+      
+      # If options[:year] is passed in, use that year regardless.
+      year = work_out_year(options[:year]) if options[:year]
+      # If the first argument is a date or time, ask it for the year
+      year ||= time.year unless time.is_a?(Numeric)
+      # If the first argument is a fixnum, assume this year.
+      year ||= Time.now.year
+      
       # Dodgy!
       # Surely there's a method in Rails to do this.
-      start_time = if valid_time_or_date?(value)
-        Time.zone.now.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
-      elsif value.to_i.class == Fixnum && value <= 26
-        Time.utc(year, 1, 1) + ((value.to_i - 1) * 2).weeks
+      start_time = if valid_time_or_date?(time)
+        time.beginning_of_year + (time.strftime("%U").to_i - 1).weeks
+      elsif time.class == Fixnum && time <= 26
+        Time.utc(year, 1, 1) + ((time.to_i - 1) * 2).weeks
       else
-        raise ParseError, "by_fortnight takes only a Time or Date object, or a Fixnum (less than or equal to 26)."
+        raise ParseError, "by_fortnight takes only a Time or Date object, a Fixnum (less than or equal to 26) or a Chronicable string."
       end
       end_time = start_time + 2.weeks
-      
       by_star(start_time, end_time, options)
     end
     
@@ -71,17 +78,27 @@ module ByStar
     #   # 36th week
     #   Post.by_week(36)
     #   Post.by_week(36, :year => 2004)
-    #   Post.by_week(time)
-    def by_week(value=Time.zone.now, options = {}, &block)
-      year = work_out_year(options[:year] || Time.now.year)
+    #   Post.by_week(<Time object>)
+    #   Post.by_week(<Date object>)
+    #   Post.by_week("next tuesday")
+    def by_week(time=Time.zone.now, options = {}, &block)
+      time = parse(time)
+      
+      # If options[:year] is passed in, use that year regardless.
+      year = work_out_year(options[:year]) if options[:year]
+      # If the first argument is a date or time, ask it for the year
+      year ||= time.year unless time.is_a?(Numeric)
+      # If the first argument is a fixnum, assume this year.
+      year ||= Time.now.year
+      
       # Dodgy!
       # Surely there's a method in Rails to do this.
-      start_time = if valid_time_or_date?(value)
-        value.beginning_of_year + (value.strftime("%U").to_i - 1).weeks
-      elsif value.to_i.class == Fixnum && value < 53
-        Time.utc(year, 1, 1) + (value.to_i - 1).weeks
+      start_time = if valid_time_or_date?(time)
+        time.beginning_of_year + (time.strftime("%U").to_i - 1).weeks
+      elsif time.to_i.class == Fixnum && time < 53
+        Time.utc(year, 1, 1) + (time.to_i - 1).weeks
       else
-        raise ParseError, "by_week takes only a Time or Date object, or a Fixnum (less than or equal to 53)."
+        raise ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string."
       end
       end_time = start_time + 1.week
       by_star(start_time, end_time, options, &block)
@@ -94,7 +111,7 @@ module ByStar
     # Post.by_weekend(Date.today + 5)
     # Post.by_weekend("next tuesday")
     def by_weekend(time=Time.zone.now, options = {}, &block)
-      time = parse(time) if time.is_a?(String)
+      time = parse(time)
       start_time = case time.wday
       when 0
         time.advance(:days => -1) 
