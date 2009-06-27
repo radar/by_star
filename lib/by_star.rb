@@ -106,7 +106,9 @@ module ByStar
     # Examples:
     #   Post.by_day
     #   Post.by_day(Time.yesterday)
+    #   Post.by_day("next tuesday")
     def by_day(time = Time.zone.now, options = {}, &block)
+      time = parse(time) if time.is_a?(String)
       time = time.to_time(:utc) if time.is_a?(Date)
       by_star(time.beginning_of_day, time.end_of_day, options, &block)
     end

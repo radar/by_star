@@ -121,6 +121,10 @@ To find records for today:
 To find records for a certain day:
 
     Post.by_day(Time.local(2008, 1, 1))
+
+You can also pass a string:
+    
+    Post.by_day("next tuesday")
    
 This will return all posts for the given day.
 

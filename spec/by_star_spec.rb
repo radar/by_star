@@ -139,6 +139,10 @@ describe Post do
     it "should show the post for today" do
       find.map(&:text).should include("Today's post")
     end
+    
+    it "should show the post for tomorrow" do
+      find("tomorrow").map(&:text).should include("Tomorrow's post")
+    end
   end
   
   describe "yesterday" do
