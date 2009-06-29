@@ -160,13 +160,13 @@ module ByStar
     # Scopes to records older than current or given time
     # Post.past
     # Post.past()
-    def past(time = Time.now, options = {}, &block)
+    def past(time = Time.zone.now, options = {}, &block)
       time = parse(time)
       by_direction("<", time, options, &block)
     end
     
     # Scopes to records newer than current or given time
-    def future(time = Time.now, options = {}, &block)
+    def future(time = Time.zone.now, options = {}, &block)
       time = parse(time)
       by_direction(">", time, options, &block)
     end

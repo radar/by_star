@@ -17,7 +17,7 @@ end
 
 ## seed data:
 
-year = Time.now.year
+year = Time.zone.now.year
 
 1.upto(12) do |month|
   month.times do |n|
