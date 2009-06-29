@@ -25,7 +25,7 @@ describe Post do
     end
     
     it "should be able to find if given a string" do
-      size(Time.now.year.to_s).should eql(Post.count - 1)
+      size(Time.zone.now.year.to_s).should eql(Post.count - 1)
     end
     
     it "should be able to find a single post from last year" do
@@ -244,7 +244,7 @@ describe Post do
     end
     
     it "should find for a given time" do
-      size(Time.now - 2.days).should eql(16)
+      size(Time.zone.now - 2.days).should eql(16)
     end
     
     it "should find for a given date" do
@@ -256,7 +256,7 @@ describe Post do
     end
     
     it "should be able to find all events before Ryan's birthday using a non-standard field" do
-      Event.past("04-12-#{Time.now.year}".to_time, :field => "start_time").size.should eql(6)
+      Event.past("04-12-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(6)
     end 
     
   end
@@ -279,19 +279,27 @@ describe Post do
     end
     
     it "should be able to find all events after Dad's birthday using a non-standard field" do
-      Event.past("05-07-#{Time.now.year}".to_time, :field => "start_time").size.should eql(3)
+      Event.past("05-07-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(3)
     end
   end
   
   describe "as of" do
     it "should be able to find posts as of 2 weeks ago" do
-      year = Time.zone.now.year
-      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      stub_time
       Post.as_of_2_weeks_ago.size.should eql(7)
     end
     
+    it "should be able to find posts as of 2 weeks before a given time" do
+      stub_time
+      Post.as_of_2_weeks_ago(Time.zone.now + 1.month).size.should eql(14)
+    end
+    
+    it "should error if given a date in the past far enough back" do
+      lambda { Post.as_of_6_weeks_ago(Time.zone.now - 2.months) }.should raise_error(ByStar::ParseError, "End time is before start time, searching like this will return no results.")
+    end
+    
     it "should not do anything if given an invalid date" do
-      lambda { Post.as_of_ryans_birthday }.should raise_error(RuntimeError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
+      lambda { Post.as_of_ryans_birthday }.should raise_error(ByStar::ParseError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
     end
   end
   
@@ -303,7 +311,7 @@ describe Post do
     
     it "should find  between two times" do
       stub_time
-      size(Time.now - 5.days, Time.now + 5.days).should eql(3)
+      size(Time.zone.now - 5.days, Time.zone.now + 5.days).should eql(3)
     end
     
     it "should find between two dates" do
@@ -314,13 +322,21 @@ describe Post do
   
   describe "up to" do
     it "should be able to find posts up to 2 weeks from now" do
-      year = Time.zone.now.year
-      Time.stub!(:now).and_return("15-05-#{year}".to_time)
+      stub_time
       Post.up_to_6_weeks_from_now.size.should eql(9)
     end
     
+    it "should be able to find posts up to 2 weeks from a given time" do
+      stub_time
+      Post.up_to_6_weeks_from_now(Time.zone.now - 1.month).size.should eql(14)
+    end
+    
+    it "should error if given a date in the past" do
+      lambda { Post.up_to_6_weeks_from_now(Time.zone.now + 2.months) }.should raise_error(ByStar::ParseError, "End time is before start time, searching like this will return no results.")
+    end
+    
     it "should not do anything if given an invalid date" do
-      lambda { Post.up_to_ryans_birthday }.should raise_error(RuntimeError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
+      lambda { Post.up_to_ryans_birthday }.should raise_error(ByStar::ParseError, "Chronic couldn't work out \"Ryans birthday\"; please be more precise.")
     end
       
   end

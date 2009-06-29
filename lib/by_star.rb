@@ -192,6 +192,8 @@ module ByStar
         start_time = parse(start_time) 
         end_time = parse(end_time)
         
+        raise ParseError, "End time is before start time, searching like this will return no results." if end_time < start_time
+        
         field = options[:field] || "created_at"
         with_scope(:find => { :conditions => { field => start_time.utc..end_time.utc } }) do
           if block_given?
@@ -240,7 +242,7 @@ module ByStar
         else
           object
         end
-        raise "Chronic couldn't work out #{o.inspect}; please be more precise." if object.nil?
+        raise ParseError, "Chronic couldn't work out #{o.inspect}; please be more precise." if object.nil?
         object
       end
       
