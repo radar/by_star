@@ -120,7 +120,7 @@ module ByStar
       else
         time.beginning_of_week.advance(:days => 5)
       end
-      by_star(start_time, (start_time + 1.day).end_of_day)
+      by_star(start_time, (start_time + 1.day).end_of_day, options, &block)
     end
     
     # Examples:
