@@ -309,7 +309,7 @@ describe Post do
       size("last tuesday", "next tuesday").should eql(3)
     end
     
-    it "should find  between two times" do
+    it "should find between two times" do
       stub_time
       size(Time.zone.now - 5.days, Time.zone.now + 5.days).should eql(3)
     end
