@@ -67,6 +67,8 @@ This will find all the posts in November 2008.
 
 ## By Fortnight
 
+Fortnight numbering starts at 0.
+
 To find records from the current fortnight:
     
     Post.by_fortnight
@@ -86,6 +88,8 @@ This will return all posts in the 18th fortnight week of 2008.
 This will return all posts from the first fortnight of 2008.
 
 ## By Week
+
+Week numbering starts at 0.
 
 To find records from the current week:
 

@@ -12,13 +12,14 @@ module ByStar
     #   by_year(10)
     #   # Time or Date object:
     #   by_year(time)
-    def by_year(value=Time.zone.now.year, options={}, &block)
-      year = valid_time_or_date?(value) ? value.year : value
-      year = work_out_year(year)
+    #   # String:
+    #   by_year("2010")
+    def by_year(time=Time.zone.now.year, options={}, &block)
+      year = work_out_year(time)
       
       start_time = Time.utc(year, 1, 1)
       end_time = start_time.end_of_year
-      by_star(start_time, end_time, options)
+      by_star(start_time, end_time, options, &block)
     rescue ArgumentError
       raise ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)"
     end
@@ -28,16 +29,17 @@ module ByStar
     #   by_month("January")
     #   by_month("January", :year => 2008)
     #   by_month(time)
-    def by_month(value=Time.zone.now.month, options={}, &block)
+    def by_month(time=Time.zone.now.month, options={}, &block)
+      time = Time.zone.now.month if time.nil?
       year = options[:year] ||= Time.zone.now.year
       # Work out what actual month is.
-      month = if value.class == Fixnum && value >= 1 && value <= 12
-        value
-      elsif valid_time_or_date?(value )
-        year = value.year
-        value.month
-      elsif value.class == String && Date::MONTHNAMES.include?(value)
-        Date::MONTHNAMES.index(value)
+      month = if time.is_a?(Numeric) && (1..12).include?(time)
+        time
+      elsif valid_time_or_date?(time)
+        year = time.year
+        time.month
+      elsif time.is_a?(String) && Date::MONTHNAMES.include?(time)
+        Date::MONTHNAMES.index(time)
       else
         raise ParseError, "Value is not an integer (between 1 and 12), time object or string (make sure you typed the name right)."
       end
@@ -45,7 +47,7 @@ module ByStar
       start_time = Time.utc(year, month, 1)
       end_time = start_time.end_of_month
 
-      by_star(start_time, end_time, options)
+      by_star(start_time, end_time, options, &block)
     end
     
     # Examples:
@@ -59,19 +61,19 @@ module ByStar
       # If the first argument is a date or time, ask it for the year
       year ||= time.year unless time.is_a?(Numeric)
       # If the first argument is a fixnum, assume this year.
-      year ||= Time.now.year
+      year ||= Time.zone.now.year
       
       # Dodgy!
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(time)
-        time.beginning_of_year + (time.strftime("%U").to_i - 1).weeks
-      elsif time.class == Fixnum && time <= 26
-        Time.utc(year, 1, 1) + ((time.to_i - 1) * 2).weeks
+        time.beginning_of_year + (time.strftime("%U").to_i).weeks
+      elsif time.is_a?(Numeric) && time <= 26
+        Time.utc(year, 1, 1) + ((time.to_i) * 2).weeks
       else
         raise ParseError, "by_fortnight takes only a Time or Date object, a Fixnum (less than or equal to 26) or a Chronicable string."
       end
       end_time = start_time + 2.weeks
-      by_star(start_time, end_time, options)
+      by_star(start_time, end_time, options, &block)
     end
     
     # Examples:
@@ -94,9 +96,9 @@ module ByStar
       # Dodgy!
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(time)
-        time.beginning_of_year + (time.strftime("%U").to_i - 1).weeks
-      elsif time.to_i.class == Fixnum && time < 53
-        Time.utc(year, 1, 1) + (time.to_i - 1).weeks
+        time.beginning_of_year + (time.strftime("%U").to_i).weeks
+      elsif time.is_a?(Numeric) && time < 53
+        Time.utc(year, 1, 1) + (time.to_i).weeks
       else
         raise ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string."
       end
@@ -186,7 +188,7 @@ module ByStar
       end
       
       # scopes results between start_time and end_time
-      def by_star(start_time, end_time, options = {})
+      def by_star(start_time, end_time, options = {}, &block)
         start_time = parse(start_time) 
         end_time = parse(end_time)
         
@@ -212,8 +214,12 @@ module ByStar
           2000 + value
         when 40..99
           1900 + value
+        when nil
+          Time.zone.now.year
         else
-          value
+          # We may be passed something that's not a straight out integer
+          # These things include: BigDecimals, Floats and Strings.
+          value.to_i
         end
       end
       
@@ -224,6 +230,8 @@ module ByStar
       
       def parse(object)
         object = case object.class.to_s
+        when "NilClass"
+          o = Time.zone.now
         when "String"
           o = object
           Chronic.parse(object, :now => Time.zone.now)
