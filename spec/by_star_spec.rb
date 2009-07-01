@@ -352,6 +352,12 @@ describe Post do
     end
   end
   
+  describe "named_scopes" do
+    it "should be compatible" do
+      Event.private.by_year(nil, :field => "start_time").size.should eql(1)
+    end
+  end
+  
   
   describe "nested find" do
   

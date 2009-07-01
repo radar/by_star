@@ -12,7 +12,7 @@ class Tag < ActiveRecord::Base
 end
 
 class Event < ActiveRecord::Base
-  
+  named_scope :private, :conditions => { :public => false }
 end
 
 ## seed data:
@@ -63,5 +63,8 @@ Event.create(:name => "Mum's birthday!",  :start_time  => "17-11-#{Time.zone.now
 Event.create(:name => "Today",            :start_time  => Time.zone.now)
 Event.create(:name => "Yesterday",        :start_time  => Time.zone.now - 1.day)
 Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now + 1.day)
+
 # For by_weekend test
 Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)
+
+Event.create(:name => "FBI meeting",      :start_time  => "02-03-#{Time.zone.now.year}".to_time, :public => false)
