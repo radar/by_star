@@ -3,9 +3,8 @@ require 'by_star'
 
 describe Post do
   
-  def stub_time
-    year = Time.zone.now.year
-    Time.stub!(:now).and_return("15-05-#{year}".to_time)
+  def stub_time(day=15, month=5, year=Time.zone.now.year)
+    Time.stub!(:now).and_return("#{day}-#{month}-#{year}".to_time)
   end
   
   def find(*args)
@@ -38,16 +37,17 @@ describe Post do
     end
     
     it "should be able to use an alternative field" do
-      Event.by_year(nil, :field => "start_time").size.should eql(7)
+      Event.by_year(nil, :field => "start_time").size.should eql(8)
     end
   end
   
   describe "by month" do
     
-    it "should be able to find a post for the current month" do
-      size.should eql(Time.zone.now.month+6)
+    it "should be able to find posts for the current month" do
+      stub_time
+      size.should eql(8)
     end
-  
+      
     it "should be able to find a single post for January" do
       size("January").should eql(1)
     end
@@ -109,7 +109,8 @@ describe Post do
     end
     
     it "should be able to use an alternative field" do
-      Event.by_fortnight(nil, :field => "start_time").size.should eql(1)
+      stub_time
+      Event.by_fortnight(nil, :field => "start_time").size.should eql(0)
     end
   end
   
@@ -143,7 +144,8 @@ describe Post do
     end
     
     it "should be able to use an alternative field" do
-      Event.by_week(nil, :field => "start_time").size.should eql(1)
+      stub_time
+      Event.by_week(nil, :field => "start_time").size.should eql(0)
     end
     
     it "should find posts at the start of the year" do
@@ -158,24 +160,25 @@ describe Post do
   
   describe "by weekend" do
     it "should be able to find the posts on the weekend of the 1st May" do
-      year = Time.zone.now.year
-      Time.stub!(:now).and_return("1-08-#{year}".to_time)
+      stub_time(1, 8)
       size.should eql(8)
     end
     
     it "should be able to use an alternative field" do
       year = Time.zone.now.year
-      Time.stub!(:now).and_return("1-08-#{year}".to_time)
+      stub_time(1, 8)
       Event.by_weekend(nil, :field => "start_time").size.should eql(1)
     end
   end
   
   describe "by day" do
     it "should be able to find a post for today" do
+      stub_time
       size.should eql(2)
     end
     
     it "should be able to find a post by a given date" do
+      stub_time
       size(Date.today).should eql(2)
     end
     
@@ -256,7 +259,7 @@ describe Post do
     end
     
     it "should be able to find all events before Ryan's birthday using a non-standard field" do
-      Event.past("04-12-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(6)
+      Event.past("04-12-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(7)
     end 
     
   end
@@ -279,7 +282,7 @@ describe Post do
     end
     
     it "should be able to find all events after Dad's birthday using a non-standard field" do
-      Event.past("05-07-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(3)
+      Event.past("05-07-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(4)
     end
   end
   
