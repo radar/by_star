@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  default_scope :order => "created_at ASC"
+  default_scope :order => "#{quoted_table_name}.created_at ASC"
   has_and_belongs_to_many :tags
   
   def self.factory(text, created_at = nil)
@@ -25,9 +25,9 @@ year = Time.zone.now.year
   end
 end
 
-Post.factory "Today's post"
-Post.factory "Yesterday's post", 1.day.ago.utc
-Post.factory "Tomorrow's post", 1.day.from_now.utc
+Post.factory "Today's post", Time.zone.now
+Post.factory "Yesterday's post", Time.zone.now - 1.day
+Post.factory "Tomorrow's post", Time.zone.now + 1.day
 
 Post.factory "That's it!", Time.zone.now.end_of_year
 

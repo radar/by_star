@@ -79,7 +79,8 @@ describe Post do
     end
     
     it "should be able to use an alternative field" do
-      Event.by_month(nil, :field => "start_time").size.should eql(3)
+      stub_time(1, 12)
+      Event.by_month(nil, :field => "start_time").size.should eql(1)
     end
     
     it "should be able to specify the year as a string" do
@@ -358,6 +359,14 @@ describe Post do
   describe "named_scopes" do
     it "should be compatible" do
       Event.private.by_year(nil, :field => "start_time").size.should eql(1)
+    end
+  end
+  
+  describe "joins" do
+    it "should not have ambiguous column names" do
+      lambda { Post.by_month do
+        { :joins => :tags }
+      end }.should_not raise_error
     end
   end
   

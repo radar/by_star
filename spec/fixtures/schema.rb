@@ -12,6 +12,7 @@ ActiveRecord::Schema.define do
   
   create_table :tags, :force => true do |t|
     t.string :name
+    t.timestamps
   end
   
   create_table :events, :force => true do |t|
