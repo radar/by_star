@@ -1,7 +1,5 @@
 require 'rubygems'
 require 'activerecord'
-require 'acts_as_tree'
-ActiveRecord::Base.send :include, ActsAsTree
 
 ActiveRecord::Base.establish_connection(
   :adapter  => "sqlite3",
@@ -10,7 +8,7 @@ ActiveRecord::Base.establish_connection(
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'activesupport'
-require 'can_touch_this'
+require 'by_star'
 require 'spec'
 
 # Define time zone before loading test_helper

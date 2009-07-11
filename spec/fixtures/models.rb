@@ -1,58 +1,70 @@
-
-require 'app/models/group'
-
-class GroupUser < ActiveRecord::Base
-  belongs_to :group
-  belongs_to :user
-end
-
-require 'app/models/permission'
-
-class Permission < ActiveRecord::Base
-  belongs_to :thing
-  belongs_to :category
-end
-
-class Thing < ActiveRecord::Base
-  has_many :permissions
-  has_many :groups, :through => :permissions
-  has_many :users, :through => :groups
+class Post < ActiveRecord::Base
+  default_scope :order => "#{quoted_table_name}.created_at ASC"
+  has_and_belongs_to_many :tags
   
-  belongs_to :category
-  
-  acts_as_tree
+  def self.factory(text, created_at = nil)
+    create!(:text => text, :created_at => created_at)
+  end
 end
 
-class Category < ActiveRecord::Base
-  has_many :things
+class Tag < ActiveRecord::Base
+  has_and_belongs_to_many :posts
 end
 
-class User < ActiveRecord::Base
-  include CanTouchThis
+class Event < ActiveRecord::Base
+  named_scope :private, :conditions => { :public => false }
 end
 
-thing = Thing.create!(:name => "it")
-sub_thing = Thing.create!(:name => "subby", :parent => thing)
+## seed data:
 
-mc_hammer = Category.create!(:name => "MC Hammer")
-the_song = mc_hammer.things.create!(:name => "Can't Touch This")
+year = Time.zone.now.year
 
-user = User.create!(:login => "radar", :password => "sekret")
+1.upto(12) do |month|
+  month.times do |n|
+    Post.factory "post #{n}", Time.local(year, month, 1)
+  end
+end
 
-group = Group.create!(:name => "Users")
-group.users << user
-group.permissions.create!(:can_touch_this => true)
-group.permissions.create!(:can_touch_this => false, :thing => thing)
+Post.factory "Today's post", Time.zone.now
+Post.factory "Yesterday's post", Time.zone.now - 1.day
+Post.factory "Tomorrow's post", Time.zone.now + 1.day
 
-user2 = User.create!(:login => "you",  :password => "people")
+Post.factory "That's it!", Time.zone.now.end_of_year
 
-other_group = Group.create!(:name => "Others")
-other_group.users << user2
-other_group.permissions.create!(:can_touch_this => true)
-other_group.permissions.create!(:can_touch_this => false, :thing => thing)
-other_group.permissions.create!(:can_touch_this => true, :thing => sub_thing)
-other_group.permissions.create!(:can_touch_this => false, :category => mc_hammer)
-other_group.permissions.create!(:can_touch_this => true, :thing => the_song)
+# For by_weekend scoped test
+post = Post.factory "Weekend of May", "16-05-2009".to_time
+post.tags.create(:name => "weekend")
+
+# For by_day scoped test
+post = Post.factory "Today", Time.zone.now
+post.tags.create(:name => "today")
+
+# For yesterday scoped test
+post = Post.factory "Yesterday", Time.zone.now.yesterday
+post.tags.create(:name => "yesterday")
+
+# For tomorrow scoped test
+post = Post.factory "Tomorrow's Another Day", Time.zone.now.tomorrow
+post.tags.create(:name => "tomorrow")
+
+post = Post.factory "Last year", Time.local(year - 1, 1, 1)
+post.tags.create(:name => "ruby")
+
+post = Post.factory "The 'Current' Fortnight", Time.local(year, 5, 15)
+post.tags.create(:name => "may")
+
+post = Post.factory "The 'Current' Week", Time.local(year, 5, 15)
+post.tags.create(:name => "may2")
 
 
+Event.create(:name => "Ryan's birthday!", :start_time  => "04-12-#{Time.zone.now.year}".to_time)
+Event.create(:name => "Dad's birthday!",  :start_time  => "05-07-#{Time.zone.now.year}".to_time)
+Event.create(:name => "Mum's birthday!",  :start_time  => "17-11-#{Time.zone.now.year}".to_time)
+Event.create(:name => "Today",            :start_time  => Time.zone.now)
+Event.create(:name => "Yesterday",        :start_time  => Time.zone.now - 1.day)
+Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now + 1.day)
 
+# For by_weekend test
+Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)
+
+Event.create(:name => "FBI meeting",      :start_time  => "02-03-#{Time.zone.now.year}".to_time, :public => false)
