@@ -1,10 +1,11 @@
+# encoding: utf-8
 desc "generates .gemspec file"
 task :gemspec => "version:read" do
   spec = Gem::Specification.new do |gem|
-    gem.name = "by_star"
+    gem.name = "can_touch_this"
     gem.summary = "ActiveRecord extension for easier date scopes and time ranges"
     gem.email = "mislav.marohnic@gmail.com"
-    gem.homepage = "http://github.com/mislav/by_star"
+    gem.homepage = "http://github.com/mislav/can_touch_this"
     gem.authors = ["Mislav Marohnić", "Ryan Bigg"]
     gem.has_rdoc = true
     
@@ -46,10 +47,10 @@ Spec::Rake::SpecTask.new do |t|
   t.ruby_opts << "-rubygems"
 end
 
-desc 'Generate documentation for the by_star plugin.'
+desc 'Generate documentation for the can_touch_this plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'ByStar'
+  rdoc.title    = 'Can Touch This'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
