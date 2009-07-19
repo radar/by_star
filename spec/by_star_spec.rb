@@ -11,7 +11,6 @@ describe Post do
   
   def range_test(&block)
     (1..31).to_a.each do |d|
-      puts "DAY: #{d}"
       stub_time(d, 07, 2009, 05, 05)
       block.call
     end
@@ -185,7 +184,15 @@ describe Post do
   describe "by current weekend" do
     it "should work" do
       range_test do
-        puts Post.by_current_weekend
+        Post.by_current_weekend
+      end
+    end
+  end
+  
+  describe "by current work week" do
+    it "should work" do
+      range_test do
+        Post.by_current_work_week
       end
     end
   end

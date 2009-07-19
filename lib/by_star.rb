@@ -157,13 +157,24 @@ module ByStar
     # Post.by_current_weekend
     def by_current_weekend(options = {}, &block)
       time = Time.zone.now
+      # Friday, 3pm
       start_time = time.beginning_of_weekend
+      # Monday, 3am
       end_time = time.end_of_weekend
       by_star(start_time, end_time, options, &block)
     end
     
     # Examples:
-    #   Post.by_current_work_week
+    # Post.by_current_work_week
+    def by_current_work_week(options = {}, &block)
+      time = Time.zone.now
+      # Monday, 3am
+      time = time + 1.week if time.wday == 6 || time.wday == 0
+      start_time = time.beginning_of_week + 3.hours
+      # Friday, 3pm
+      end_time = time.beginning_of_weekend
+      by_star(start_time, end_time, options, &block)
+    end
     
     
     # Examples:
@@ -327,16 +338,8 @@ class Time
   end
   
   def end_of_weekend
-    monday = case self.wday
-    when 0
-      self.beginning_of_day.advance(:days => 1) 
-    when 1
-      self.beginning_of_day
-    else
-      self.beginning_of_week
-    end
-    
-    # 3am, Monday
-    (monday + 3.hours)
+    # 3am, Monday.
+    # LOL I CHEATED.
+    beginning_of_weekend + 3.days - 12.hours
   end
 end
