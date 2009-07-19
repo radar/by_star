@@ -3,8 +3,18 @@ require 'by_star'
 
 describe Post do
   
-  def stub_time(day=15, month=5, year=Time.zone.now.year)
-    Time.stub!(:now).and_return("#{day}-#{month}-#{year}".to_time)
+  def stub_time(day=15, month=5, year=Time.zone.now.year, hour=0, minute=0)
+    stub = "#{day}-#{month}-#{year} #{hour}:#{minute}".to_time
+    Time.stub!(:now).and_return(stub)
+    Time.zone.stub!(:now).and_return(stub)
+  end
+  
+  def range_test(&block)
+    (1..31).to_a.each do |d|
+      puts "DAY: #{d}"
+      stub_time(d, 07, 2009, 05, 05)
+      block.call
+    end
   end
   
   def find(*args)
@@ -172,6 +182,14 @@ describe Post do
     end
   end
   
+  describe "by current weekend" do
+    it "should work" do
+      range_test do
+        puts Post.by_current_weekend
+      end
+    end
+  end
+  
   describe "by day" do
     it "should be able to find a post for today" do
       stub_time
@@ -283,7 +301,7 @@ describe Post do
     end
     
     it "should be able to find all events after Dad's birthday using a non-standard field" do
-      Event.past("05-07-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(4)
+      Event.past("05-07-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(1)
     end
   end
   
@@ -437,8 +455,20 @@ describe Post do
       end.size.should eql(1)
     end
     
+  end
+  
+  describe Time do
+    it "should work out the beginning of a weekend (Friday 3pm)" do
+      range_test do 
+        Time.now.beginning_of_weekend.strftime("%A %I:%M%p").should eql("Friday 03:00PM")
+      end
+    end
     
-    
+    it "should work out the end of a weekend (Monday 3am)" do
+      range_test do
+        Time.now.end_of_weekend.strftime("%A %I:%M%p").should eql("Monday 03:00AM")
+      end
+    end
   end
   
 end
