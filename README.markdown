@@ -67,7 +67,7 @@ This will find all the posts in November 2008.
 
 ## By Fortnight
 
-Fortnight numbering starts at 0.
+Fortnight numbering starts at 0. The beginning of a fortnight is Monday, 12am.
 
 To find records from the current fortnight:
     
