@@ -89,7 +89,7 @@ This will return all posts from the first fortnight of 2008.
 
 ## By Week
 
-Week numbering starts at 0.
+Week numbering starts at 0. The beginning of a week is Monday, 12am.
 
 To find records from the current week:
 

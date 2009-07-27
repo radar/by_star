@@ -140,6 +140,12 @@ describe Post do
       size(1.week.ago.to_date).should eql(0)
     end
     
+    it "should find, not size the posts for the current week" do
+      stub_time
+      find.map(&:text).include?("The 'Current' Week")
+      find.map(&:text).include?("Weekend of May")
+    end
+    
     it "should raise an error when given an invalid argument" do
       lambda { find(54) }.should raise_error(ByStar::ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string.")
     end
@@ -283,7 +289,7 @@ describe Post do
     end
     
     it "should be able to find all events after Dad's birthday using a non-standard field" do
-      Event.past("05-07-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(4)
+      Event.past("05-07-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(1)
     end
   end
   
