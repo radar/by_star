@@ -72,6 +72,7 @@ module ByStar
       else
         raise ParseError, "by_fortnight takes only a Time or Date object, a Fixnum (less than or equal to 26) or a Chronicable string."
       end
+      start_time = start_time.beginning_of_week
       end_time = start_time + 2.weeks
       by_star(start_time, end_time, options, &block)
     end
