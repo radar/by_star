@@ -5,6 +5,8 @@ ActiveRecord::Base.establish_connection(
   :adapter  => "sqlite3",
   :database => ":memory:"
 )
+
+ActiveRecord::Base.logger = Logger.new("tmp/activerecord.log")
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'activesupport'
