@@ -400,10 +400,10 @@ describe Post do
     
     it "should be able to find posts after right now" do
       stub_time
-      Post.by_month.size.should eql(8)
-      Post.by_month do
+      Post.by_current_work_week.size.should eql(2)
+      Post.by_current_work_week do
         { :conditions => ["created_at > ?", Time.now] }
-      end.size.should eql(1)
+      end.size.should eql(0)
     end
   
     it "should be able to find a single post from last year with the tag 'ruby'" do
