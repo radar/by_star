@@ -109,24 +109,76 @@ module ByStar
       by_star(start_time, end_time, options, &block)
     end
     
+    # Examples:
+    #   # 36th week
+    #   Post.by_week(36)
+    #   Post.by_week(36.54)
+    #   Post.by_week(36, :year => 2004)
+    #   Post.by_week(<Time object>)
+    #   Post.by_week(<Date object>)
+    #   Post.by_week("next tuesday")
+    def by_week(time=Time.zone.now, options = {}, &block)
+      time = parse(time)
+      
+      # If options[:year] is passed in, use that year regardless.
+      year = work_out_year(options[:year]) if options[:year]
+      # If the first argument is a date or time, ask it for the year
+      year ||= time.year unless time.is_a?(Numeric)
+      # If the first argument is a fixnum, assume this year.
+      year ||= Time.now.year
+      
+      # Dodgy!
+      # Surely there's a method in Rails to do this.
+      start_time = if valid_time_or_date?(time)
+        weeks = time.strftime("%U").to_i
+        time.beginning_of_year
+      elsif time.is_a?(Numeric) && time < 53
+        weeks = time.to_i
+        Time.utc(year, 1, 1)
+      else
+        raise ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string."
+      end
+      start_time += weeks.weeks
+      end_time = start_time + 1.week
+      by_star(start_time, end_time, options, &block)
+    end
+    
     
     # Examples:
-    # Post.by_weekend
-    # Post.by_weekend(Time.now + 5.days)
-    # Post.by_weekend(Date.today + 5)
-    # Post.by_weekend("next tuesday")
+    #    Post.by_weekend
+    #    Post.by_weekend(Time.now + 5.days)
+    #    Post.by_weekend(Date.today + 5)
+    #    Post.by_weekend("next tuesday")
     def by_weekend(time=Time.zone.now, options = {}, &block)
       time = parse(time)
-      start_time = case time.wday
-      when 0
-        time.advance(:days => -1) 
-      when 6
-        time
-      else
-        time.beginning_of_week.advance(:days => 5)
-      end
+      start_time = time.beginning_of_weekend
       by_star(start_time, (start_time + 1.day).end_of_day, options, &block)
     end
+    
+    
+    # Examples:
+    # Post.by_current_weekend
+    def by_current_weekend(options = {}, &block)
+      time = Time.zone.now
+      # Friday, 3pm
+      start_time = time.beginning_of_weekend
+      # Monday, 3am
+      end_time = time.end_of_weekend
+      by_star(start_time, end_time, options, &block)
+    end
+    
+    # Examples:
+    # Post.by_current_work_week
+    def by_current_work_week(options = {}, &block)
+      time = Time.zone.now
+      # Monday, 3am
+      time = time + 1.week if time.wday == 6 || time.wday == 0
+      start_time = time.beginning_of_week + 3.hours
+      # Friday, 3pm
+      end_time = time.beginning_of_weekend
+      by_star(start_time, end_time, options, &block)
+    end
+    
     
     # Examples:
     #   Post.by_day
@@ -272,4 +324,25 @@ module ByStar
   
   class ParseError < Exception; end
   class MonthNotFound < Exception; end
+end
+
+class Time
+  def beginning_of_weekend
+    friday = case self.wday
+    when 0
+      self.end_of_week.beginning_of_day.advance(:days => -2) 
+    when 5
+      self.beginning_of_day
+    else
+      self.beginning_of_week.advance(:days => 4)
+    end
+    # 3pm, Friday.
+    (friday + 15.hours)
+  end
+  
+  def end_of_weekend
+    # 3am, Monday.
+    # LOL I CHEATED.
+    beginning_of_weekend + 3.days - 12.hours
+  end
 end

@@ -3,8 +3,17 @@ require 'by_star'
 
 describe Post do
   
-  def stub_time(day=15, month=5, year=Time.zone.now.year)
-    Time.stub!(:now).and_return("#{day}-#{month}-#{year}".to_time)
+  def stub_time(day=15, month=5, year=Time.zone.now.year, hour=0, minute=0)
+    stub = "#{day}-#{month}-#{year} #{hour}:#{minute}".to_time
+    Time.stub!(:now).and_return(stub)
+    Time.zone.stub!(:now).and_return(stub)
+  end
+  
+  def range_test(&block)
+    (1..31).to_a.each do |d|
+      stub_time(d, 07, 2009, 05, 05)
+      block.call
+    end
   end
   
   def find(*args)
@@ -175,6 +184,22 @@ describe Post do
       year = Time.zone.now.year
       stub_time(1, 8)
       Event.by_weekend(nil, :field => "start_time").size.should eql(1)
+    end
+  end
+  
+  describe "by current weekend" do
+    it "should work" do
+      range_test do
+        Post.by_current_weekend
+      end
+    end
+  end
+  
+  describe "by current work week" do
+    it "should work" do
+      range_test do
+        Post.by_current_work_week
+      end
     end
   end
   
@@ -378,6 +403,14 @@ describe Post do
   
   
   describe "nested find" do
+    
+    it "should be able to find posts after right now" do
+      stub_time
+      Post.by_current_work_week.size.should eql(2)
+      Post.by_current_work_week do
+        { :conditions => ["created_at > ?", Time.now] }
+      end.size.should eql(0)
+    end
   
     it "should be able to find a single post from last year with the tag 'ruby'" do
       Post.by_year(Time.zone.now.year - 1) do
@@ -443,8 +476,20 @@ describe Post do
       end.size.should eql(1)
     end
     
+  end
+  
+  describe Time do
+    it "should work out the beginning of a weekend (Friday 3pm)" do
+      range_test do 
+        Time.now.beginning_of_weekend.strftime("%A %I:%M%p").should eql("Friday 03:00PM")
+      end
+    end
     
-    
+    it "should work out the end of a weekend (Monday 3am)" do
+      range_test do
+        Time.now.end_of_weekend.strftime("%A %I:%M%p").should eql("Monday 03:00AM")
+      end
+    end
   end
   
 end
