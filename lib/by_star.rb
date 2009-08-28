@@ -21,7 +21,7 @@ module ByStar
       end_time = start_time.end_of_year
       by_star(start_time, end_time, options, &block)
     rescue ArgumentError
-      raise ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)"
+      raise ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039). This is no longer a problem on Ruby versions > 1.8.7, so we recommend you upgrade to at least 1.8.7."
     end
     
     # Examples:

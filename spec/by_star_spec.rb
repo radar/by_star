@@ -41,8 +41,14 @@ describe Post do
     end
     
     it "should error when given an invalid year" do
-      lambda { find(1901) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
-      lambda { find(2039) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
+      if RUBY_VERSION =~ /1.8.7/
+        find(1456).should be_empty
+        find(1901).should be_empty
+        find(2039).should be_empty
+      else
+        lambda { find(1901) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
+        lambda { find(2039) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
+      end
     end
     
     it "should be able to use an alternative field" do
