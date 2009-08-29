@@ -80,38 +80,6 @@ module ByStar
     # Examples:
     #   # 36th week
     #   Post.by_week(36)
-    #   Post.by_week(36, :year => 2004)
-    #   Post.by_week(<Time object>)
-    #   Post.by_week(<Date object>)
-    #   Post.by_week("next tuesday")
-    def by_week(time=Time.zone.now, options = {}, &block)
-      time = parse(time)
-      
-      # If options[:year] is passed in, use that year regardless.
-      year = work_out_year(options[:year]) if options[:year]
-      # If the first argument is a date or time, ask it for the year
-      year ||= time.year unless time.is_a?(Numeric)
-      # If the first argument is a fixnum, assume this year.
-      year ||= Time.now.year
-      
-      # Dodgy!
-      # Surely there's a method in Rails to do this.
-      start_time = if valid_time_or_date?(time)
-        time.beginning_of_year + (time.strftime("%U").to_i).weeks
-      elsif time.is_a?(Numeric) && time < 53
-        Time.utc(year, 1, 1) + (time.to_i).weeks
-      else
-        raise ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string."
-      end
-      start_time = start_time.beginning_of_week
-      end_time = start_time + 1.week
-      
-      by_star(start_time, end_time, options, &block)
-    end
-    
-    # Examples:
-    #   # 36th week
-    #   Post.by_week(36)
     #   Post.by_week(36.54)
     #   Post.by_week(36, :year => 2004)
     #   Post.by_week(<Time object>)

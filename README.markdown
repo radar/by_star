@@ -9,6 +9,8 @@ by_* (byStar) is a plugin that allows you to find ActiveRecord objects given cer
 * A given week
 * A given weekend
 * A given day
+* The current weekend
+* The current work week
 * Between certain times
 * As of a certain time
 * Up to a certain time
@@ -23,7 +25,7 @@ It also allows you to do nested finds on the records returned which I personally
 If you're not using the standard `created_at` field: don't worry! I've covered that scenario too.
 
 
-## By Year
+## By Year (`by_year`)
 
 To find records based on a year you can pass it a two or four digit number:
     
@@ -35,7 +37,7 @@ This will return all posts in 2009, whereas:
 
 will return all the posts in the year 1999.
 
-## By Month
+## By Month (`by_month`)
 
 If you know the number of the month you want:
  
@@ -65,7 +67,7 @@ If you have a Time object you can use it to find the posts:
      
 This will find all the posts in November 2008.
 
-## By Fortnight
+## By Fortnight (`by_fortnight`)
 
 Fortnight numbering starts at 0. The beginning of a fortnight is Monday, 12am.
 
@@ -87,7 +89,7 @@ This will return all posts in the 18th fortnight week of 2008.
     
 This will return all posts from the first fortnight of 2008.
 
-## By Week
+## By Week (`by_week`)
 
 Week numbering starts at 0. The beginning of a week is Monday, 12am.
 
@@ -109,13 +111,13 @@ This will return all posts in the 36th week of 2008.
     
 This will return all posts from the first week of 2008.
 
-## By Weekend
+## By Weekend (`by_weekend`)
 
 If the time passed in (or the time now is a weekend) it will return posts from 12am Saturday to 11:59:59PM Sunday. If the time is a week day, it will show all posts for the coming weekend.
 
     Post.by_weekend(Time.now)
    
-## By Day
+## By Day (`by_day` or `today`)
 
 To find records for today:
     
@@ -132,8 +134,18 @@ You can also pass a string:
    
 This will return all posts for the given day.
 
+## Current Weekend (`by_current_weekend`)
 
-## Tomorrow
+If you are currently in a weekend (between 3pm Friday and 3am Monday) this will find all records starting at 3pm the previous Friday up until 3am, Monday.
+
+If you are not in a weekend (between 3am Monday and 3pm Friday) this will find all records from the next Friday 3pm to the following Monday 3am.
+
+## Current Work Week (`by_current_work_week`)
+
+If you are currently in a work week (between 3am Monday and 3pm Friday) this will find all records in that range. If you are currently in a weekend (between 3pm Friday and 3am Monday) this will return all records in the upcoming work week.
+
+
+## Tomorrow (`tomorrow`)
 
 To find all posts from the day after the current date:
 
@@ -148,7 +160,7 @@ You can also pass a string:
  
     Post.tomorrow("next tuesday")
     
-## Yesterday
+## Yesterday (`yesterday`)
 
 To find all posts from the day before the current date:
 
@@ -163,7 +175,7 @@ You can also pass a string:
  
     Post.yesterday("next tuesday")
     
-## Past
+## Past (`past`)
 
 To find all posts before the current time:
 
@@ -178,7 +190,7 @@ You can also pass a string:
 
     Post.past("next tuesday")
 
-## Future
+## Future (`future`)
 
 To find all posts after the current time:
 
@@ -193,7 +205,7 @@ You can also pass a string:
 
     Post.future("next tuesday")
     
-## Between
+## Between (`between`)
 
 To find records between two times:
 
@@ -207,7 +219,7 @@ And with strings:
 
     Post.between("last tuesday", "next wednesday")
     
-## As of
+## As of (`as_of_<dynamic>`)
 
 To find records as of a certain date up until the current time:
     
@@ -215,7 +227,7 @@ To find records as of a certain date up until the current time:
     
 This uses the Chronic "human mind reading" (read: it's really good at determining what time you mean using written English) library to work it out.
 
-## Up to
+## Up to (`up_to_<dynamic>`)
 
 To find records up to a certain time from the current time:
 
