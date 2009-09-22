@@ -6,7 +6,7 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
   
-  create_table :posts_tags, :force => true do |t|
+  create_table :posts_tags, :force => true, :id => false do |t|
     t.integer :post_id, :tag_id
   end
   
