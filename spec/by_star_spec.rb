@@ -41,13 +41,15 @@ describe Post do
     end
     
     it "should error when given an invalid year" do
-      if RUBY_VERSION =~ /1.8.7/
+      # This is broken on 1.8.6 (and previous versions), any patchlevel after & before 111
+      major, minor, trivial = RUBY_VERSION.split(".").map(&:to_i)
+      if major == 1 && ((minor == 8 && trivial <= 6) || (minor <= 8)) && RUBY_PATCHLEVEL.to_i > 111
+        lambda { find(1901) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
+        lambda { find(2039) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
+      else
         find(1456).should be_empty
         find(1901).should be_empty
         find(2039).should be_empty
-      else
-        lambda { find(1901) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
-        lambda { find(2039) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
       end
     end
     
