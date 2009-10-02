@@ -61,8 +61,8 @@ Event.create(:name => "Ryan's birthday!", :start_time  => "04-12-#{Time.zone.now
 Event.create(:name => "Dad's birthday!",  :start_time  => "05-07-#{Time.zone.now.year}".to_time)
 Event.create(:name => "Mum's birthday!",  :start_time  => "17-11-#{Time.zone.now.year}".to_time)
 Event.create(:name => "Today",            :start_time  => Time.zone.now)
-Event.create(:name => "Yesterday",        :start_time  => Time.zone.now - 1.day)
-Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now + 1.day)
+Event.create(:name => "Yesterday",        :start_time  => Time.zone.now.yesterday)
+Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now.tomorrow)
 
 # For by_weekend test
 Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)

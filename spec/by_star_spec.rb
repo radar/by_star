@@ -232,24 +232,27 @@ describe Post do
       find.map(&:text).should include("Today's post")
     end
     
-    it "should show the post for tomorrow" do
-      find("tomorrow").map(&:text).should include("Tomorrow's post")
-    end
-    
     it "should be able to use an alternative field" do
       # Test may occur on an event day.
       stub_time
       Event.today(nil, :field => "start_time").size.should eql(0)
     end
+    
   end
   
+  describe "tomorrow" do
+    it "should show the post for tomorrow" do
+      find.map(&:text).should include("Tomorrow's post")
+    end
+  end
+    
   describe "yesterday" do
     it "should show the post for yesterday" do
       find.map(&:text).should include("Yesterday's post")
     end
     
     it "should be able find yesterday, given a Date" do
-      find(Date.today).map(&:text).should include("Yesterday's post")
+      find(Time.now).map(&:text).should include("Yesterday's post")
     end
     
     it "should be able to use an alternative field" do
@@ -266,7 +269,7 @@ describe Post do
     end
     
     it "should be able find tomorrow, given a Date" do
-      find(Date.today).map(&:text).should include("Tomorrow's post")
+      find(Time.now).map(&:text).should include("Tomorrow's post")
     end
     
     it "should be able to use an alternative field" do
