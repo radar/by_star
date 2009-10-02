@@ -147,6 +147,8 @@ If you are currently in a work week (between 3am Monday and 3pm Friday) this wil
 
 ## Tomorrow (`tomorrow`)
 
+*This method has been shown to be shifty when passed a `Date` object, it is recommended that you pass it a `Time` object instead.*
+
 To find all posts from the day after the current date:
 
     Post.tomorrow
@@ -161,6 +163,8 @@ You can also pass a string:
     Post.tomorrow("next tuesday")
     
 ## Yesterday (`yesterday`)
+
+*This method has been shown to be shifty when passed a `Date` object, it is recommended that you pass it a `Time` object instead.*
 
 To find all posts from the day before the current date:
 
