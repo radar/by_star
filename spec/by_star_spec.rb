@@ -489,6 +489,12 @@ describe Post do
     
   end
   
+  describe "Calculations" do
+    it "should be able to sum correctly" do
+      Invoice.sum_by_month(:value, 2).should eql(12000)
+    end
+  end
+  
   describe Time do
     it "should work out the beginning of a weekend (Friday 3pm)" do
       range_test do 

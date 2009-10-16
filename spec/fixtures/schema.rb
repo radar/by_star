@@ -1,6 +1,11 @@
 ActiveRecord::Schema.define do
   self.verbose = false
   
+  create_table :invoices, :force => true do |t|
+    t.integer :value
+    t.timestamps
+  end
+  
   create_table :posts, :force => true do |t|
     t.string :text
     t.timestamps

@@ -15,6 +15,12 @@ class Event < ActiveRecord::Base
   named_scope :private, :conditions => { :public => false }
 end
 
+class Invoice < ActiveRecord::Base
+  def self.factory(value, created_at = nil)
+    create!(:value => value, :created_at => created_at)
+  end
+end
+
 ## seed data:
 
 year = Time.zone.now.year
@@ -22,6 +28,12 @@ year = Time.zone.now.year
 1.upto(12) do |month|
   month.times do |n|
     Post.factory "post #{n}", Time.local(year, month, 1)
+  end
+end
+
+1.upto(12) do |month|
+  month.times do |n|
+    Invoice.factory n * 1000, Time.local(year, month, 1)
   end
 end
 
@@ -68,3 +80,10 @@ Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now.tomorrow
 Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)
 
 Event.create(:name => "FBI meeting",      :start_time  => "02-03-#{Time.zone.now.year}".to_time, :public => false)
+
+
+1.upto(12) do |month|
+  month.times do |n|
+    Post.factory "post #{n}", Time.local(year, month, 1)
+  end
+end
