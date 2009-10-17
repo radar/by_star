@@ -80,11 +80,8 @@ To count records in the current year where only a specific field is set:
   
 To count records in a different year regardless of field:
 
-    Invoice.count_by_year(:all, :)
+    Invoice.count_by_year(:all, :year => 2009)
    
-    
-
-
 ## By Month (`by_month`)
 
 If you know the number of the month you want:

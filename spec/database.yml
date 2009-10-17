@@ -1,0 +1,9 @@
+mysql:
+  username: root
+  password:
+  database: by_star
+  adapter: mysql
+
+sqlite3:
+  adapter: sqlite3
+  database: by_star.sqlite3
