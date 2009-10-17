@@ -3,6 +3,7 @@ ActiveRecord::Schema.define do
   
   create_table :invoices, :force => true do |t|
     t.integer :value
+    t.integer :number
     t.timestamps
   end
   

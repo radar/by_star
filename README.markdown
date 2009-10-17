@@ -24,6 +24,16 @@ It also allows you to do nested finds on the records returned which I personally
     
 If you're not using the standard `created_at` field: don't worry! I've covered that scenario too.
 
+## count_by* methods
+
+`count_by` methods can be scoped to only count those records which have a specific field set, and you do this by specifying the symbol version of the name of the field, e.g;
+
+    Invoice.count_by_year(:value)
+    
+If you want to specify further arguments but do not care about the scoped field:
+
+    Invoice.count_by_year(:all, 2009)
+
 
 ## By Year (`by_year`)
 
@@ -46,6 +56,10 @@ When you specify a year *less than* 1902 and *greater than* 2039 using specific 
 
 ## Sum By Year (`sum_by_year`)
 
+To sum records for the current year based on a field:
+    
+    Invoice.sum_by_year(:value)
+
 To sum records for a year based on a field:
 
     Invoice.sum_by_year(:value, 09)
@@ -53,6 +67,23 @@ To sum records for a year based on a field:
 You can also pass it a full year:
    
     Invoice.sum_by_year(:value, 2009)
+    
+## Count By Year (`count_by_year`)
+
+To count the records in the current year regardless of field:
+
+    Invoice.count_by_year
+    
+To count records in the current year where only a specific field is set:
+
+    Invoice.count_by_year(:value)
+  
+To count records in a different year regardless of field:
+
+    Invoice.count_by_year(:all, :)
+   
+    
+
 
 ## By Month (`by_month`)
 
@@ -89,6 +120,10 @@ When you specify a year *less than* 1902 and *greater than* 2039 using specific 
 
 ## Sum By Month (`sum_by_month`)
 
+To sum records for the current month:
+
+    Invoice.sum_by_month
+
 To sum records for a numbered month based on a field:
 
     Invoice.sum_by_month(:value, 9)
@@ -101,6 +136,28 @@ You can also lookup on a different year:
    
     Invoice.sum_by_year(:value, 9, :year => "2009")
 
+## Count By Month (`count_by_month`)
+
+To count records for the current month regardless of field:
+
+    Invoice.count_by_month
+
+To count records for the current month where only a specific field is set:
+
+    Invoice.count_by_month(:value)
+    
+To count records for a different month regardless of field:
+   
+    Invoice.count_by_month(:all, 9)
+    
+To count records for a different month in the current year:
+
+    Invoice.count_by_month(:number, 9)
+    
+To count records for a different month in a different year:
+   
+    Invoice.count_by_month(:number, 9, :year => 2008)
+    
 ## By Fortnight (`by_fortnight`)
 
 Fortnight numbering starts at 0. The beginning of a fortnight is Monday, 12am.

@@ -17,7 +17,7 @@ end
 
 class Invoice < ActiveRecord::Base
   def self.factory(value, created_at = nil)
-    create!(:value => value, :created_at => created_at)
+    create!(:value => value, :created_at => created_at, :number => value)
   end
 end
 
@@ -39,6 +39,9 @@ end
 
 # Invoice from last year
 Invoice.factory 10000, Time.local(Time.now.year-1, 1, 1)
+
+# Invoice without a number
+Invoice.create!(:value => 10000, :number => nil) 
 
 Post.factory "Today's post", Time.zone.now
 Post.factory "Yesterday's post", Time.zone.now - 1.day

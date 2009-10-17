@@ -494,7 +494,7 @@ describe Post do
       describe "by year" do
         it "current year" do
           stub_time
-          Invoice.sum_by_year(:value).should eql(364000)
+          Invoice.sum_by_year(:value).should eql(374000)
         end
       end
       
@@ -519,6 +519,37 @@ describe Post do
       #     Invoice.sum_by_week(:value).should eql(12)
       #   end
       # end
+    end
+    
+    describe "Count" do
+      describe "by year" do
+        it "current year" do
+          Invoice.count_by_year.should eql(79)
+        end
+        
+        it "using a field" do
+          Invoice.count_by_year(:number).should eql(Invoice.by_year.size-1)
+        end
+        
+        it "different year" do
+          Invoice.count_by_year(:all, 2008)
+        end
+      end
+      
+      describe "by month" do
+        it "current month" do
+          Invoice.count_by_month
+        end
+        
+        it "using a field" do
+          Invoice.count_by_month(:number).should eql(Invoice.by_month.size-1)
+        end
+        
+        it "different month" do
+          stub_time
+          Invoice.count_by_month(:all, 9).should eql(9)
+        end
+      end
     end
 
   end
