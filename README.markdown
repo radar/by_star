@@ -37,6 +37,23 @@ This will return all posts in 2009, whereas:
 
 will return all the posts in the year 1999.
 
+You can also specify the full year:
+    
+    Post.by_year(2009)
+    Post.by_year(1999)
+    
+When you specify a year *less than* 1902 and *greater than* 2039 using specific versions of Ruby (i.e. 1.8.6p114) an `ArgumentError` will be raised. We recommend you upgrade Ruby to *at least* 1.8.7 to stop this problem occuring.
+
+## Sum By Year (`sum_by_year`)
+
+To sum records for a year based on a field:
+
+    Invoice.sum_by_year(09)
+    
+You can also pass it a full year:
+   
+    Invoice.sum_by_year(2009)
+
 ## By Month (`by_month`)
 
 If you know the number of the month you want:
@@ -66,6 +83,8 @@ If you have a Time object you can use it to find the posts:
      Post.by_month(Time.local(2008, 11, 24))
      
 This will find all the posts in November 2008.
+
+When you specify a year *less than* 1902 and *greater than* 2039 using specific versions of Ruby (i.e. 1.8.6p114) an `ArgumentError` will be raised. We recommend you upgrade Ruby to *at least* 1.8.7 to stop this problem occuring.
 
 ## By Fortnight (`by_fortnight`)
 
