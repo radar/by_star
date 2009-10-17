@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{by_star}
-  s.version = "0.2.5"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Bigg", "Mislav Marohni\304\207"]
-  s.date = %q{2009-10-15}
+  s.date = %q{2009-10-17}
   s.description = %q{ActiveRecord extension for easier date scopes and time ranges}
   s.email = %q{radarlistener@gmail.com}
   s.extra_rdoc_files = [
@@ -22,9 +22,18 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "by_star.gemspec",
+     "by_star.sqlite3",
      "lib/by_star.rb",
+     "lib/calculations.rb",
+     "lib/calculations/count.rb",
+     "lib/calculations/sum.rb",
+     "lib/range_calculations.rb",
+     "lib/shared.rb",
+     "lib/time_ext.rb",
+     "lib/vanilla.rb",
      "rails/init.rb",
      "spec/by_star_spec.rb",
+     "spec/database.yml",
      "spec/fixtures/models.rb",
      "spec/fixtures/schema.rb",
      "spec/spec_helper.rb",
