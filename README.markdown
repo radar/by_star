@@ -48,11 +48,11 @@ When you specify a year *less than* 1902 and *greater than* 2039 using specific 
 
 To sum records for a year based on a field:
 
-    Invoice.sum_by_year(09)
+    Invoice.sum_by_year(:value, 09)
     
 You can also pass it a full year:
    
-    Invoice.sum_by_year(2009)
+    Invoice.sum_by_year(:value, 2009)
 
 ## By Month (`by_month`)
 
