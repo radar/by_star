@@ -10,8 +10,7 @@ module ByStar
     #   by_year("2010")
     def by_year(time=Time.zone.now.year, options={}, &block)
       year = work_out_year(time)
-  
-      start_time = Time.utc(year, 1, 1)
+      start_time = start_of_year(year)
       end_time = start_time.end_of_year
       by_star(start_time, end_time, options, &block)
     rescue ArgumentError
@@ -25,20 +24,9 @@ module ByStar
     #   by_month(time)
     def by_month(time=Time.zone.now.month, options={}, &block)
       time = Time.zone.now.month if time.nil?
-      year = options[:year] ||= Time.zone.now.year
-      # Work out what actual month is.
-      month = if time.is_a?(Numeric) && (1..12).include?(time)
-        time
-      elsif valid_time_or_date?(time)
-        year = time.year
-        time.month
-      elsif time.is_a?(String) && Date::MONTHNAMES.include?(time)
-        Date::MONTHNAMES.index(time)
-      else
-        raise ParseError, "Value is not an integer (between 1 and 12), time object or string (make sure you typed the name right)."
-      end
+      year, month = work_out_month(time, options)
   
-      start_time = Time.utc(year, month, 1)
+      start_time = start_of_month(month, year)
       end_time = start_time.end_of_month
 
       by_star(start_time, end_time, options, &block)
@@ -189,7 +177,7 @@ module ByStar
     end
 
     private
-
+      
       def by_direction(condition, time, options = {}, &block)
         field = connection.quote_table_name(table_name)
         field << "." << connection.quote_column_name(options[:field] || "created_at")
@@ -211,8 +199,7 @@ module ByStar
     
         raise ParseError, "End time is before start time, searching like this will return no results." if end_time < start_time
     
-        field = options[:field] || "created_at"
-        with_scope(:find => { :conditions => { field => start_time.utc..end_time.utc } }) do
+        with_scope(:find => { :conditions => conditions_for_range(start_time, end_time, options) }) do
           if block_given?
             with_scope(:find => block.call) do
               find(:all)

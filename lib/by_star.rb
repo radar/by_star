@@ -1,4 +1,6 @@
 require 'chronic'
+require 'shared'
+require 'range_calculations'
 require 'time_ext'
 require 'vanilla'
 require 'calculations'
@@ -9,6 +11,8 @@ module ByStar
   end
   
   module ClassMethods
+    include RangeCalculations
+    include Shared
     include Vanilla
     include Calculations
   end

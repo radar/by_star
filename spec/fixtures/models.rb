@@ -33,9 +33,12 @@ end
 
 1.upto(12) do |month|
   month.times do |n|
-    Invoice.factory n * 1000, Time.local(year, month, 1)
+    Invoice.factory n * 1000 + 1000, Time.local(year, month, 1)
   end
 end
+
+# Invoice from last year
+Invoice.factory 10000, Time.local(Time.now.year-1, 1, 1)
 
 Post.factory "Today's post", Time.zone.now
 Post.factory "Yesterday's post", Time.zone.now - 1.day
@@ -80,10 +83,3 @@ Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now.tomorrow
 Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)
 
 Event.create(:name => "FBI meeting",      :start_time  => "02-03-#{Time.zone.now.year}".to_time, :public => false)
-
-
-1.upto(12) do |month|
-  month.times do |n|
-    Post.factory "post #{n}", Time.local(year, month, 1)
-  end
-end

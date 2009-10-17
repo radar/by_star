@@ -490,9 +490,37 @@ describe Post do
   end
   
   describe "Calculations" do
-    it "should be able to sum correctly" do
-      Invoice.sum_by_month(:value, 2).should eql(12000)
+    describe "Sum" do
+      describe "by year" do
+        it "current year" do
+          stub_time
+          Invoice.sum_by_year(:value).should eql(364000)
+        end
+      end
+      
+      describe "by month" do
+        it "current month" do
+          stub_time
+          Invoice.sum_by_month(:value).should eql(15000)
+        end
+        
+        it "name of month" do
+          Invoice.sum_by_month(:value, "January").should eql(1000)
+        end
+        
+        it "should be able to specify another year" do
+          Invoice.sum_by_month(:value, 1, :year => 2008).should eql(10000)
+        end
+      end
+      
+      # describe "by week" do
+      #   it "current week" do
+      #     stub_time
+      #     Invoice.sum_by_week(:value).should eql(12)
+      #   end
+      # end
     end
+
   end
   
   describe Time do
