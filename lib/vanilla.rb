@@ -198,8 +198,10 @@ module ByStar
         end_time = parse(end_time)
     
         raise ParseError, "End time is before start time, searching like this will return no results." if end_time < start_time
-    
-        with_scope(:find => { :conditions => conditions_for_range(start_time, end_time, options) }) do
+        order = options.delete(:order)
+        scoping = { :conditions => conditions_for_range(start_time, end_time, options) }
+        scoping.merge!(:order => order) if order
+        with_scope(:find => scoping) do
           if block_given?
             with_scope(:find => block.call) do
               find(:all)

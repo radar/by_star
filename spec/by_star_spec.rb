@@ -58,6 +58,10 @@ describe Post do
       it "should be able to use an alternative field" do
         Event.by_year(nil, :field => "start_time").size.should eql(8)
       end
+      
+      it "should be able to order the result set" do
+        find(Time.zone.now.year, :order => "created_at DESC").first.text.should eql("That's it!")
+      end
     end
   
     describe "by month" do
