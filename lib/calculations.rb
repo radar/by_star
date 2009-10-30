@@ -4,8 +4,8 @@ module ByStar
     include Sum
     
     private
-      def work_out_month(time, options = {})
-        year = options[:year] ||= Time.zone.now.year
+      def work_out_month(time, year=Time.zone.now.year)
+        year ||= Time.zone.now.year
         # Work out what actual month is.
         month = if time.is_a?(Numeric) && (1..12).include?(time)
           time

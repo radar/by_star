@@ -335,11 +335,27 @@ All methods support this extra option.
 
 ## Scoping the find
 
-All the `by_*` methods takes a block which will then scope the find based on the options passed into it. The supported options are the same options that are supported by `ActiveRecord::Base.find`:
+All the `by_*` methods take a block which will then scope the find based on the options passed into it. You can also specify these options for each method, but the syntax may differ. The supported options are the same options that are supported by `find` from ActiveRecord. Please note that if you want to use conditions you *have* to use this syntax:
+
+     Post.by_month(1) { { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] } }
+
+or the lengthened:
 
      Post.by_month(1) do
        { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
      end
+    
+An alternative syntax to this is:
+
+     Post.by_month(1, { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] })
+     
+## Ordering records
+
+To order the returned set of records you may specify an `:order` option which works the same was as a standard AR `:order` option:
+
+     Item.by_month(1, :order => "position DESC")
+
+     
 ## "Chronicable string"
 
 This means a string that can be parsed with the Chronic gem.

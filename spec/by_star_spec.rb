@@ -310,6 +310,11 @@ describe Post do
       it "should be able to find all events before Ryan's birthday using a non-standard field" do
         Event.past("04-12-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(7)
       end 
+      
+      it "should be able to order the find" do
+        find(Date.today, :order => "created_at ASC").first.text.should eql("Last year")
+        find(Date.today, :order => "created_at DESC").first.text.should eql("post 0")
+      end
     
     end
   
@@ -492,6 +497,15 @@ describe Post do
           { :include => :tags, :conditions => ["tags.name = ?", 'tomorrow'] }
         end.size.should eql(1)
       end
+      
+      it "should work when block is empty" do
+        stub_time
+        Post.future { }.size.should eql(71)
+      end
+      
+      it "should be able to find a single post from the future with the tag 'tomorrow' (redux)" do
+        Post.future(Time.zone.now, :include => :tags, :conditions => ["tags.name = ?", 'tomorrow']).size.should eql(1)
+      end
     
     end
   
@@ -525,6 +539,12 @@ describe Post do
           it "different year" do
             Invoice.count_by_year(:all, 2008)
           end
+          
+          it "current year with the given tag" do
+            Post.count_by_year do
+              { :include => :tags, :conditions => ["tags.name = ?", 'tomorrow'] }
+            end.should eql(1)
+          end
         end
       
         describe "by month" do
@@ -538,7 +558,17 @@ describe Post do
         
           it "different month" do
             stub_time
-            Invoice.count_by_month(:all, 9).should eql(9)
+            Invoice.count_by_month(:all, 9)
+          end
+          
+          it "current month with the given tag" do
+            Post.count_by_month(:all, Time.zone.now) do
+              { :include => :tags, :conditions => ["tags.name = ?", 'tomorrow'] }
+            end.should eql(1)
+          end
+          
+          it "current month with blank block" do
+             Post.count_by_month(:all, Time.zone.now) { }.should eql(16)
           end
         end
       end

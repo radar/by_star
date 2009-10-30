@@ -24,7 +24,7 @@ module ByStar
     #   by_month(time)
     def by_month(time=Time.zone.now.month, options={}, &block)
       time = Time.zone.now.month if time.nil?
-      year, month = work_out_month(time, options)
+      year, month = work_out_month(time, options.delete(:year))
   
       start_time = start_of_month(month, year)
       end_time = start_time.end_of_month
@@ -71,7 +71,7 @@ module ByStar
       time = parse(time)
   
       # If options[:year] is passed in, use that year regardless.
-      year = work_out_year(options[:year]) if options[:year]
+      year = work_out_year(options.delete(:year)) if options[:year]
       # If the first argument is a date or time, ask it for the year
       year ||= time.year unless time.is_a?(Numeric)
       # If the first argument is a fixnum, assume this year.
@@ -180,13 +180,11 @@ module ByStar
       
       def by_direction(condition, time, options = {}, &block)
         field = connection.quote_table_name(table_name)
-        field << "." << connection.quote_column_name(options[:field] || "created_at")
-        with_scope(:find => { :conditions => ["#{field} #{condition} ?", time.utc] }) do
-          if block_given?
-            with_scope(:find => block.call) do
-              find(:all)
-            end
-          else
+        field << "." << connection.quote_column_name(options.delete(:field) || "created_at")
+        validate_find_options(options)
+        scoping = { :conditions => ["#{field} #{condition} ?", time.utc] }.merge(options)
+        with_scope(:find => scoping) do
+          scoped_by(block) do
             find(:all)
           end
         end
@@ -198,15 +196,11 @@ module ByStar
         end_time = parse(end_time)
     
         raise ParseError, "End time is before start time, searching like this will return no results." if end_time < start_time
-        order = options.delete(:order)
-        scoping = { :conditions => conditions_for_range(start_time, end_time, options) }
-        scoping.merge!(:order => order) if order
+        field = options.delete(:field)
+        validate_find_options(options)
+        scoping = { :conditions => conditions_for_range(start_time, end_time, field) }.merge(options)
         with_scope(:find => scoping) do
-          if block_given?
-            with_scope(:find => block.call) do
-              find(:all)
-            end
-          else
+          scoped_by(block) do
             find(:all)
           end
         end
