@@ -27,4 +27,10 @@ ActiveRecord::Schema.define do
     t.boolean :public, :default => true
   end
   
+  create_table :day_entries, :force => true do |t|
+    t.references :invoice
+    t.datetime :spent_at
+    t.string :name
+  end
+  
 end

@@ -575,6 +575,14 @@ describe Post do
       end
 
     end
+    
+    describe "edge cases" do
+      # This method previously generated sql like: `day_entries`.`spent_at`.`spent_at`.`spent_at`.`spent_at`
+      # Which is *obviously* incorrect and #omg worthy.
+      it "should not spam the field name when using a different field" do
+        Invoice.first.day_entries.between((Time.zone.now - 3.days).to_date, Time.zone.now.to_date, :field => "spent_at")
+      end
+    end
   
     describe Time do
       it "should work out the beginning of a weekend (Friday 3pm)" do

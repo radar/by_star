@@ -16,9 +16,14 @@ class Event < ActiveRecord::Base
 end
 
 class Invoice < ActiveRecord::Base
+  has_many :day_entries
   def self.factory(value, created_at = nil)
     create!(:value => value, :created_at => created_at, :number => value)
   end
+end
+
+class DayEntry < ActiveRecord::Base
+  
 end
 
 ## seed data:
@@ -86,3 +91,5 @@ Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now.tomorrow
 Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)
 
 Event.create(:name => "FBI meeting",      :start_time  => "02-03-#{Time.zone.now.year}".to_time, :public => false)
+
+Invoice.first.day_entries.create(:spent_at => Time.zone.now + 1.hour, :name => "Working harder, better, faster stronger.")

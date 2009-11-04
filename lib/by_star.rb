@@ -3,6 +3,7 @@ require 'shared'
 require 'range_calculations'
 require 'time_ext'
 require 'vanilla'
+
 Dir[File.dirname(__FILE__) + '/calculations/*.rb'].each { |file| require file }
 require 'calculations'
 module ByStar
