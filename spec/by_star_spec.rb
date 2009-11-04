@@ -568,7 +568,8 @@ describe Post do
           end
           
           it "current month with blank block" do
-             Post.count_by_month(:all, Time.zone.now) { }.should eql(16)
+            stub_time
+            Post.count_by_month(:all, Time.zone.now) { }.should eql(8)
           end
         end
       end
