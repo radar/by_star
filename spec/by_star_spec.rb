@@ -55,8 +55,17 @@ describe Post do
         end
       end
     
-      it "should be able to use an alternative field" do
+      it "should be able to use an alternative field (string)" do
         Event.by_year(nil, :field => "start_time").size.should eql(8)
+      end
+      
+      it "should be able to use an alternative field (symbol)" do
+        Event.by_year(nil, :field => :start_time).size.should eql(8)
+      end
+      
+      it "should be able to use an alternative field (symbol) with directional searching" do
+        stub_time
+        Event.past(nil, :field => :start_time).size.should eql(1)
       end
       
       it "should be able to order the result set" do
