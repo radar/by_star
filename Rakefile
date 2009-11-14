@@ -11,6 +11,7 @@ begin
     gem.homepage = "http://github.com/radar/by_star"
     gem.authors = ["Ryan Bigg", "Mislav Marohnić"]
     gem.add_development_dependency "rspec"
+  
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
