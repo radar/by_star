@@ -238,7 +238,7 @@ describe Post do
       end
     
       it "should be able to use an alternative field" do
-        Event.by_day(nil, :field => "start_time").size.should eql(1)
+        Event.by_day(Time.now - 1.day, :field => "start_time").size.should eql(1)
       end
     end
 
