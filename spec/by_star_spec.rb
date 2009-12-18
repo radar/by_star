@@ -317,7 +317,7 @@ describe Post do
       end
     
       it "should be able to find all events before Ryan's birthday using a non-standard field" do
-        Event.past("04-12-#{Time.zone.now.year}".to_time, :field => "start_time").size.should eql(7)
+        Event.past("01-01-#{Time.zone.now.year+2}".to_time, :field => "start_time").size.should eql(8)
       end 
       
       it "should be able to order the find" do
