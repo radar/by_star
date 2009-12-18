@@ -111,8 +111,12 @@ describe Post do
       end
     
       it "should be able to use an alternative field" do
-        stub_time(1, 12)
-        Event.by_month(nil, :field => "start_time").size.should eql(1)
+        if Time.zone.now.month == 12
+          Event.by_month(nil, :field => "start_time").size.should eql(4)
+        else
+          stub_time(1, 12)
+          Event.by_month(nil, :field => "start_time").size.should eql(1)
+        end
       end
     
       it "should be able to specify the year as a string" do
