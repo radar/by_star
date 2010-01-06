@@ -55,7 +55,7 @@ Post.factory "Tomorrow's post", Time.zone.now + 1.day
 Post.factory "That's it!", Time.zone.now.end_of_year
 
 # For by_weekend scoped test
-post = Post.factory "Weekend of May", "16-05-2009".to_time
+post = Post.factory "Weekend of May", "16-05-#{Time.zone.now.year}".to_time
 post.tags.create(:name => "weekend")
 
 # For by_day scoped test
