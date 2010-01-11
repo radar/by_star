@@ -5,15 +5,14 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "by_star"
+    gem.name = "knoopx-by_star"
     gem.summary = %Q{ActiveRecord extension for easier date scopes and time ranges}
     gem.description = %Q{ActiveRecord extension for easier date scopes and time ranges}
     gem.email = "radarlistener@gmail.com"
     gem.homepage = "http://github.com/radar/by_star"
     gem.authors = ["Ryan Bigg", "Mislav Marohnić"]
     gem.add_development_dependency "rspec"
-  
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency('chronic', '~> 0.2.3')
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -33,7 +32,6 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
 end
 
 task :spec => :check_dependencies
-
 task :default => :spec
 
 require 'rake/rdoctask'
