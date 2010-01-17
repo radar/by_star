@@ -87,6 +87,7 @@ post.tags.create(:name => "may2")
 
 
 Event.create(:name => "Ryan's birthday!", :start_time  => "04-12-#{Time.zone.now.year}".to_time)
+Event.create(:name => "Ryan's birthday, last year!", :start_time  => "04-12-#{Time.zone.now.year-1}".to_time)
 Event.create(:name => "Dad's birthday!",  :start_time  => "05-07-#{Time.zone.now.year}".to_time)
 Event.create(:name => "Mum's birthday!",  :start_time  => "17-11-#{Time.zone.now.year}".to_time)
 Event.create(:name => "Today",            :start_time  => Time.zone.now)
