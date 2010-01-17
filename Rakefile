@@ -5,7 +5,7 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "knoopx-by_star"
+    gem.name = "by_star"
     gem.summary = %Q{ActiveRecord extension for easier date scopes and time ranges}
     gem.description = %Q{ActiveRecord extension for easier date scopes and time ranges}
     gem.email = "radarlistener@gmail.com"

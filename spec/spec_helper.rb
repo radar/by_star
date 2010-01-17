@@ -1,12 +1,13 @@
 require 'rubygems'
-require 'activerecord'
+require 'active_record'
 require 'fileutils'
+require 'logger'
 FileUtils.mkdir_p("tmp")
 
 ActiveRecord::Base.logger = Logger.new("tmp/activerecord.log")
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
-require 'activesupport'
+require 'active_support'
 require 'by_star'
 require 'spec'
 
