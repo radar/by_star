@@ -31,6 +31,7 @@ describe Post do
   
     describe "by year" do
       it "should be able to find all the posts in the current year" do
+        p find.map(&:text).sort
         size.should eql(Post.count - 1)
       end
     
@@ -327,7 +328,7 @@ describe Post do
       it "should be able to order the find" do
         stub_time(2,1)
         find(Date.today, :order => "created_at ASC").first.text.should eql("Last year")
-        find(Date.today, :order => "created_at DESC").first.text.should eql("post 0")
+        find(Date.today, :order => "created_at DESC").first.text.should eql("post 1-0")
       end
     
     end
@@ -426,7 +427,7 @@ describe Post do
   
     describe "named_scopes" do
       it "should be compatible" do
-        Event.private.by_year(nil, :field => "start_time").size.should eql(1)
+        Event.secret.by_year(nil, :field => "start_time").size.should eql(1)
       end
     end
   
@@ -477,6 +478,7 @@ describe Post do
     
       it "should be able to find a single post from the current weekend with the tag 'weekend'" do
         stub_time
+        p Post.find_by_text("Weekend of January").created_at
         Post.by_weekend do
           { :include => :tags, :conditions => ["tags.name = ?", 'weekend'] }
         end.size.should eql(1)

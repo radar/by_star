@@ -12,7 +12,7 @@ class Tag < ActiveRecord::Base
 end
 
 class Event < ActiveRecord::Base
-  named_scope :private, :conditions => { :public => false }
+  named_scope :secret, :conditions => { :public => false }
 end
 
 class Invoice < ActiveRecord::Base
@@ -32,18 +32,18 @@ year = Time.zone.now.year
 
 1.upto(12) do |month|
   month.times do |n|
-    Post.factory "post #{n}", Time.local(year, month, 1)
+    Post.factory "post #{month}-#{n}", Time.zone.now.beginning_of_year + (month - 1).months
   end
 end
 
 1.upto(12) do |month|
   month.times do |n|
-    Invoice.factory n * 1000 + 1000, Time.local(year, month, 1)
+    Invoice.factory n * 1000 + 1000, Time.zone.now.beginning_of_year + (month - 1).months
   end
 end
 
 # Invoice from last year
-Invoice.factory 10000, Time.local(Time.now.year-1, 1, 1)
+Invoice.factory 10000, Time.local(Time.zone.now.year-1, 1, 1)
 
 # Invoice without a number
 Invoice.create!(:value => 10000, :number => nil) 

@@ -102,7 +102,8 @@ module ByStar
     def by_weekend(time=Time.zone.now, options = {}, &block)
       time = parse(time)
       start_time = time.beginning_of_weekend
-      by_star(start_time, (start_time + 1.day).end_of_day, options, &block)
+      end_time = (start_time + 1.day).end_of_day
+      by_star(start_time, end_time, options, &block)
     end
 
 
@@ -181,7 +182,7 @@ module ByStar
       def by_direction(condition, time, options = {}, &block)
         field = connection.quote_table_name(table_name)
         field << "." << connection.quote_column_name(options.delete(:field) || "created_at")
-        validate_find_options(options)
+        ensure_valid_options(options)
         scoping = { :conditions => ["#{field} #{condition} ?", time.utc] }.merge(options)
         with_scope(:find => scoping) do
           scoped_by(block) do
@@ -194,15 +195,25 @@ module ByStar
       def by_star(start_time, end_time, options = {}, &block)
         start_time = parse(start_time) 
         end_time = parse(end_time)
+        
     
         raise ParseError, "End time is before start time, searching like this will return no results." if end_time < start_time
         field = options.delete(:field)
-        validate_find_options(options)
+        ensure_valid_options(options)
+        
         scoping = { :conditions => conditions_for_range(start_time, end_time, field) }.merge(options)
         with_scope(:find => scoping) do
           scoped_by(block) do
             find(:all)
           end
+        end
+      end
+      
+      def ensure_valid_options(options)
+        if respond_to?(:validate_find_options)
+          validate_find_options(options)
+        else
+          options.assert_valid_keys(ActiveRecord::SpawnMethods::VALID_FIND_OPTIONS)
         end
       end
   

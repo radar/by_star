@@ -8,6 +8,7 @@ ActiveRecord::Base.logger = Logger.new("tmp/activerecord.log")
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'active_support'
+require 'active_support/core_ext/string/conversions'
 require 'by_star'
 require 'spec'
 
@@ -26,12 +27,12 @@ end
 # tests how it would load in a real application
 load File.dirname(__FILE__) + "/../rails/init.rb"
 # Print the location of puts/p calls so you can find them later
-def puts str
-  super caller.first if caller.first.index("shoulda.rb") == -1
-  super str
-end
-
-def p obj
-  puts caller.first
-  super obj
-end
+# def puts str
+#   super caller.first if caller.first.index("shoulda.rb") == -1
+#   super str
+# end
+# 
+# def p obj
+#   puts caller.first
+#   super obj
+# end
