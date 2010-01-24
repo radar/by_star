@@ -56,10 +56,12 @@ Post.factory "That's it!", Time.zone.now.end_of_year
 
 # For by_weekend scoped test
 # We need to calculate the weekend.
-time = Time.now.beginning_of_year
+time = Time.zone.now.beginning_of_year
 while time.wday != 6
   time += 1.day
 end
+
+p time
 
 post = Post.factory "Weekend of January", time
 post.tags.create(:name => "weekend")

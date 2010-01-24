@@ -4,7 +4,6 @@ require 'fileutils'
 require 'logger'
 FileUtils.mkdir_p("tmp")
 
-ActiveRecord::Base.logger = Logger.new("tmp/activerecord.log")
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'active_support'
@@ -36,3 +35,5 @@ load File.dirname(__FILE__) + "/../rails/init.rb"
 #   puts caller.first
 #   super obj
 # end
+
+ActiveRecord::Base.logger = Logger.new("tmp/activerecord.log")

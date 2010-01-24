@@ -31,7 +31,6 @@ describe Post do
   
     describe "by year" do
       it "should be able to find all the posts in the current year" do
-        p find.map(&:text).sort
         size.should eql(Post.count - 1)
       end
     
