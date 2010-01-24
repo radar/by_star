@@ -61,8 +61,6 @@ while time.wday != 6
   time += 1.day
 end
 
-p time
-
 post = Post.factory "Weekend of January", time
 post.tags.create(:name => "weekend")
 

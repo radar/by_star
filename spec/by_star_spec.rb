@@ -477,7 +477,6 @@ describe Post do
     
       it "should be able to find a single post from the current weekend with the tag 'weekend'" do
         stub_time
-        p Post.find_by_text("Weekend of January").created_at
         Post.by_weekend do
           { :include => :tags, :conditions => ["tags.name = ?", 'weekend'] }
         end.size.should eql(1)
