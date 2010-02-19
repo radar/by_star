@@ -13,6 +13,13 @@ module ByStar
           sum(field, { :conditions => conditions_for_range(start_of_month(month, year), end_of_month(month, year), options.delete(:field)) }.reverse_merge!(options))
         end
       end
+      
+      def sum_by_day(field, day=Time.zone.now, options={}, &block)
+        scoped_by(block) do
+          day = parse(day)
+          sum(field, { :conditions => conditions_for_range(day.beginning_of_day, day.end_of_day, options.delete(:field)) }.reverse_merge!(options))
+        end
+      end
     end
   end
 end

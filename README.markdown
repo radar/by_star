@@ -222,6 +222,19 @@ You can also pass a string:
    
 This will return all posts for the given day.
 
+## Sum By Day (`sum_by_day`)
+
+
+To sum records for the current day:
+
+    Event.sum_by_day
+
+The `sum_by_day` method's second argument works in the same was as `by_day`, accepting Time, String, Date and chronicable strings:
+
+    Event.sum_by_day(:value, Time.now)
+    Event.sum_by_day(:value, Date.today)
+
+
 ## Current Weekend (`by_current_weekend`)
 
 If you are currently in a weekend (between 3pm Friday and 3am Monday) this will find all records starting at 3pm the previous Friday up until 3am, Monday.

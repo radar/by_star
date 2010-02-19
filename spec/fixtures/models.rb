@@ -31,21 +31,20 @@ end
 year = Time.zone.now.year
 
 1.upto(12) do |month|
-  month.times do |n|
-    Post.factory "post #{month}-#{n}", Time.zone.now.beginning_of_year + (month - 1).months
-  end
+  Post.factory "post #{month}", Time.zone.now.beginning_of_year + (month - 1).months
 end
 
 1.upto(12) do |month|
-  month.times do |n|
-    Invoice.factory n * 1000 + 1000, Time.zone.now.beginning_of_year + (month - 1).months
-  end
+  Invoice.factory 10000, Time.zone.now.beginning_of_year + (month - 1).months
 end
+
+# Inovice for 2nd January for sum_by_day
+Invoice.factory 5500, Time.zone.now.beginning_of_year + 1.day 
 
 # Invoice from last year
 Invoice.factory 10000, Time.local(Time.zone.now.year-1, 1, 1)
 
-# Invoice without a number
+# Invoice without a number for count_by_year test
 Invoice.create!(:value => 10000, :number => nil) 
 
 Post.factory "Today's post", Time.zone.now

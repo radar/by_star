@@ -529,14 +529,25 @@ describe Post do
         describe "by year" do
           it "current year" do
             stub_time
-            Invoice.sum_by_year(:value).should eql(374000)
+            # 13 invoices, all of them $10000.
+            # +1 of $5500 (2nd January)
+            # = $13550
+            Invoice.sum_by_year(:value).should eql(135500)
           end
         end
       
         describe "by month" do
           it "current month" do
             stub_time
-            Invoice.sum_by_month(:value).should eql(11000)
+            # 1 invoice per month, just $10000.
+            Invoice.sum_by_month(:value).should eql(15500)
+          end
+        end
+        
+        describe "by day" do
+          it "current day" do
+            stub_time(2, 1) # 2nd January
+            Invoice.sum_by_day(:value).should eql(5500)
           end
         end
       end
