@@ -8,7 +8,7 @@ module ByStar
     end
     
     def end_of_year(year=Time.zone.now.year)
-      start_of_year.end_of_year
+      start_of_year(year).end_of_year
     end
     
     def start_of_month(month, year=Timeow.year)

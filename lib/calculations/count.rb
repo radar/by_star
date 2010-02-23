@@ -1,7 +1,7 @@
 module ByStar
   module Calculations
     module Count
-      def count_by_year(field=nil, year=Time.now.year, options={}, &block)
+      def count_by_year(field=nil, year=Time.zone.now.year, options={}, &block)
         db_field = options.delete(:field)
         scoped_by(block) do
           count(field, { :conditions => conditions_for_range(start_of_year(year), end_of_year(year), db_field) }.reverse_merge!(options))
