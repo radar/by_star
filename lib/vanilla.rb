@@ -180,8 +180,7 @@ module ByStar
     private
       
       def by_direction(condition, time, options = {}, &block)
-        field = connection.quote_table_name(table_name)
-        field << "." << connection.quote_column_name(options.delete(:field) || "created_at")
+        field = options.delete(:field) || "created_at"
         ensure_valid_options(options)
         scoping = { :conditions => ["#{field} #{condition} ?", time.utc] }.merge(options)
         with_scope(:find => scoping) do
