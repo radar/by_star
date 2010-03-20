@@ -25,7 +25,7 @@ module ByStar
     def by_month(time=Time.zone.now.month, options={}, &block)
       time = Time.zone.now.month if time.nil?
       year, month = work_out_month(time, options.delete(:year))
-  
+
       start_time = start_of_month(month, year)
       end_time = start_time.end_of_month
 
@@ -37,14 +37,14 @@ module ByStar
     #   Post.by_fortnight(18, :year => 2004)
     def by_fortnight(time=Time.zone.now, options = {}, &block)
       time = parse(time)
-  
+
       # If options[:year] is passed in, use that year regardless.
       year = work_out_year(options[:year]) if options[:year]
       # If the first argument is a date or time, ask it for the year
       year ||= time.year unless time.is_a?(Numeric)
       # If the first argument is a fixnum, assume this year.
       year ||= Time.zone.now.year
-  
+
       # Dodgy!
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(time)
@@ -69,19 +69,19 @@ module ByStar
     #   Post.by_week("next tuesday")
     def by_week(time=Time.zone.now, options = {}, &block)
       time = parse(time)
-  
+
       # If options[:year] is passed in, use that year regardless.
       year = work_out_year(options.delete(:year)) if options[:year]
       # If the first argument is a date or time, ask it for the year
       year ||= time.year unless time.is_a?(Numeric)
       # If the first argument is a fixnum, assume this year.
       year ||= Time.zone.now.year
-  
+
       # Dodgy!
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(time)
         weeks = time.strftime("%U").to_i
-        
+
         # Sunday defines the start of the week.
         # Finds the sunday that defines the starting week of the year.
         # This is because AS +*.weeks helper works off the given time, which could be any day.
@@ -184,7 +184,7 @@ module ByStar
     end
 
     private
-      
+
       def by_direction(condition, time, options = {}, &block)
         field = options.delete(:field) || "#{self.table_name}.created_at"
         ensure_valid_options(options)
@@ -195,17 +195,17 @@ module ByStar
           end
         end
       end
-  
+
       # scopes results between start_time and end_time
       def by_star(start_time, end_time, options = {}, &block)
         start_time = parse(start_time) 
         end_time = parse(end_time)
-        
-    
+
+
         raise ParseError, "End time is before start time, searching like this will return no results." if end_time < start_time
         field = options.delete(:field)
         ensure_valid_options(options)
-        
+
         scoping = { :conditions => conditions_for_range(start_time, end_time, field) }.merge(options)
         with_scope(:find => scoping) do
           scoped_by(block) do
@@ -213,7 +213,7 @@ module ByStar
           end
         end
       end
-      
+
       def ensure_valid_options(options)
         if respond_to?(:validate_find_options)
           validate_find_options(options)
@@ -221,10 +221,10 @@ module ByStar
           options.assert_valid_keys(ActiveRecord::SpawnMethods::VALID_FIND_OPTIONS)
         end
       end
-  
+
       alias :between :by_star
       public :between
-  
+
       # This will work for the next 30 years (written in 2009)
       def work_out_year(value)
         case value
@@ -240,12 +240,12 @@ module ByStar
           value.to_i
         end
       end
-  
+
       # Checks if the object is a Time, Date or TimeWithZone object.
       def valid_time_or_date?(value)
         value.is_a?(Time) || value.is_a?(Date) || value.is_a?(ActiveSupport::TimeWithZone)
       end
-  
+
       def parse(object)
         object = case object.class.to_s
         when "NilClass"
@@ -261,7 +261,7 @@ module ByStar
         raise ParseError, "Chronic couldn't work out #{o.inspect}; please be more precise." if object.nil?
         object
       end
-  
+
       def method_missing(method, *args)
         if method.to_s =~ /^(as_of|up_to)_(.+)$/
           method = $1
@@ -269,9 +269,9 @@ module ByStar
           unless time = parse(expr)
             raise ParseError, "Chronic couldn't work out #{expr.inspect}; please be more precise."
           end
-      
+
           reference = args.first || Time.now
-      
+
           if "as_of" == method
             between(time, reference)
           else

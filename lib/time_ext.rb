@@ -11,7 +11,7 @@ class Time
     # 3pm, Friday.
     (friday + 15.hours)
   end
-  
+
   def end_of_weekend
     # 3am, Monday.
     # LOL I CHEATED.

@@ -2,7 +2,7 @@ module ByStar
   module Calculations
     include Count
     include Sum
-    
+
     private
       def work_out_month(time, year=Time.zone.now.year)
         year ||= Time.zone.now.year

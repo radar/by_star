@@ -1,7 +1,7 @@
 class Post < ActiveRecord::Base
   default_scope :order => "#{quoted_table_name}.created_at ASC"
   has_and_belongs_to_many :tags
-  
+
   def self.factory(text, created_at = nil)
     create!(:text => text, :created_at => created_at)
   end
@@ -23,7 +23,7 @@ class Invoice < ActiveRecord::Base
 end
 
 class DayEntry < ActiveRecord::Base
-  
+
 end
 
 ## seed data:

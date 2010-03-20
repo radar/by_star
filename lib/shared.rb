@@ -3,7 +3,7 @@ module Shared
     field = table_name << '.' << (field ? field.to_s : "created_at")
     ["#{field} >= ? AND #{field} <= ?", start_time.utc, end_time.utc]
   end
-  
+
   private 
   def scoped_by(options=nil, &block)
     if options && scope = options.call

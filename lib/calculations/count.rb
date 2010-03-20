@@ -7,7 +7,7 @@ module ByStar
           count(field, { :conditions => conditions_for_range(start_of_year(year), end_of_year(year), db_field) }.reverse_merge!(options))
         end
       end
-      
+
       def count_by_month(field=nil, month=Time.now.month, options={}, &block)
         db_field = options.delete(:field)
         year, month = work_out_month(month, options.delete(:year))
