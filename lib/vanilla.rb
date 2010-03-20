@@ -75,13 +75,19 @@ module ByStar
       # If the first argument is a date or time, ask it for the year
       year ||= time.year unless time.is_a?(Numeric)
       # If the first argument is a fixnum, assume this year.
-      year ||= Time.now.year
+      year ||= Time.zone.now.year
   
       # Dodgy!
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(time)
         weeks = time.strftime("%U").to_i
-        time.beginning_of_year
+        
+        # Sunday defines the start of the week.
+        # Finds the sunday that defines the starting week of the year.
+        # This is because AS +*.weeks helper works off the given time, which could be any day.
+        # Principle of least surprise and all. Ideally.
+        start_time = Time.now.beginning_of_year
+        start_time.strftime("%w").to_i != 0 ? start_time - (7 - start_time.strftime("%w").to_i).days : start_time
       elsif time.is_a?(Numeric) && time < 53
         weeks = time.to_i
         Time.utc(year, 1, 1)
@@ -99,7 +105,7 @@ module ByStar
     #    Post.by_weekend(Time.now + 5.days)
     #    Post.by_weekend(Date.today + 5)
     #    Post.by_weekend("next tuesday")
-    def by_weekend(time=Time.zone.now, options = {}, &block)
+    def by_weekend(time=Time.now, options = {}, &block)
       time = parse(time)
       start_time = time.beginning_of_weekend
       end_time = (start_time + 1.day).end_of_day
@@ -180,7 +186,7 @@ module ByStar
     private
       
       def by_direction(condition, time, options = {}, &block)
-        field = options.delete(:field) || "created_at"
+        field = options.delete(:field) || "#{self.table_name}.created_at"
         ensure_valid_options(options)
         scoping = { :conditions => ["#{field} #{condition} ?", time.utc] }.merge(options)
         with_scope(:find => scoping) do

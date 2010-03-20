@@ -55,12 +55,11 @@ Post.factory "That's it!", Time.zone.now.end_of_year
 
 # For by_weekend scoped test
 # We need to calculate the weekend.
-time = Time.zone.now.beginning_of_year
-while time.wday != 6
-  time += 1.day
-end
+weekend_time = Time.zone.now
+weekend_time += 1.day while weekend_time.wday != 6
 
-post = Post.factory "Weekend of January", time
+# For by_weekend scoped test
+post = Post.factory "Weekend", weekend_time
 post.tags.create(:name => "weekend")
 
 # For by_day scoped test
@@ -78,11 +77,14 @@ post.tags.create(:name => "tomorrow")
 post = Post.factory "Last year", Time.zone.now.beginning_of_year - 1.year
 post.tags.create(:name => "ruby")
 
-post = Post.factory "The 'Current' Fortnight", Time.zone.now.beginning_of_year
-post.tags.create(:name => "may")
+post = Post.factory "End of last year", Time.zone.now.end_of_year - 1.year
+post.tags.create(:name => "final")
 
-post = Post.factory "The 'Current' Week", Time.zone.now.beginning_of_year
-post.tags.create(:name => "may2")
+post = Post.factory "The 'Current' Fortnight", Time.zone.now
+post.tags.create(:name => "fortnight")
+
+post = Post.factory "The 'Current' Week", Time.zone.now
+post.tags.create(:name => "week")
 
 
 Event.create(:name => "Ryan's birthday!", :start_time  => "04-12-#{Time.zone.now.year}".to_time)

@@ -2,7 +2,20 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 require 'by_star'
 
 describe Post do
-    
+  # Posts from the 1st January this year.
+  # 12 posts for the year.
+  # + 2 for today
+  # + 2 for yesterday
+  # + 2 for tomorrow
+  # + 1 for current week
+  # + 1 for current weekend
+  # + 1 for current fortnight
+  # + 1 for the end of year
+  # = 22
+  def this_years_posts
+    22
+  end
+  
   def stub_time(day=1, month=1, year=Time.zone.now.year, hour=0, minute=0)
     stub = "#{day}-#{month}-#{year} #{hour}:#{minute}".to_time
     Time.stub!(:now).and_return(stub)
@@ -31,15 +44,19 @@ describe Post do
   
     describe "by year" do
       it "should be able to find all the posts in the current year" do
-        size.should eql(Post.count - 1)
+        size.should eql(this_years_posts)
       end
     
       it "should be able to find if given a string" do
-        size(Time.zone.now.year.to_s).should eql(Post.count - 1)
+        size(Time.zone.now.year.to_s).should eql(this_years_posts)
       end
     
       it "should be able to find a single post from last year" do
-        size(Time.zone.now.year-1).should eql(1)
+        size(Time.zone.now.year-1).should eql(2)
+      end
+      
+      it "knows what last year's posts were" do
+        find(Time.zone.now.year-1).map(&:text).should eql(["Last year", "End of last year"])
       end
     
       it "should error when given an invalid year" do
@@ -76,23 +93,29 @@ describe Post do
     describe "by month" do
     
       it "should be able to find posts for the current month" do
-        stub_time
         size.should eql(10)
       end
       
       it "should be able to find a single post for January" do
-        size("January").should eql(10)
+        # If it is January we'll have all the "current" posts in there.
+        # This makes the count 10.
+        # I'm sure you can guess what happens when it's not January.
+        size("January").should eql(Time.now.month == 1 ? 10 : 1)
       end
   
       it "should be able to find two posts for the 2nd month" do
-        size(2).should eql(2)
+        # If it is February we'll have all the "current" posts in there.
+        # This makes the count 10.
+        # I'm sure you can guess what happens when it's not February.
+        size(2).should eql(Time.now.month == 2 ? 10 : 1)
       end
   
       it "should be able to find three posts for the 3rd month, using time instance" do
-        # Hack... if we're running this test during march there's going to be more posts than usual.
-        # This is due to the #today, #yesterday and #tomorrow methods.
-      
-        size(Time.local(Time.zone.now.year, 3, 1)).should eql(3)
+        # If it is March we'll have all the "current" posts in there.
+        # This makes the count 10.
+        # I'm sure you can guess what happens when it's not March.
+        time = Time.local(Time.zone.now.year, 3, 1)
+        size(time).should eql(Time.now.month == 3 ? 10 : 1)
       end
   
       it "should be able to find a single post from January last year" do
@@ -107,7 +130,7 @@ describe Post do
       end
     
       it "should be able to take decimals" do
-        size(1.5).should eql(10)
+        size(1.5).should eql(1)
       end
     
       it "should be able to use an alternative field" do
@@ -128,12 +151,15 @@ describe Post do
     describe "by fortnight" do
     
       it "should be able to find posts in the current fortnight" do
-        stub_time
-        size.should eql(4)
+        # +1 "Tomorrow's Post"
+        # +1 "Tomorrow's Another Day"
+        # +1 "Weekend"
+        # = 3
+        size.should eql(3)
       end
     
       it "should be able to find posts in the 1st fortnight" do
-        size(0).should eql(4)
+        size(0).should eql(2)
       end
     
       it "should be able to find posts for a fortnight ago" do
@@ -155,11 +181,11 @@ describe Post do
     
       it "should be able to find posts in the current week" do
         stub_time
-        size.should eql(4)
+        size.should eql(2)
       end
     
       it "should be able to find posts in the 1st week" do
-        size(0).should eql(4)
+        size(0).should eql(1)
       end
     
       it "should be able to find posts in the 1st week of last year" do
@@ -192,7 +218,7 @@ describe Post do
       end
     
       it "should find posts at the start of the year" do
-        size(0).should eql(4)
+        size(0).should eql(1)
       end
     
       it "should find posts at the end of the year" do
@@ -233,12 +259,12 @@ describe Post do
     describe "by day" do
       it "should be able to find a post for today" do
         stub_time
-        size.should eql(3)
+        size.should eql(1)
       end
     
       it "should be able to find a post by a given date" do
         stub_time
-        size(Date.today).should eql(3)
+        size(Date.today).should eql(1)
       end
     
       it "should be able to use an alternative field" do
@@ -305,7 +331,7 @@ describe Post do
       end
     
       it "should show the correct number of posts in the past" do
-        size.should eql(1)
+        size.should eql(2)
       end
     
       it "should find for a given time" do
@@ -317,7 +343,7 @@ describe Post do
       end
     
       it "should find for a given string" do
-        size("next tuesday").should eql(5)
+        size("next tuesday").should eql(3)
       end
     
       it "should be able to find all events before Ryan's birthday using a non-standard field" do
@@ -327,7 +353,7 @@ describe Post do
       it "should be able to order the find" do
         stub_time(2,1)
         find(Date.today, :order => "created_at ASC").first.text.should eql("Last year")
-        find(Date.today, :order => "created_at DESC").first.text.should eql("post 1-0")
+        find(Date.today, :order => "created_at DESC").first.text.should eql("post 1")
       end
     
     end
@@ -338,15 +364,15 @@ describe Post do
       end
     
       it "should show the correct number of posts in the future" do
-        size.should eql(85)
+        size.should eql(21)
       end
     
       it "should find for a given date" do
-        size(Date.today - 2).should eql(88)
+        size(Date.today - 2).should eql(23)
       end
     
       it "should find for a given string" do
-        size("next tuesday").should eql(84)
+        size("next tuesday").should eql(21)
       end
     
       it "should be able to find all events before Dad's birthday using a non-standard field" do
@@ -358,12 +384,12 @@ describe Post do
     describe "as of" do
       it "should be able to find posts as of 2 weeks ago" do
         stub_time
-        Post.as_of_2_weeks_ago.size.should eql(3)
+        Post.as_of_2_weeks_ago.size.should eql(2)
       end
     
       it "should be able to find posts as of 2 weeks before a given time" do
         stub_time
-        Post.as_of_2_weeks_ago(Time.zone.now + 1.month).size.should eql(12)
+        Post.as_of_2_weeks_ago(Time.zone.now + 1.month).size.should eql(3)
       end
     
       it "should error if given a date in the past far enough back" do
@@ -378,29 +404,29 @@ describe Post do
     describe "between" do
       it "should find posts between last tuesday and next tuesday" do
         stub_time
-        size("last tuesday", "next tuesday").should eql(4)
+        size("last tuesday", "next tuesday").should eql(2)
       end
     
       it "should find between two times" do
         stub_time
-        size(Time.zone.now - 5.days, Time.zone.now + 5.days).should eql(4)
+        size(Time.zone.now - 5.days, Time.zone.now + 5.days).should eql(2)
       end
     
       it "should find between two dates" do
         stub_time
-        size(Date.today, Date.today + 5).should eql(4)
+        size(Date.today, Date.today + 5).should eql(1)
       end
     end
   
     describe "up to" do
-      it "should be able to find posts up to 2 weeks from now" do
+      it "should be able to find posts up to 6 weeks from now" do
         stub_time
-        Post.up_to_6_weeks_from_now.size.should eql(12)
+        Post.up_to_6_weeks_from_now.size.should eql(2)
       end
     
-      it "should be able to find posts up to 2 weeks from a given time" do
+      it "should be able to find posts up to 6 weeks from a given time" do
         stub_time
-        Post.up_to_6_weeks_from_now(Time.zone.now - 1.month).size.should eql(12)
+        Post.up_to_6_weeks_from_now(Time.zone.now - 1.month).size.should eql(3)
       end
     
       it "should error if given a date in the past" do
@@ -443,7 +469,10 @@ describe Post do
     
       it "should be able to find posts after right now" do
         stub_time
-        Post.by_current_work_week.size.should eql(3)
+        # The post at the end of last year
+        # + The first post of this year
+        # = 2
+        Post.by_current_work_week.size.should eql(2)
         Post.by_current_work_week do
           { :conditions => ["created_at > ?", Time.now] }
         end.size.should eql(0)
@@ -461,22 +490,25 @@ describe Post do
         end.size.should eql(1)
       end
     
-      it "should be able to find a single post from the current fortnight with the tag 'may2'" do
-        stub_time
+      it "should be able to find a single post from the current fortnight with the tag 'fortnight'" do
         Post.by_fortnight do
-          { :include => :tags, :conditions => ["tags.name = ?", 'may2'] }
+          { :include => :tags, :conditions => ["tags.name = ?", 'fortnight'] }
         end.size.should eql(1)
       end
     
-      it "should be able to find a single post from the current week with the tag 'may2'" do
-        stub_time
+      it "should be able to find a single post from the current week with the tag 'week'" do
         Post.by_week do
-          { :include => :tags, :conditions => ["tags.name = ?", 'may2'] }
+          { :include => :tags, :conditions => ["tags.name = ?", 'week'] }
+        end.size.should eql(1)
+      end
+      
+      it "should be able to find a single pot from the last week of last year with the tag 'final'" do
+        Post.by_week(52, :year => Time.zone.now.year - 1) do
+          { :include => :tags, :conditions => ["tags.name = ?", 'final'] }
         end.size.should eql(1)
       end
     
       it "should be able to find a single post from the current weekend with the tag 'weekend'" do
-        stub_time
         Post.by_weekend do
           { :include => :tags, :conditions => ["tags.name = ?", 'weekend'] }
         end.size.should eql(1)
@@ -514,8 +546,8 @@ describe Post do
       end
       
       it "should work when block is empty" do
-        stub_time
-        Post.future { }.size.should eql(85)
+        stub_time        
+        Post.future { }.size.should eql(this_years_posts)
       end
       
       it "should be able to find a single post from the future with the tag 'tomorrow' (redux)" do
@@ -555,18 +587,22 @@ describe Post do
       describe "Count" do
         describe "by year" do
           it "current year" do
-            Invoice.count_by_year.should eql(79)
+            # 13 invoices, 1 for every month + 1 for this month.
+            Invoice.count_by_year.should eql(14)
           end
         
           it "using a field" do
+            # 12 invoices, as we have a single invoice without a number.
             Invoice.count_by_year(:number).should eql(Invoice.by_year.size-1)
           end
         
           it "different year" do
-            Invoice.count_by_year(:all, 2008)
+            # 1 invoice from last year
+            Invoice.count_by_year(:all, Time.zone.now.year-1).should eql(1)
           end
           
           it "current year with the given tag" do
+            # BROKEN: Due to time range looking up from beginning of current year to end of next
             Post.count_by_year do
               { :include => :tags, :conditions => ["tags.name = ?", 'tomorrow'] }
             end.should eql(1)
@@ -594,7 +630,6 @@ describe Post do
           end
           
           it "current month with blank block" do
-            stub_time
             Post.count_by_month(:all, Time.zone.now) { }.should eql(10)
           end
         end
