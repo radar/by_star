@@ -151,7 +151,7 @@ describe Post do
     describe "by fortnight" do
 
       it "should be able to find posts in the current fortnight" do
-        size.should eql(9)
+        size.should eql(10)
       end
 
       it "should be able to find posts in the 1st fortnight" do
@@ -231,7 +231,7 @@ describe Post do
         when 6 # Saturday
           size.should eql(5)
         else
-          size.should eql(1)
+          size.should eql(3)
         end
       end
 
@@ -639,6 +639,19 @@ describe Post do
         end
       end
 
+    end
+    
+    describe "chaining of methods" do
+      # a by_star and a by_direction method, in that order
+      it "should be able to chain today and past" do
+        Post.today.past.size.should eql(4)
+      end
+      
+      # a by_direction and by_star method, in that order
+      it "should be able to chain together past and today" do
+        Post.past.today.size.should eql(4)
+      end
+      
     end
 
     describe "edge cases" do

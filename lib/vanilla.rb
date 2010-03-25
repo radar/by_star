@@ -188,12 +188,9 @@ module ByStar
       def by_direction(condition, time, options = {}, &block)
         field = options.delete(:field) || "#{self.table_name}.created_at"
         ensure_valid_options(options)
-        scoping = { :conditions => ["#{field} #{condition} ?", time.utc] }.merge(options)
-        with_scope(:find => scoping) do
-          scoped_by(block) do
-            find(:all)
-          end
-        end
+        result = scoped({ :conditions => ["#{field} #{condition} ?", time.utc] }.merge(options))
+        result = result.scoped(block.call) if block_given?
+        result
       end
 
       # scopes results between start_time and end_time
@@ -207,11 +204,9 @@ module ByStar
         ensure_valid_options(options)
 
         scoping = { :conditions => conditions_for_range(start_time, end_time, field) }.merge(options)
-        with_scope(:find => scoping) do
-          scoped_by(block) do
-            find(:all)
-          end
-        end
+        result = scoped(scoping)
+        result = result.scoped(block.call) if block_given?
+        result
       end
 
       def ensure_valid_options(options)
