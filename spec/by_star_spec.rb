@@ -641,6 +641,23 @@ describe Post do
 
     end
     
+    describe "directional finders" do
+      subject { Post.today.first }
+      
+      describe "previous" do
+        it "should find the post previous to it" do
+          subject.previous.text.should eql("Yesterday's post")
+        end
+      end
+    
+    
+      describe "next" do
+        it "should find the post next to it" do
+          subject.next.text.should eql("Tomorrow's post")
+        end
+      end
+    end
+    
     describe "chaining of methods" do
       # a by_star and a by_direction method, in that order
       it "should be able to chain today and past" do
@@ -653,7 +670,7 @@ describe Post do
       end
       
     end
-
+    
     describe "edge cases" do
       # This method previously generated sql like: `day_entries`.`spent_at`.`spent_at`.`spent_at`.`spent_at`
       # Which is *obviously* incorrect and #omg worthy.

@@ -32,7 +32,7 @@ You can treat all `by_*` methods exactly how you would treat `named_scope`s: the
     
 Where `my_special_scope` is a `named_scope` you have specified.
 
-All the `by_*` methods take a block which will then scope the find based on the options passed into it. You can also specify these options for each method, but the syntax may differ. The supported options are the same options that are supported by `find` from ActiveRecord. Please note that if you want to use conditions you *have* to use this syntax:
+All the `by_*` methods, with the exception of `previous` and `next`, take a block which will then scope the find based on the options passed into it. You can also specify these options for each method, but the syntax may differ. The supported options are the same options that are supported by `find` from ActiveRecord. Please note that if you want to use conditions you *have* to use this syntax:
 
      Post.by_month(1) { { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] } }
 
@@ -361,6 +361,26 @@ To find records up to a certain time from the current time:
 
     Post.up_to_6_weeks_from_now
 
+## Previous (`previous`)
+
+To find the record prior to this one call `previous` on any model instance:
+
+    Post.last.previous
+  
+You can specify a field also:
+
+    Post.last.previous("published_at")
+
+## Next (`next`)
+
+To find the record after this one call `next` on any model instance:
+
+    Post.last.next
+
+You can specify a field also:
+
+    Post.last.next("published_at")
+
 ## Not using created_at? No worries!
 
 If your database uses something other than `created_at` for storing a timestamp, you can specify the field option like this:
@@ -388,6 +408,7 @@ Unfortunately I forget who exactly prompted me to write the plugin, but I would 
 * August Lilleas (leethal)
 * gte351s
 * Thomase Sinclair (anathematic)
+* Sam Elliott (lenaryg)
 * The dude(s) & gal(s) who created Chronic
 
 ## Suggestions?
