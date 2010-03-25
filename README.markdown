@@ -11,10 +11,15 @@ by_* (byStar) is a plugin that allows you to find ActiveRecord objects given cer
 * A given day
 * The current weekend
 * The current work week
+* The Past
+* The Future
 * Between certain times
 * As of a certain time
 * Up to a certain time
+* Before a specific record
+* After a specific record
 
+All methods return scopes. I love these. You love these. Everybody loves these.
 
 It also allows you to do nested finds on the records returned which I personally think is the coolest feature of the whole plugin:
 

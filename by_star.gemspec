@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{by_star}
-  s.version = "0.6.4"
+  s.version = "0.7.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Bigg", "Mislav Marohni\304\207"]
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "lib/calculations.rb",
      "lib/calculations/count.rb",
      "lib/calculations/sum.rb",
+     "lib/neighbours.rb",
      "lib/range_calculations.rb",
      "lib/shared.rb",
      "lib/time_ext.rb",
