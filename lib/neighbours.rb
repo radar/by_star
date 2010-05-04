@@ -1,13 +1,15 @@
 module ByStar
   module Neighbours
     # Find the previous record to this.
-    def previous(field="created_at")
-      self.class.past(self.send(field)) { { :order => "#{field} DESC" }}.first
+    def previous(field=nil)
+      field = field || self.class.by_star_field
+      self.class.past(self.send(field.split(".").last)) { { :order => "#{field} DESC" }}.first
     end
     
     # Find the next record to this.
-    def next(field="created_at")
-      self.class.future(self.send(field)) { { :order => "#{field} ASC" }}.first
+    def next(field=nil)
+      field = field || self.class.by_star_field
+      self.class.future(self.send(field.split(".").last)) { { :order => "#{field} ASC" }}.first
     end
   end
 end

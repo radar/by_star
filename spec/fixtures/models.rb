@@ -12,6 +12,7 @@ class Tag < ActiveRecord::Base
 end
 
 class Event < ActiveRecord::Base
+  by_star_field :start_time
   named_scope :secret, :conditions => { :public => false }
 end
 

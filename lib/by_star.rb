@@ -12,6 +12,12 @@ module ByStar
   def self.included(base)
     base.extend ClassMethods
     base.send(:include, InstanceMethods)
+    base.class_eval do
+      def self.by_star_field(value=nil)
+        @by_star_field ||= value
+        @by_star_field || "#{self.table_name}.created_at"
+      end
+    end
   end
 
   module ClassMethods

@@ -13,6 +13,7 @@ begin
     gem.authors = ["Ryan Bigg", "Mislav Marohnić"]
     gem.add_development_dependency "rspec"
     gem.add_dependency('chronic', '~> 0.2.3')
+    gem.files << "lib/**/*"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

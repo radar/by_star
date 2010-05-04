@@ -1,6 +1,7 @@
 module Shared
-  def conditions_for_range(start_time, end_time, field="created_at")
-    field = table_name << '.' << (field ? field.to_s : "created_at")
+  def conditions_for_range(start_time, end_time, field=nil)
+    field = table_name << '.' << field.to_s if field
+    field ||= by_star_field
     ["#{field} >= ? AND #{field} <= ?", start_time.utc, end_time.utc]
   end
 

@@ -186,7 +186,7 @@ module ByStar
     private
 
       def by_direction(condition, time, options = {}, &block)
-        field = options.delete(:field) || "#{self.table_name}.created_at"
+        field = options.delete(:field) || by_star_field
         ensure_valid_options(options)
         result = scoped({ :conditions => ["#{field} #{condition} ?", time.utc] }.merge(options))
         result = result.scoped(block.call) if block_given?

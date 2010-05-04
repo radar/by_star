@@ -391,8 +391,14 @@ You can specify a field also:
 If your database uses something other than `created_at` for storing a timestamp, you can specify the field option like this:
 
     Post.by_month("January", :field => :something_else)
-
+    
 All methods support this extra option.
+    
+Or if you're doing it all the time on your model, then it's best to use `by_star_field` at the top of your model:
+
+    class Post < ActiveRecord::Base
+      by_star_field :something_else
+    end
 
 ## Ordering records
 
@@ -415,6 +421,7 @@ Unfortunately I forget who exactly prompted me to write the plugin, but I would 
 * Thomase Sinclair (anathematic)
 * Sam Elliott (lenaryg)
 * The dude(s) & gal(s) who created Chronic
+* Erik Fonselius
 
 ## Suggestions?
 

@@ -79,6 +79,10 @@ describe Post do
       it "should be able to use an alternative field (symbol)" do
         Event.by_year(nil, :field => :start_time).size.should eql(8)
       end
+      
+      it "should not have to specify the field when using by_star_field" do
+        Event.by_year.size.should eql(8)
+      end
 
       it "should be able to use an alternative field (symbol) with directional searching" do
         stub_time

@@ -16,15 +16,16 @@ zone = "UTC"
 Time.zone = zone
 ActiveRecord::Base.default_timezone = zone
 
+# bootstraping the plugin through init.rb
+# tests how it would load in a real application
+load File.dirname(__FILE__) + "/../rails/init.rb"
+
 YAML::load_file(File.dirname(__FILE__) + "/database.yml").each do |key, connection|
   ActiveRecord::Base.establish_connection(connection)
   load File.dirname(__FILE__) + "/fixtures/schema.rb"
   load File.dirname(__FILE__) + "/fixtures/models.rb"
 end
 
-# bootstraping the plugin through init.rb
-# tests how it would load in a real application
-load File.dirname(__FILE__) + "/../rails/init.rb"
 # Print the location of puts/p calls so you can find them later
 # def puts str
 #   super caller.first if caller.first.index("shoulda.rb") == -1
