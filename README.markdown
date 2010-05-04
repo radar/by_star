@@ -34,7 +34,7 @@ If you're not using the standard `created_at` field: don't worry! I've covered t
 You can treat all `by_*` methods exactly how you would treat `named_scope`s: they are effectively scopes in their own right. This means you are able to call them like this:
 
     Post.by_month.my_special_scope
-    
+
 Where `my_special_scope` is a `named_scope` you have specified.
 
 All the `by_*` methods, with the exception of `previous` and `next`, take a block which will then scope the find based on the options passed into it. You can also specify these options for each method, but the syntax may differ. The supported options are the same options that are supported by `find` from ActiveRecord. Please note that if you want to use conditions you *have* to use this syntax:
@@ -371,7 +371,7 @@ To find records up to a certain time from the current time:
 To find the record prior to this one call `previous` on any model instance:
 
     Post.last.previous
-  
+
 You can specify a field also:
 
     Post.last.previous("published_at")
@@ -391,9 +391,9 @@ You can specify a field also:
 If your database uses something other than `created_at` for storing a timestamp, you can specify the field option like this:
 
     Post.by_month("January", :field => :something_else)
-    
+
 All methods support this extra option.
-    
+
 Or if you're doing it all the time on your model, then it's best to use `by_star_field` at the top of your model:
 
     class Post < ActiveRecord::Base

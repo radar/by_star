@@ -26,7 +26,7 @@ module ByStar
     include Vanilla
     include Calculations
   end
-  
+
   module InstanceMethods
     include Neighbours
   end

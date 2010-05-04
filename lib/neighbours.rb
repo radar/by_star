@@ -5,7 +5,7 @@ module ByStar
       field = field || self.class.by_star_field
       self.class.past(self.send(field.split(".").last)) { { :order => "#{field} DESC" }}.first
     end
-    
+
     # Find the next record to this.
     def next(field=nil)
       field = field || self.class.by_star_field

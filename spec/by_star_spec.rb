@@ -79,7 +79,7 @@ describe Post do
       it "should be able to use an alternative field (symbol)" do
         Event.by_year(nil, :field => :start_time).size.should eql(8)
       end
-      
+
       it "should not have to specify the field when using by_star_field" do
         Event.by_year.size.should eql(8)
       end
@@ -644,37 +644,37 @@ describe Post do
       end
 
     end
-    
+
     describe "directional finders" do
       subject { Post.today.first }
-      
+
       describe "previous" do
         it "should find the post previous to it" do
           subject.previous.text.should eql("Yesterday's post")
         end
       end
-    
-    
+
+
       describe "next" do
         it "should find the post next to it" do
           subject.next.text.should eql("Tomorrow's post")
         end
       end
     end
-    
+
     describe "chaining of methods" do
       # a by_star and a by_direction method, in that order
       it "should be able to chain today and past" do
         Post.today.past.size.should eql(4)
       end
-      
+
       # a by_direction and by_star method, in that order
       it "should be able to chain together past and today" do
         Post.past.today.size.should eql(4)
       end
-      
+
     end
-    
+
     describe "edge cases" do
       # This method previously generated sql like: `day_entries`.`spent_at`.`spent_at`.`spent_at`.`spent_at`
       # Which is *obviously* incorrect and #omg worthy.
