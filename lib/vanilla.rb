@@ -81,19 +81,15 @@ module ByStar
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(time)
         weeks = time.strftime("%U").to_i
-
-        # Sunday defines the start of the week.
-        # Finds the sunday that defines the starting week of the year.
-        # This is because AS +*.weeks helper works off the given time, which could be any day.
-        # Principle of least surprise and all. Ideally.
-        start_time = Time.now.beginning_of_year
-        start_time.strftime("%w").to_i != 0 ? start_time - (7 - start_time.strftime("%w").to_i).days : start_time
+        Time.now.beginning_of_year
       elsif time.is_a?(Numeric) && time < 53
         weeks = time.to_i
         Time.utc(year, 1, 1)
       else
         raise ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string."
       end
+      # Make the start of the week predictably Sunday.
+      start_time.strftime("%w").to_i != 0 ? start_time - (7 - start_time.strftime("%w").to_i).days : start_time
       start_time += weeks.weeks
       end_time = start_time + 1.week
       by_star(start_time, end_time, options, &block)

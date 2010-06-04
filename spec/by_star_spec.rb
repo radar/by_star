@@ -647,17 +647,27 @@ describe Post do
 
     describe "directional finders" do
       subject { Post.today.first }
+      let(:event) { Event.last }
 
       describe "previous" do
         it "should find the post previous to it" do
           subject.previous.text.should eql("Yesterday's post")
         end
+        
+        it "should find the previous event" do
+          event.previous.name.should eql("Ryan's birthday, last year!")
+        end
       end
 
 
       describe "next" do
+        let(:event) { Event.first }
         it "should find the post next to it" do
           subject.next.text.should eql("Tomorrow's post")
+        end
+        
+        it "should find the next event" do
+          event.next.should be_nil
         end
       end
     end
