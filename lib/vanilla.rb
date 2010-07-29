@@ -81,7 +81,7 @@ module ByStar
       # Surely there's a method in Rails to do this.
       start_time = if valid_time_or_date?(time)
         weeks = time.strftime("%U").to_i
-        Time.now.beginning_of_year
+        Time.zone.now.beginning_of_year
       elsif time.is_a?(Numeric) && time < 53
         weeks = time.to_i
         Time.utc(year, 1, 1)
