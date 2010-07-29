@@ -34,3 +34,6 @@ module ByStar
   class ParseError < Exception; end
   class MonthNotFound < Exception; end
 end
+
+ActiveRecord::Base.send :include, ByStar
+ActiveRecord::Relation.send :include, ByStar if ActiveRecord.const_defined?("Relation")
