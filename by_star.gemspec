@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{by_star}
-  s.version = "0.7.2"
+  s.version = "0.9.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Bigg", "Mislav Marohni\304\207"]
-  s.date = %q{2010-05-05}
+  s.date = %q{2010-07-29}
   s.description = %q{ActiveRecord extension for easier date scopes and time ranges}
   s.email = %q{radarlistener@gmail.com}
   s.extra_rdoc_files = [
@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
      "VERSION",
      "by_star.gemspec",
      "cleaner.rb",
-     "init.rb",
      "lib/by_star.rb",
      "lib/calculations.rb",
      "lib/calculations/count.rb",
