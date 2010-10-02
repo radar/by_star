@@ -1,12 +1,16 @@
 require 'chronic'
-require 'shared'
-require 'range_calculations'
-require 'time_ext'
-require 'vanilla'
-require 'neighbours'
 
-Dir[File.dirname(__FILE__) + '/calculations/*.rb'].each { |file| require file }
-require 'calculations'
+require 'by_star/shared'
+require 'by_star/range_calculations'
+require 'by_star/time_ext'
+require 'by_star/vanilla'
+require 'by_star/neighbours'
+
+require 'by_star/calculations/count'
+require 'by_star/calculations/sum'
+
+require 'by_star/calculations'
+
 module ByStar
 
   def self.included(base)

@@ -9,16 +9,12 @@ $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 require 'active_support'
 require 'active_support/core_ext/string/conversions'
 require 'by_star'
-require 'spec'
+require 'rspec'
 
 # Define time zone before loading test_helper
 zone = "UTC"
 Time.zone = zone
 ActiveRecord::Base.default_timezone = zone
-
-# bootstraping the plugin through init.rb
-# tests how it would load in a real application
-load File.dirname(__FILE__) + "/../rails/init.rb"
 
 YAML::load_file(File.dirname(__FILE__) + "/database.yml").each do |key, connection|
   ActiveRecord::Base.establish_connection(connection)

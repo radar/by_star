@@ -13,7 +13,7 @@ end
 
 class Event < ActiveRecord::Base
   by_star_field :start_time
-  named_scope :secret, :conditions => { :public => false }
+  scope :secret, :conditions => { :public => false }
 end
 
 class Invoice < ActiveRecord::Base
@@ -101,4 +101,4 @@ Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now
 
 Event.create(:name => "FBI meeting",      :start_time  => "02-03-#{Time.zone.now.year}".to_time, :public => false)
 
-Invoice.first.day_entries.create(:spent_at => Time.zone.now + 1.hour, :name => "Working harder, better, faster stronger.")
+# Invoice.first.day_entries.create(:spent_at => Time.zone.now + 1.hour, :name => "Working harder, better, faster stronger.")

@@ -30,19 +30,18 @@ describe Post do
   end
 
   def find(*args)
-    method = description_args.first.sub(' ', '_')
-    Post.send(method, *args)
+    Post.send(subject, *args)
   end
 
   def size(*args)
-    method = description_args.first.sub(' ', '_')
-    Post.send(method, *args).size
+    Post.send(subject, *args).size
   end
 
   ["mysql", "sqlite3"].each do |adapter|
     ActiveRecord::Base.establish_connection(YAML::load_file(File.dirname(__FILE__) + "/database.yml")[adapter])
 
     describe "by year" do
+      subject { "by_year" }
       it "should be able to find all the posts in the current year" do
         size.should eql(this_years_posts)
       end
@@ -60,9 +59,7 @@ describe Post do
       end
 
       it "should error when given an invalid year" do
-        # This is broken on 1.8.6 (and previous versions), any patchlevel after & before 111
-        major, minor, trivial = RUBY_VERSION.split(".").map(&:to_i)
-        if major == 1 && ((minor == 8 && trivial <= 6) || (minor <= 8)) && RUBY_PATCHLEVEL.to_i > 111
+        if RUBY_VERSION < "1.8.7"
           lambda { find(1901) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
           lambda { find(2039) }.should raise_error(ByStar::ParseError, "Invalid arguments detected, year may possibly be outside of valid range (1902-2039)")
         else
@@ -95,6 +92,7 @@ describe Post do
     end
 
     describe "by month" do
+      subject { "by_month" }
 
       it "should be able to find posts for the current month" do
         size.should eql(10)
@@ -153,6 +151,7 @@ describe Post do
     end
 
     describe "by fortnight" do
+      subject { "by_fortnight" }
 
       it "should be able to find posts in the current fortnight" do
         size.should eql(10)
@@ -178,6 +177,7 @@ describe Post do
     end
 
     describe "by week" do
+      subject { "by_week" }
 
       it "should be able to find posts in the current week" do
         stub_time
@@ -228,6 +228,8 @@ describe Post do
     end
 
     describe "by weekend" do
+      subject { "by_weekend" }
+      
       it "should be able to find the posts on the weekend of the 1st of January" do
         case Time.zone.now.wday
         when 5 # Friday
@@ -263,6 +265,7 @@ describe Post do
     end
 
     describe "by day" do
+      subject { "by_day" }
       it "should be able to find a post for today" do
         stub_time
         size.should eql(1)
@@ -279,6 +282,7 @@ describe Post do
     end
 
     describe "today" do
+      subject { "today" }
       it "should show the post for today" do
         find.map(&:text).should include("Today's post")
       end
@@ -292,18 +296,21 @@ describe Post do
     end
 
     describe "tomorrow" do
+      subject { "tomorrow" }
       it "should show the post for tomorrow" do
         find.map(&:text).should include("Tomorrow's post")
       end
     end
 
     describe "yesterday" do
+      subject { "yesterday" }
+      
       it "should show the post for yesterday" do
-        find.map(&:text).should include("Yesterday's post")
+        find.map(&:text).should include("Yesterday")
       end
 
       it "should be able find yesterday, given a Date" do
-        find(Time.now).map(&:text).should include("Yesterday's post")
+        find(Time.now).map(&:text).should include("Yesterday")
       end
 
       it "should be able to use an alternative field" do
@@ -315,6 +322,7 @@ describe Post do
     end
 
     describe "tomorrow" do
+      subject { "tomorrow" }
       it "should show the post for tomorrow" do
         find.map(&:text).should include("Tomorrow's post")
       end
@@ -331,6 +339,7 @@ describe Post do
     end
 
     describe "past" do
+      subject { "past" }
 
       before do
         stub_time
@@ -365,6 +374,7 @@ describe Post do
     end
 
     describe "future" do
+      subject { "future" }
       before do
         stub_time
       end
@@ -408,6 +418,7 @@ describe Post do
     end
 
     describe "between" do
+      subject { "between" }
       it "should find posts between last tuesday and next tuesday" do
         stub_time
         size("last tuesday", "next tuesday").should eql(2)
@@ -651,7 +662,7 @@ describe Post do
 
       describe "previous" do
         it "should find the post previous to it" do
-          subject.previous.text.should eql("Yesterday's post")
+          subject.previous.text.should eql("Yesterday")
         end
         
         it "should find the previous event" do
@@ -675,12 +686,12 @@ describe Post do
     describe "chaining of methods" do
       # a by_star and a by_direction method, in that order
       it "should be able to chain today and past" do
-        Post.today.past.size.should eql(4)
+        Post.today.past.size.should eql(5)
       end
 
       # a by_direction and by_star method, in that order
       it "should be able to chain together past and today" do
-        Post.past.today.size.should eql(4)
+        Post.past.today.size.should eql(5)
       end
 
     end
