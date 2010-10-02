@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = []
   s.email       = []
   s.homepage    = "http://rubygems.org/gems/by_star"
-  s.summary     = "TODO: Write a gem summary"
-  s.description = "TODO: Write a gem description"
+  s.summary     = "ActiveRecord extension for easier date scopes and time ranges"
+  s.description = "ActiveRecord extension for easier date scopes and time ranges"
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "by_star"
