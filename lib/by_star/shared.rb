@@ -1,6 +1,6 @@
 module Shared
   def conditions_for_range(start_time, end_time, field=nil)
-    field = table_name << '.' << field.to_s if field
+    field = "#{table_name}.#{field}" if field
     field ||= by_star_field
     ["#{field} >= ? AND #{field} <= ?", start_time.utc, end_time.utc]
   end
