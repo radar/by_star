@@ -1,7 +1,7 @@
 source :gemcutter
 
 group :test do
-  gem 'rspec', '2.0.0.beta.22'
+  gem 'rspec', '~> 2.6.0'
   gem 'mysql'
   gem 'sqlite3-ruby'
 end
