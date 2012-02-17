@@ -8,6 +8,26 @@ module ByStar
   end
 
   include ByYear
+
+  def between(start, finish, options={})
+    field = options[:field] || by_star_field
+    scope = where("#{field} >= ? AND #{field} <= ?",
+              start, finish)
+    scope = scope.order(options[:order]) if options[:order]
+    scope
+  end
+
+  private
+
+  def time_klass(time)
+    case time
+    when ActiveSupport::TimeWithZone
+      Time
+    else
+      time.class
+    end
+  end
+
 end
 
 ActiveRecord::Base.send :extend, ByStar

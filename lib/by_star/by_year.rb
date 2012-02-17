@@ -3,24 +3,14 @@ module ByStar
     def by_year(*args)
       options = args.extract_options!.symbolize_keys!
       time = args.first || Time.zone.now
-      klass = case time
-        when ActiveSupport::TimeWithZone
-          Time
-        else
-          time.class
-        end
 
-      send("by_year_#{klass}", time, options)
+      send("by_year_#{time_klass(time)}", time, options)
     end
 
     private
 
     def by_year_Time(time, options={})
-      field = options[:field] || by_star_field
-      scope = where("#{field} >= ? AND #{field} <= ?",
-                time.beginning_of_year, time.end_of_year)
-      scope = scope.order(options[:order]) if options[:order]
-      scope
+      between(time.beginning_of_year, time.end_of_year)
     end
 
     def by_year_String_or_Fixnum(year, options={})
