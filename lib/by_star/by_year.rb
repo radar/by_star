@@ -14,7 +14,7 @@ module ByStar
     end
 
     def by_year_String_or_Fixnum(year, options={})
-      time = "#{year.to_s}-01-01 00:00:00".to_time
+      time = "#{year.to_s}-01-01".to_time
       by_year_Time(time, options)
     end
     alias_method :by_year_String, :by_year_String_or_Fixnum
