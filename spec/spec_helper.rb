@@ -1,4 +1,6 @@
 require 'rubygems'
+require 'bundler'
+Bundler.setup
 require 'active_record'
 require 'fileutils'
 require 'logger'
@@ -16,11 +18,12 @@ zone = "UTC"
 Time.zone = zone
 ActiveRecord::Base.default_timezone = zone
 
-YAML::load_file(File.dirname(__FILE__) + "/database.yml").each do |key, connection|
-  ActiveRecord::Base.establish_connection(connection)
-  load File.dirname(__FILE__) + "/fixtures/schema.rb"
-  load File.dirname(__FILE__) + "/fixtures/models.rb"
-end
+ActiveRecord::Base.configurations = YAML::load_file(File.dirname(__FILE__) + "/database.yml")
+
+# TODO: Multiple database support
+ActiveRecord::Base.establish_connection(:sqlite3)
+load File.dirname(__FILE__) + "/fixtures/schema.rb"
+load File.dirname(__FILE__) + "/fixtures/models.rb"
 
 # Print the location of puts/p calls so you can find them later
 # def puts str

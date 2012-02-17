@@ -1,8 +1,8 @@
-mysql:
-  username: root
-  password:
-  database: by_star
-  adapter: mysql
+# mysql:
+#   username: root
+#   password:
+#   database: by_star
+#   adapter: mysql
 
 sqlite3:
   adapter: sqlite3

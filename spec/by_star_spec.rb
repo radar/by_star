@@ -37,7 +37,7 @@ describe Post do
     Post.send(subject, *args).size
   end
 
-  ["mysql", "sqlite3"].each do |adapter|
+  ["sqlite3"].each do |adapter|
     ActiveRecord::Base.establish_connection(YAML::load_file(File.dirname(__FILE__) + "/database.yml")[adapter])
 
     describe "by year" do
