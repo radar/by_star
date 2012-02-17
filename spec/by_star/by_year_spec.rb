@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "by year" do
   it "should be able to find all the posts in the current year" do
-    Post.by_year.should eql(22)
+    Post.by_year.count.should eql(22)
   end
 
   it "should be able to find if given a string" do
