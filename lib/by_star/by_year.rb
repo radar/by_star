@@ -10,7 +10,7 @@ module ByStar
     private
 
     def by_year_Time(time, options={})
-      between(time.beginning_of_year, time.end_of_year)
+      between(time.beginning_of_year, time.end_of_year, options)
     end
 
     def by_year_String_or_Fixnum(year, options={})
