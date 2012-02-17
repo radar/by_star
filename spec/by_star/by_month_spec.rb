@@ -1,8 +1,12 @@
 require 'spec_helper'
 
 describe "by_month" do
-  def posts_count
-    Post.by_month.count
+  def find_posts(time=Time.zone.now, options={})
+    Post.by_month(time, options)
+  end
+
+  def posts_count(time=Time.zone.now, options={})
+    find_posts(time, options).count
   end
 
   it "should be able to find posts for the current month" do
@@ -20,7 +24,7 @@ describe "by_month" do
     # If it is February we'll have all the "current" posts in there.
     # This makes the count 10.
     # I'm sure you can guess what happens when it's not February.
-    size(2).should eql(Time.now.month == 2 ? 10 : 1)
+    posts_count(2).should eql(Time.now.month == 2 ? 10 : 1)
   end
 
   it "should be able to find three posts for the 3rd month, using time instance" do
@@ -28,35 +32,33 @@ describe "by_month" do
     # This makes the count 10.
     # I'm sure you can guess what happens when it's not March.
     time = Time.local(Time.zone.now.year, 3, 1)
-    size(time).should eql(Time.now.month == 3 ? 10 : 1)
+    posts_count(time).should eql(Time.now.month == 3 ? 10 : 1)
   end
 
   it "should be able to find a single post from January last year" do
-    size("January", :year => Time.zone.now.year - 1).should eql(1)
+    posts_count("January", :year => Time.zone.now.year - 1).should eql(1)
   end
 
   it "should fail when given incorrect months" do
-    lambda { find(0) }.should raise_error(ByStar::ParseError)
-    lambda { find(13) }.should raise_error(ByStar::ParseError)
-    lambda { find("Ryan") }.should raise_error(ByStar::ParseError)
-    lambda { find([1,2,3]) }.should raise_error(ByStar::ParseError)
-  end
-
-  it "should be able to take decimals" do
-    size(1.5).should eql(1)
+    lambda { find_posts(0) }.should raise_error(ByStar::ParseError)
+    lambda { find_posts(13) }.should raise_error(ByStar::ParseError)
+    lambda { find_posts("Ryan") }.should raise_error(ByStar::ParseError)
+    # LOL arrays
+    lambda { find_posts([1,2,3]) }.should raise_error(NoMethodError)
   end
 
   it "should be able to use an alternative field" do
     if Time.zone.now.month == 12
       Event.by_month(nil, :field => "start_time").size.should eql(4)
     else
-      stub_time(1, 12)
-      Event.by_month(nil, :field => "start_time").size.should eql(1)
+      Timecop.freeze(Time.local(Time.now.year, 12, 1)) do
+        Event.by_month(nil, :field => "start_time").size.should eql(1)
+      end
     end
   end
 
   it "should be able to specify the year as a string" do
-    size(1, :year => (Time.zone.now.year - 1).to_s).should eql(1)
+    posts_count(1, :year => (Time.zone.now.year - 1).to_s).should eql(1)
   end
 
 end
