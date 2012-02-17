@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    by_star (1.0.0)
+    by_star (2.0.0.beta)
       activerecord (>= 2.0.0)
       chronic
 
