@@ -11,6 +11,10 @@ module ByStar
   include ByYear
   include ByMonth
 
+  class ParseError < StandardError
+
+  end
+
   def between(start, finish, options={})
     field = options[:field] || by_star_field
     scope = where("#{field} >= ? AND #{field} <= ?",
