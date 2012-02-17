@@ -1,4 +1,5 @@
 require 'by_star/by_year'
+require 'by_star/by_month'
 
 module ByStar
 
@@ -8,6 +9,7 @@ module ByStar
   end
 
   include ByYear
+  include ByMonth
 
   def between(start, finish, options={})
     field = options[:field] || by_star_field
