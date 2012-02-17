@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails", "~> 2.8"
+  s.add_development_dependency "timecop", "~> 0.3"
 
   s.add_dependency "activerecord", ">= 2.0.0"
   s.add_dependency "chronic"
