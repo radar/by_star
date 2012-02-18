@@ -21,8 +21,7 @@ ActiveRecord::Base.default_timezone = :utc
 
 ActiveRecord::Base.configurations = YAML::load_file(File.dirname(__FILE__) + "/database.yml")
 
-# TODO: Multiple database support
-ActiveRecord::Base.establish_connection(:sqlite3)
+ActiveRecord::Base.establish_connection(ENV["DB"] || "sqlite3")
 load File.dirname(__FILE__) + "/fixtures/schema.rb"
 
 # Freeze time to Jan 1st of this year
