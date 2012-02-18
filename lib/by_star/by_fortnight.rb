@@ -1,8 +1,7 @@
 module ByStar
   module ByFortnight
-    def by_fortnight(time=nil, options={})
+    def by_fortnight(time=Time.zone.now.beginning_of_day, options={})
       options.symbolize_keys!
-      time ||= Time.zone.now.beginning_of_day
       send("by_fortnight_#{time_klass(time)}", time, options)
     end
 
