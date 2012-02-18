@@ -49,10 +49,10 @@ describe "by_month" do
 
   it "should be able to use an alternative field" do
     if Time.zone.now.month == 12
-      Event.by_month(nil, :field => "start_time").size.should eql(4)
+      Event.by_month(:field => "start_time").size.should eql(4)
     else
       Timecop.freeze(Time.local(Time.now.year, 12, 1)) do
-        Event.by_month(nil, :field => "start_time").size.should eql(1)
+        Event.by_month(:field => "start_time").size.should eql(1)
       end
     end
   end
