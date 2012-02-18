@@ -1,6 +1,7 @@
 require 'by_star/by_year'
 require 'by_star/by_month'
 require 'by_star/by_fortnight'
+require 'by_star/by_week'
 
 module ByStar
 
@@ -12,6 +13,7 @@ module ByStar
   include ByYear
   include ByMonth
   include ByFortnight
+  include ByWeek
 
   class ParseError < StandardError
 
