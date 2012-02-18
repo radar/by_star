@@ -17,6 +17,9 @@ module ByStar
 
   end
 
+  # Returns all records between a given start and finish time.
+  #
+  # Currently only supports Time objects.
   def between(start, finish, options={})
     field = options[:field] || by_star_field
     scope = where("#{field} >= ? AND #{field} <= ?",
@@ -27,6 +30,9 @@ module ByStar
 
   private
 
+  # Used inside the by_* methods to determine what kind of object "time" is.
+  # These methods take the result of the time_klass method, and call other methods
+  # using it, such as by_year_Time and by_year_String.
   def time_klass(time)
     case time
     when ActiveSupport::TimeWithZone
