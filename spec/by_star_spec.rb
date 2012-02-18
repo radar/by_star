@@ -82,7 +82,7 @@ describe Post do
         size(0, :year => Time.zone.now.year-1).should eql(1)
       end
 
-      it "should not find any posts from a week ago" do  
+      it "should not find any posts from a week ago" do
         stub_time
         size(1.week.ago).should eql(0)
       end
