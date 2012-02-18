@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe "by fortnight" do
 
-  def find_posts(time=nil, options={})
-    Post.by_fortnight(time, options)
+  def find_posts(*args)
+    Post.by_fortnight(*args)
   end
 
-  def posts_count(time=nil, options={})
-    find_posts(time, options).count
+  def posts_count(*args)
+    find_posts(*args).count
   end
 
   it "should be able to find posts in the current fortnight" do

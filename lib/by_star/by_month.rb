@@ -1,5 +1,8 @@
 module ByStar
   module ByMonth
+    # For reasoning why I use *args rather than variables here,
+    # please see the by_year method comments in lib/by_star/by_year.rb
+
     def by_month(*args)
       options = args.extract_options!
       time = args.first || Time.zone.now

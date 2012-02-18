@@ -1,7 +1,13 @@
 module ByStar
   module ByFortnight
-    def by_fortnight(time=Time.zone.now.beginning_of_day, options={})
-      options.symbolize_keys!
+    # For reasoning why I use *args rather than variables here,
+    # please see the by_year method comments in lib/by_star/by_year.rb
+
+    def by_fortnight(*args)
+      options = args.extract_options!.symbolize_keys!
+      time = args.first
+      time ||= Time.local(options[:year], 1, 1) if options[:year]
+      time ||= Time.zone.now
       send("by_fortnight_#{time_klass(time)}", time, options)
     end
 
