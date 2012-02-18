@@ -17,7 +17,7 @@ require 'timecop'
 # Define time zone before loading test_helper
 zone = "UTC"
 Time.zone = zone
-ActiveRecord::Base.default_timezone = zone
+ActiveRecord::Base.default_timezone = :utc
 
 ActiveRecord::Base.configurations = YAML::load_file(File.dirname(__FILE__) + "/database.yml")
 
