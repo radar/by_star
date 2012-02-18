@@ -1,6 +1,6 @@
 before_script:
-  - "[ $DB == \"mysql\" ] && mysql -e 'create database by_star_test;'"
-  - "[ $DB == \"postgres\" ] && psql -c 'create database by_star_test;' -U postgres"
+  - "mysql -e 'create database by_star_test;'"
+  - "psql -c 'create database by_star_test;' -U postgres"
 
 env:
   - DB=sqlite
