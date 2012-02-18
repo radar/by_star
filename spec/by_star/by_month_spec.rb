@@ -10,21 +10,21 @@ describe "by_month" do
   end
 
   it "should be able to find posts for the current month" do
-    posts_count.should eql(10)
+    posts_count.should eql(8)
   end
 
   it "should be able to find a single post for January" do
     # If it is January we'll have all the "current" posts in there.
     # This makes the count 10.
     # I'm sure you can guess what happens when it's not January.
-    posts_count("January").should eql(Time.now.month == 1 ? 10 : 1)
+    posts_count("January").should eql(8)
   end
 
   it "should be able to find two posts for the 2nd month" do
     # If it is February we'll have all the "current" posts in there.
     # This makes the count 10.
     # I'm sure you can guess what happens when it's not February.
-    posts_count(2).should eql(Time.now.month == 2 ? 10 : 1)
+    posts_count(2).should eql(1)
   end
 
   it "should be able to find three posts for the 3rd month, using time instance" do
@@ -32,7 +32,7 @@ describe "by_month" do
     # This makes the count 10.
     # I'm sure you can guess what happens when it's not March.
     time = Time.local(Time.zone.now.year, 3, 1)
-    posts_count(time).should eql(Time.now.month == 3 ? 10 : 1)
+    posts_count(time).should eql(1)
   end
 
   it "should be able to find a single post from January last year" do

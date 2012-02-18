@@ -12,6 +12,7 @@ require 'active_support'
 require 'active_support/core_ext/string/conversions'
 require 'by_star'
 require 'rspec'
+require 'timecop'
 
 # Define time zone before loading test_helper
 zone = "UTC"
@@ -23,7 +24,11 @@ ActiveRecord::Base.configurations = YAML::load_file(File.dirname(__FILE__) + "/d
 # TODO: Multiple database support
 ActiveRecord::Base.establish_connection(:sqlite3)
 load File.dirname(__FILE__) + "/fixtures/schema.rb"
+
+# Freeze time to Jan 1st of this year
+Timecop.travel(Time.local(Time.zone.now.year, 1, 1))
 load File.dirname(__FILE__) + "/fixtures/models.rb"
+
 
 # Print the location of puts/p calls so you can find them later
 # def puts str

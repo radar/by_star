@@ -40,13 +40,13 @@ end
 end
 
 # Inovice for 2nd January for sum_by_day
-Invoice.factory 5500, Time.zone.now.beginning_of_year + 1.day 
+Invoice.factory 5500, Time.zone.now.beginning_of_year + 1.day
 
 # Invoice from last year
 Invoice.factory 10000, Time.local(Time.zone.now.year-1, 1, 1)
 
 # Invoice without a number for count_by_year test
-Invoice.create!(:value => 10000, :number => nil) 
+Invoice.create!(:value => 10000, :number => nil)
 
 Post.factory "Today's post", Time.zone.now
 Post.factory "Yesterday's post", Time.zone.now - 1.day
@@ -100,5 +100,3 @@ Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now.tomorrow
 Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)
 
 Event.create(:name => "FBI meeting",      :start_time  => "02-03-#{Time.zone.now.year}".to_time, :public => false)
-
-# Invoice.first.day_entries.create(:spent_at => Time.zone.now + 1.hour, :name => "Working harder, better, faster stronger.")
