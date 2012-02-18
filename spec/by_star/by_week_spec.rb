@@ -13,7 +13,7 @@ describe "by week" do
   end
 
   it "should be able to find posts in the 1st week" do
-    posts_count(0).should eql(1)
+    posts_count(0).should eql(8)
   end
 
   it "should be able to find posts in the 1st week of last year" do
@@ -28,16 +28,12 @@ describe "by week" do
     posts_count(1.week.ago.to_date).should eql(0)
   end
 
-  it "should raise an error when given an invalid argument" do
-    lambda { find(54) }.should raise_error(ByStar::ParseError, "by_week takes only a Time or Date object, a Fixnum (less than or equal to 53) or a Chronicable string.")
-  end
-
   it "should be able to use an alternative field" do
-    Event.by_week(nil, :field => "start_time").posts_count.should eql(0)
+    Event.by_week(:field => "start_time").size.should eql(2)
   end
 
   it "should find posts at the start of the year" do
-    posts_count(0).should eql(1)
+    posts_count(0).should eql(8)
   end
 
   it "should find posts at the end of the year" do
