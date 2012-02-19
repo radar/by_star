@@ -39,14 +39,6 @@ describe "future" do
   end
 
   it "should show the correct number of posts in the future" do
-    # MySQL misbehaves. SQLite3 and PostgreSQL do not.
-    # See http://travis-ci.org/#!/radar/by_star/jobs/703790 as to the how.
-    if ENV['DB'] == "mysql"
-      posts_count = 15
-    else
-      posts_count = 19
-    end
-
     Post.after.count.should eql(posts_count)
     Post.after_now.count.should eql(posts_count)
   end
