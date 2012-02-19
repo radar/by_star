@@ -21,3 +21,14 @@ describe "by day" do
     Event.by_day(Time.now.yesterday, :field => "start_time").size.should eql(1)
   end
 end
+
+describe "today" do
+  it "should show the post for today" do
+    Post.today.map(&:text).should include("Today's post")
+  end
+
+  it "should be able to use an alternative field" do
+    # Test may occur on an event day.
+    Event.today(:field => "start_time").size.should eql(1)
+  end
+end

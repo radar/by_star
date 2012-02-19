@@ -8,6 +8,11 @@ module ByStar
       send("by_day_#{time_klass(time)}", time, options)
     end
 
+    def today(options={})
+      time = Time.zone.now
+      by_day_Time_or_Date(time, options)
+    end
+
     private
 
     def by_day_Time_or_Date(time, options)
