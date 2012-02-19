@@ -9,10 +9,6 @@ describe "by day" do
     posts_count.should eql(5)
   end
 
-  it "should be able to find a post by a given date" do
-    posts_count(Date.today).should eql(5)
-  end
-
   it "should be able to find a post by a given date in last year" do
     posts_count(:year => Time.zone.now.year - 1).should eql(1)
   end

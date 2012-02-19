@@ -28,10 +28,6 @@ describe "by fortnight" do
     posts_count(2.weeks.ago).should eql(3)
   end
 
-  it "should be able to find posts if given a Date object" do
-    posts_count(Date.today).should eql(8)
-  end
-
   it "should be able to find posts for a given fortnight in a year" do
     posts_count(0, :year => Time.zone.now.year - 1).should eql(1)
   end

@@ -9,25 +9,22 @@ module ByStar
     end
 
     def today(options={})
-      by_day_Time_or_Date(Time.zone.now, options)
+      by_day_Time(Time.zone.now, options)
     end
 
     def yesterday(options={})
-      by_day_Time_or_Date(Time.zone.now.yesterday, options)
+      by_day_Time(Time.zone.now.yesterday, options)
     end
 
     def tomorrow(options={})
-      by_day_Time_or_Date(Time.zone.now.tomorrow, options)
+      by_day_Time(Time.zone.now.tomorrow, options)
     end
 
     private
 
-    def by_day_Time_or_Date(time, options)
+    def by_day_Time(time, options)
       between(time.beginning_of_day, time.end_of_day, options)
     end
-    alias_method :by_day_Time, :by_day_Time_or_Date
-    alias_method :by_day_Date, :by_day_Time_or_Date
-
 
   end
 end

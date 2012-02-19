@@ -13,7 +13,7 @@ module ByStar
 
     private
 
-    def by_fortnight_Time_or_Date(time, options={})
+    def by_fortnight_Time(time, options={})
       # We want to get the current fortnight and so...
       # We need to find the current week number and take one from it,
       # so that we are correctly offset from the start of the year.
@@ -22,8 +22,6 @@ module ByStar
       start_time = time.beginning_of_year + (time.strftime("%U").to_i - 1).weeks
       between(start_time, (start_time + 2.weeks).end_of_day, options)
     end
-    alias_method :by_fortnight_Time, :by_fortnight_Time_or_Date
-    alias_method :by_fortnight_Date, :by_fortnight_Time_or_Date
 
     def by_fortnight_String_or_Fixnum(weeks, options={})
       weeks = weeks.to_i
