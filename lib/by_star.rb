@@ -1,5 +1,8 @@
+require 'chronic'
+
 require 'by_star/time_ext'
 
+require 'by_star/by_direction'
 require 'by_star/by_year'
 require 'by_star/by_month'
 require 'by_star/by_fortnight'
@@ -14,6 +17,7 @@ module ByStar
     @by_star_field || "#{self.table_name}.created_at"
   end
 
+  include ByDirection
   include ByYear
   include ByMonth
   include ByFortnight
