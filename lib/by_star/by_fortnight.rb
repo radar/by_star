@@ -20,7 +20,7 @@ module ByStar
       # The first fortnight of the year should of course start on the 1st January,
       # and not the beginning of that week.
       start_time = time.beginning_of_year + (time.strftime("%U").to_i - 1).weeks
-      between(start_time, start_time + 2.weeks, options)
+      between(start_time, (start_time + 2.weeks).end_of_day, options)
     end
     alias_method :by_fortnight_Time, :by_fortnight_Time_or_Date
     alias_method :by_fortnight_Date, :by_fortnight_Time_or_Date
@@ -30,7 +30,7 @@ module ByStar
       current_time = Time.zone.local(options[:year] || Time.zone.now.year)
       if weeks <= 26
         start_time = current_time + (weeks * 2).weeks
-        between(start_time, start_time + 2.weeks, options)
+        between(start_time, (start_time + 2.weeks).end_of_day, options)
       else
         raise ParseError, "by_fortnight takes only a Time, Date or a Fixnum (less than or equal to 26)."
       end
