@@ -49,8 +49,8 @@ Invoice.factory 10000, Time.local(Time.zone.now.year-1, 1, 1)
 Invoice.create!(:value => 10000, :number => nil)
 
 Post.factory "Today's post", Time.zone.now
-Post.factory "Yesterday's post", Time.zone.now - 1.day
-Post.factory "Tomorrow's post", Time.zone.now + 1.day
+Post.factory "Yesterday's post", (Time.zone.now - 1.day).beginning_of_day
+Post.factory "Tomorrow's post", (Time.zone.now + 1.day).beginning_of_day
 
 Post.factory "That's it!", Time.zone.now.end_of_year
 
@@ -68,11 +68,11 @@ post = Post.factory "Today", Time.zone.now
 post.tags.create(:name => "today")
 
 # For yesterday scoped test
-post = Post.factory "Yesterday", Time.zone.now.yesterday
+post = Post.factory "Yesterday", Time.zone.now.yesterday.beginning_of_day
 post.tags.create(:name => "yesterday")
 
 # For tomorrow scoped test
-post = Post.factory "Tomorrow's Another Day", Time.zone.now.tomorrow
+post = Post.factory "Tomorrow's Another Day", Time.zone.now.tomorrow.beginning_of_day
 post.tags.create(:name => "tomorrow")
 
 post = Post.factory "Last year", Time.zone.now.beginning_of_year - 1.year
@@ -93,8 +93,8 @@ Event.create(:name => "Ryan's birthday, last year!", :start_time  => "04-12-#{Ti
 Event.create(:name => "Dad's birthday!",  :start_time  => "05-07-#{Time.zone.now.year}".to_time)
 Event.create(:name => "Mum's birthday!",  :start_time  => "17-11-#{Time.zone.now.year}".to_time)
 Event.create(:name => "Today",            :start_time  => Time.zone.now)
-Event.create(:name => "Yesterday",        :start_time  => Time.zone.now.yesterday)
-Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now.tomorrow)
+Event.create(:name => "Yesterday",        :start_time  => Time.zone.now.yesterday.beginning_of_day)
+Event.create(:name => "Tomorrow",         :start_time  => Time.zone.now.tomorrow.beginning_of_day)
 
 # For by_weekend test
 Event.create(:name => "1st of August",    :start_time  => "01-08-#{Time.zone.now.year}".to_time)
