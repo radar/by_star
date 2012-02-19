@@ -25,8 +25,7 @@ describe "by fortnight" do
   end
 
   it "should be able to find posts for a fortnight ago" do
-    p find_posts(2.weeks.ago).to_sql
-    posts_count(2.weeks.ago).should eql(0)
+    posts_count(2.weeks.ago).should eql(3)
   end
 
   it "should be able to find posts if given a Date object" do
