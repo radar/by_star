@@ -30,9 +30,11 @@ module ByStar
 
     private
 
-    def by_year_Time(time, options={})
+    def by_year_Time_or_Date(time, options={})
       between(time.beginning_of_year, time.end_of_year, options)
     end
+    alias_method :by_year_Time, :by_year_Time_or_Date
+    alias_method :by_year_Date, :by_year_Time_or_Date
 
     def by_year_String_or_Fixnum(year, options={})
       by_year_Time("#{year.to_s}-01-01".to_time, options)

@@ -20,8 +20,7 @@ Time.zone = zone
 ActiveRecord::Base.default_timezone = :utc
 
 ActiveRecord::Base.configurations = YAML::load_file(File.dirname(__FILE__) + "/database.yml")
-
-ActiveRecord::Base.establish_connection(ENV["DB"] || "sqlite3")
+ActiveRecord::Base.establish_connection(ENV["DB"] || "sqlite")
 load File.dirname(__FILE__) + "/fixtures/schema.rb"
 
 # Freeze time to Jan 1st of this year
