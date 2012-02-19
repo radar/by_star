@@ -1,3 +1,5 @@
+require 'by_star/time_ext'
+
 require 'by_star/by_year'
 require 'by_star/by_month'
 require 'by_star/by_fortnight'
