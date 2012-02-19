@@ -9,8 +9,15 @@ module ByStar
     end
 
     def today(options={})
-      time = Time.zone.now
-      by_day_Time_or_Date(time, options)
+      by_day_Time_or_Date(Time.zone.now, options)
+    end
+
+    def yesterday(options={})
+      by_day_Time_or_Date(Time.zone.now.yesterday, options)
+    end
+
+    def tomorrow(options={})
+      by_day_Time_or_Date(Time.zone.now.tomorrow, options)
     end
 
     private

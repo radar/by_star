@@ -32,3 +32,25 @@ describe "today" do
     Event.today(:field => "start_time").size.should eql(1)
   end
 end
+
+describe "yesterday" do
+
+  it "should show the post for yesterday" do
+    Post.yesterday.map(&:text).should include("Yesterday")
+  end
+
+  it "should be able to use an alternative field" do
+    Event.yesterday(:field => "start_time").size.should eql(1)
+  end
+
+end
+
+describe "tomorrow" do
+  it "should show the post for tomorrow" do
+    Post.tomorrow.map(&:text).should include("Tomorrow's post")
+  end
+
+  it "should be able to use an alternative field" do
+    Event.tomorrow(:field => "start_time").size.should eql(1)
+  end
+end
