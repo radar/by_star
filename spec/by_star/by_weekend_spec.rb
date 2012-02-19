@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'by weekend' do
 
   it "should be able to find the posts on the weekend of the 1st of January" do
-    posts_count.should eql(10)
+    Post.by_weekend.count.should eql(10)
   end
 
   it "should be able to use an alternative field" do
