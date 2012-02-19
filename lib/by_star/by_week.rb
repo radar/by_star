@@ -24,7 +24,7 @@ module ByStar
       time = Time.zone.local(options[:year], 1, 1) if options[:year]
       time ||= Time.zone.now
       start_time = time.beginning_of_year + week.to_i.weeks
-      between(start_time, start_time + 1.week, options)
+      between(start_time, (start_time + 1.week).end_of_day, options)
     end
   end
 end
