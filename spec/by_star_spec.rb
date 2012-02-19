@@ -40,10 +40,6 @@ describe Post do
   ["sqlite3"].each do |adapter|
 
 
-    describe "tomorrow" do
-      subject { "tomorrow" }
-    end
-
 
     describe "past" do
       subject { "past" }
