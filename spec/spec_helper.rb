@@ -24,7 +24,7 @@ ActiveRecord::Base.establish_connection(ENV["DB"] || "sqlite")
 load File.dirname(__FILE__) + "/fixtures/schema.rb"
 
 # Freeze time to Jan 1st of this year
-Timecop.travel(Time.zone.local(Time.zone.now.year, 1, 1, 0, 0, 0))
+Timecop.travel(Time.zone.local(Time.zone.now.year, 1, 1, 0, 0, 1, 0))
 load File.dirname(__FILE__) + "/fixtures/models.rb"
 
 
