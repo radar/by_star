@@ -39,6 +39,8 @@ GEM
     journey (1.0.1)
     json (1.6.5)
     multi_json (1.0.4)
+    mysql2 (0.3.11)
+    pg (0.13.1)
     rack (1.4.1)
     rack-cache (1.1)
       rack (>= 0.4)
@@ -85,6 +87,8 @@ PLATFORMS
 DEPENDENCIES
   bundler (>= 1.0.0)
   by_star!
+  mysql2
+  pg
   rspec-rails (~> 2.8)
   sqlite3
   timecop (~> 0.3)
