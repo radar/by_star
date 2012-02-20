@@ -234,10 +234,6 @@ Also works with dates:
 
     Post.between(date1, date2)
 
-And with strings:
-
-    Post.between("last tuesday", "next wednesday")
-
 ## Previous (`previous`)
 
 To find the record prior to this one call `previous` on any model instance:
