@@ -24,7 +24,7 @@ Post.factory "Today's post", Time.zone.now
 Post.factory "Yesterday's post", 1.day.ago
 Post.factory "A week ago", 1.week.ago
 Post.factory "Tomorrow's post", 1.day.from_now
-
+Post.factory "This time, last year", 1.year.ago
 Post.factory "That's it!", Time.zone.now.end_of_year
 
 # For by_weekend scoped test
