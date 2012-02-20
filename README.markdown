@@ -14,8 +14,6 @@ by_* (byStar) is a plugin that allows you to find ActiveRecord objects given cer
 * The Past
 * The Future
 * Between certain times
-* As of a certain time
-* Up to a certain time
 * Before a specific record
 * After a specific record
 
