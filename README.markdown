@@ -93,46 +93,6 @@ If you have a Time object you can use it to find the posts:
 
 This will find all the posts in November 2008.
 
-## Sum By Month (`sum_by_month`)
-
-To sum records for the current month:
-
-    Invoice.sum_by_month
-
-To sum records for a numbered month based on a field:
-
-    Invoice.sum_by_month(:value, 9)
-
-You can also specify the name of the month:
-
-    Invoice.sum_by_month(:value, "September")
-
-You can also lookup on a different year:
-
-    Invoice.sum_by_year(:value, 9, :year => "2009")
-
-## Count By Month (`count_by_month`)
-
-To count records for the current month regardless of field:
-
-    Invoice.count_by_month
-
-To count records for the current month where only a specific field is set:
-
-    Invoice.count_by_month(:value)
-
-To count records for a different month regardless of field:
-
-    Invoice.count_by_month(:all, 9)
-
-To count records for a different month in the current year:
-
-    Invoice.count_by_month(:number, 9)
-
-To count records for a different month in a different year:
-
-    Invoice.count_by_month(:number, 9, :year => 2008)
-
 ## By Fortnight (`by_fortnight`)
 
 Fortnight numbering starts at 0. The beginning of a fortnight is Monday, 12am.
