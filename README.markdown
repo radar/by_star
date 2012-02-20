@@ -162,7 +162,7 @@ This will return all posts for the given day.
 
 ## Tomorrow (`tomorrow`)
 
-*This method has been shown to be shifty when passed a `Date` object, it is recommended that you pass it a `Time` object instead.*
+*This method has been shown to be shifty when passed a `Date` object, it is recommended that you pass it an `ActiveSupport::TimeWithZone` object instead.*
 
 To find all posts from the day after the current date:
 
@@ -179,7 +179,7 @@ You can also pass a string:
 
 ## Yesterday (`yesterday`)
 
-*This method has been shown to be shifty when passed a `Date` object, it is recommended that you pass it a `Time` object instead.*
+*This method has been shown to be shifty when passed a `Date` object, it is recommended that you pass it an `ActiveSupport::TimeWithZone` object instead.*
 
 To find all posts from the day before the current date:
 
