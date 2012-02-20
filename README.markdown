@@ -268,27 +268,15 @@ Or if you're doing it all the time on your model, then it's best to use `by_star
       by_star_field :something_else
     end
 
-## Ordering records
-
-To order the returned set of records you may specify an `:order` option which works the same was as a standard AR `:order` option:
-
-     Item.by_month(1, :order => "position DESC")
-
-
-## "Chronicable string"
-
-This means a string that can be parsed with the Chronic gem.
-
 ## Collaborators
 
-Unfortunately I forget who exactly prompted me to write the plugin, but I would like to thank #rubyonrails for their support and the following people:
+Thanks to Thomas Sinclair for the original bump for implementing it. I would like to thank #rubyonrails for their support and the following people:
 
 * Mislav Marohnic
 * August Lilleas (leethal)
 * gte351s
-* Thomase Sinclair (anathematic)
-* Sam Elliott (lenaryg)
-* The dude(s) & gal(s) who created Chronic
+* Sam Elliott (lenary)
+* The people who created Chronic
 * Erik Fonselius
 
 ## Suggestions?
