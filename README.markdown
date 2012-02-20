@@ -238,20 +238,6 @@ And with strings:
 
     Post.between("last tuesday", "next wednesday")
 
-## As of (`as_of_<dynamic>`)
-
-To find records as of a certain date up until the current time:
-
-    Post.as_of_2_weeks_ago
-
-This uses the Chronic "human mind reading" (read: it's really good at determining what time you mean using written English) library to work it out.
-
-## Up to (`up_to_<dynamic>`)
-
-To find records up to a certain time from the current time:
-
-    Post.up_to_6_weeks_from_now
-
 ## Previous (`previous`)
 
 To find the record prior to this one call `previous` on any model instance:
