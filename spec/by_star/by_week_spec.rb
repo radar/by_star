@@ -9,11 +9,11 @@ describe "by week" do
   end
 
   it "should be able to find posts in the current week" do
-    posts_count.should eql(8)
+    posts_count.should eql(5)
   end
 
   it "should be able to find posts in the 1st week" do
-    posts_count(0).should eql(8)
+    posts_count(0).should eql(6)
   end
 
   it "should be able to find posts in the 1st week of last year" do
@@ -21,11 +21,7 @@ describe "by week" do
   end
 
   it "should not find any posts from a week ago" do
-    posts_count(1.week.ago).should eql(0)
-  end
-
-  it "should be able to find posts by a given date" do
-    posts_count(1.week.ago.to_date).should eql(0)
+    posts_count(1.week.ago).should eql(1)
   end
 
   it "should be able to use an alternative field" do
@@ -33,7 +29,7 @@ describe "by week" do
   end
 
   it "should find posts at the start of the year" do
-    posts_count(0).should eql(8)
+    posts_count(0).should eql(6)
   end
 
   it "should find posts at the end of the year" do

@@ -6,7 +6,7 @@ describe "by day" do
   end
 
   it "should be able to find a post for today" do
-    posts_count.should eql(5)
+    posts_count.should eql(4)
   end
 
   it "should be able to find a post by a given date in last year" do
@@ -32,7 +32,7 @@ end
 describe "yesterday" do
 
   it "should show the post for yesterday" do
-    Post.yesterday.map(&:text).should include("Yesterday")
+    Post.yesterday.map(&:text).should include("Yesterday's post")
   end
 
   it "should be able to use an alternative field" do

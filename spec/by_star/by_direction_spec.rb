@@ -5,23 +5,23 @@ describe "before" do
   end
 
   it "should show the correct number of posts in the past" do
-    posts_count.should == 9
+    posts_count.should == 5
   end
 
   it "is aliased as before_now" do
-    Post.before_now.count.should == 9
+    Post.before_now.count.should == 5
   end
 
   it "should find for a given time" do
-    posts_count(Time.zone.now - 2.days).should eql(1)
+    posts_count(Time.zone.now - 2.days).should eql(2)
   end
 
   it "should find for a given date" do
-    posts_count(Date.today - 2).should eql(1)
+    posts_count(Date.today - 2).should eql(2)
   end
 
   it "should find for a given string" do
-    posts_count("next tuesday").should eql(11)
+    posts_count("next tuesday").should eql(8)
   end
 
   it "raises an exception when Chronic can't parse" do
@@ -44,7 +44,7 @@ describe "future" do
   end
 
   it "should find for a given date" do
-    posts_count(Date.today - 2).should eql(23)
+    posts_count(Date.today - 2).should eql(19)
   end
 
   it "should find for a given string" do
@@ -62,7 +62,7 @@ describe "previous and next" do
 
   context "previous" do
     it "can find the previous post" do
-      current_post.previous.text.should == "Last year"
+      current_post.previous.text.should == "Yesterday's post"
     end
 
     it "takes the field option" do

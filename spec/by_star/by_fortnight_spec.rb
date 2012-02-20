@@ -11,12 +11,12 @@ describe "by fortnight" do
   end
 
   it "should be able to find posts in the current fortnight" do
-    posts_count.should eql(8)
+    posts_count.should eql(6)
   end
 
   it "should be able to find posts in the 1st fortnight of the current year" do
-    posts_count(0).should eql(8)
-    posts_count("0").should eql(8)
+    posts_count(0).should eql(6)
+    posts_count("0").should eql(6)
     # There was previously a situation where incorrect time zone math
     # caused the 'post 1' post to NOT appear, so count would be 7, rather than 8.
     # So this line simply regression tests that problem.
@@ -24,7 +24,7 @@ describe "by fortnight" do
   end
 
   it "should be able to find posts for a fortnight ago" do
-    posts_count(2.weeks.ago).should eql(3)
+    posts_count(2.weeks.ago).should eql(2)
   end
 
   it "should be able to find posts for a given fortnight in a year" do

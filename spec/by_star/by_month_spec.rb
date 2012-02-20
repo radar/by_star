@@ -10,14 +10,14 @@ describe "by_month" do
   end
 
   it "should be able to find posts for the current month" do
-    posts_count.should eql(8)
+    posts_count.should eql(6)
   end
 
   it "should be able to find a single post for January" do
     # If it is January we'll have all the "current" posts in there.
     # This makes the count 10.
     # I'm sure you can guess what happens when it's not January.
-    posts_count("January").should eql(8)
+    posts_count("January").should eql(6)
   end
 
   it "should be able to find two posts for the 2nd month" do

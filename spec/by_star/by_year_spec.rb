@@ -10,7 +10,7 @@ describe "by_year" do
     Post.by_year(args.first, options)
   end
 
-  let(:this_years_posts) { 20 }
+  let(:this_years_posts) { 18 }
 
   it "should be able to find all the posts in the current year" do
     posts_count.should eql(this_years_posts)
@@ -21,16 +21,16 @@ describe "by_year" do
   end
 
   it "should be able to find a single post from last year" do
-    posts_count(Time.zone.now.year-1).should eql(4)
+    posts_count(Time.zone.now.year-1).should eql(3)
   end
 
   it "knows what last year's posts were" do
-    find_posts(Time.zone.now.year-1).map(&:text).should =~ ["Last year", "End of last year", "Yesterday", "Yesterday's post"]
+    find_posts(Time.zone.now.year-1).map(&:text).should =~ ["A week ago", "This time, last year", "Yesterday's post"]
   end
 
   it "can find posts given a 2-digit year" do
     # Should be good for at least a couple of years.
-    posts_count(Time.zone.now.year-2001).should eql(4)
+    posts_count(Time.zone.now.year-2001).should eql(3)
   end
 
   it "should be able to use an alternative field (string)" do
