@@ -89,9 +89,9 @@ This will perform a find using the column you've specified.
 
 If you have a Time object you can use it to find the posts:
 
-     Post.by_month(Time.local(2008, 11, 24))
+     Post.by_month(Time.local(2012, 11, 24))
 
-This will find all the posts in November 2008.
+This will find all the posts in November 2012.
 
 ## By Fortnight (`by_fortnight`)
 
@@ -107,13 +107,13 @@ To find records based on a fortnight, you can pass in a number (representing the
 
 This will return all posts in the 18th fortnight of the current year.
 
-    Post.by_fortnight(18, :year => 2008)
+    Post.by_fortnight(18, :year => 2012)
 
-This will return all posts in the 18th fortnight week of 2008.
+This will return all posts in the 18th fortnight week of 2012.
 
-    Post.by_fortnight(Time.local(2008,1,1))
+    Post.by_fortnight(Time.local(2012,1,1))
 
-This will return all posts from the first fortnight of 2008.
+This will return all posts from the first fortnight of 2012.
 
 ## By Week (`by_week`)
 
@@ -129,13 +129,13 @@ To find records based on a week, you can pass in a number (representing the week
 
 This will return all posts in the 36th week of the current year.
 
-    Post.by_week(36, :year => 2008)
+    Post.by_week(36, :year => 2012)
 
-This will return all posts in the 36th week of 2008.
+This will return all posts in the 36th week of 2012.
 
-    Post.by_week(Time.local(2008,1,1))
+    Post.by_week(Time.local(2012,1,1))
 
-This will return all posts from the first week of 2008.
+This will return all posts from the first week of 2012.
 
 ## By Weekend (`by_weekend`)
 
@@ -152,7 +152,7 @@ To find records for today:
 
 To find records for a certain day:
 
-    Post.by_day(Time.local(2008, 1, 1))
+    Post.by_day(Time.local(2012, 1, 1))
 
 You can also pass a string:
 
