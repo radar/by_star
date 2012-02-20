@@ -21,8 +21,9 @@ year = Time.zone.now.year
 end
 
 Post.factory "Today's post", Time.zone.now
-Post.factory "Yesterday's post", Time.zone.now - 1.day
-Post.factory "Tomorrow's post", Time.zone.now + 1.day
+Post.factory "Yesterday's post", 1.day.ago
+Post.factory "A week ago", 1.week.ago
+Post.factory "Tomorrow's post", 1.day.from_now
 
 Post.factory "That's it!", Time.zone.now.end_of_year
 
