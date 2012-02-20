@@ -21,9 +21,7 @@ All methods return scopes. I love these. You love these. Everybody loves these.
 
 It also allows you to do nested finds on the records returned which I personally think is the coolest feature of the whole plugin:
 
-    Post.by_month(1) do
-      { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
-    end
+    Post.by_month(1).include(:tags).where("tags.name" => "ruby")
 
 If you're not using the standard `created_at` field: don't worry! I've covered that scenario too.
 
