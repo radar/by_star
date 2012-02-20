@@ -15,7 +15,6 @@ describe "by fortnight" do
   end
 
   it "should be able to find posts in the 1st fortnight of the current year" do
-    Post.by_fortnight(0).to_sql
     posts_count(0).should eql(8)
     posts_count("0").should eql(8)
     # There was previously a situation where incorrect time zone math
