@@ -44,6 +44,10 @@ Want to count records? Simple:
 
 ## By Year (`by_year`)
 
+To find records from the current year, simply call the method without any arguments:
+
+    Post.by_year
+
 To find records based on a year you can pass it a two or four digit number:
 
     Post.by_year(09)
