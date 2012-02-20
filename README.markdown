@@ -160,17 +160,6 @@ You can also pass a string:
 
 This will return all posts for the given day.
 
-## Current Weekend (`by_current_weekend`)
-
-If you are currently in a weekend (between 3pm Friday and 3am Monday) this will find all records starting at 3pm the previous Friday up until 3am, Monday.
-
-If you are not in a weekend (between 3am Monday and 3pm Friday) this will find all records from the next Friday 3pm to the following Monday 3am.
-
-## Current Work Week (`by_current_work_week`)
-
-If you are currently in a work week (between 3am Monday and 3pm Friday) this will find all records in that range. If you are currently in a weekend (between 3pm Friday and 3am Monday) this will return all records in the upcoming work week.
-
-
 ## Tomorrow (`tomorrow`)
 
 *This method has been shown to be shifty when passed a `Date` object, it is recommended that you pass it a `Time` object instead.*
