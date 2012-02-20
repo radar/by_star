@@ -59,36 +59,6 @@ You can also specify the full year:
     Post.by_year(2009)
     Post.by_year(1999)
 
-When you specify a year *less than* 1902 and *greater than* 2039 using specific versions of Ruby (i.e. 1.8.6p114) an `ArgumentError` will be raised. We recommend you upgrade Ruby to *at least* 1.8.7 to stop this problem occuring.
-
-## Sum By Year (`sum_by_year`)
-
-To sum records for the current year based on a field:
-
-    Invoice.sum_by_year(:value)
-
-To sum records for a year based on a field:
-
-    Invoice.sum_by_year(:value, 09)
-
-You can also pass it a full year:
-
-    Invoice.sum_by_year(:value, 2009)
-
-## Count By Year (`count_by_year`)
-
-To count the records in the current year regardless of field:
-
-    Invoice.count_by_year
-
-To count records in the current year where only a specific field is set:
-
-    Invoice.count_by_year(:value)
-
-To count records in a different year regardless of field:
-
-    Invoice.count_by_year(:all, :year => 2009)
-
 ## By Month (`by_month`)
 
 If you know the number of the month you want:
