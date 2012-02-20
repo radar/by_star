@@ -33,30 +33,13 @@ You can treat all `by_*` methods exactly how you would treat normal, every-day A
 
 Where `my_special_scope` is a `named_scope` you have specified.
 
-All the `by_*` methods, with the exception of `previous` and `next`, take a block which will then scope the find based on the options passed into it. You can also specify these options for each method, but the syntax may differ. The supported options are the same options that are supported by `find` from ActiveRecord. Please note that if you want to use conditions you *have* to use this syntax:
+You can also call typical `ActiveRecord::Relation` methods on the `by_*` methods (like I showed before):
 
-     Post.by_month(1) { { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] } }
+   Post.by_month.include(:tags).where("tags.name" => "ruby")
 
-or the lengthened:
+Want to count records? Simple:
 
-     Post.by_month(1) do
-       { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] }
-     end
-
-An alternative syntax to this is:
-
-     Post.by_month(1, { :include => "tags", :conditions => ["tags.name = ?", 'ruby'] })
-
-
-## count_by* methods
-
-`count_by` methods can be scoped to only count those records which have a specific field set, and you do this by specifying the symbol version of the name of the field, e.g;
-
-    Invoice.count_by_year(:value)
-
-If you want to specify further arguments but do not care about the scoped field:
-
-    Invoice.count_by_year(:all, 2009)
+   Post.by_month.count
 
 
 ## By Year (`by_year`)
