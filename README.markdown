@@ -27,9 +27,9 @@ If you're not using the standard `created_at` field: don't worry! I've covered t
 
 ## Scoping the find
 
-You can treat all `by_*` methods exactly how you would treat `named_scope`s: they are effectively scopes in their own right. This means you are able to call them like this:
+You can treat all `by_*` methods exactly how you would treat normal, every-day ActiveRecord scopes. This is because all `by_*` methods return `ActiveRecord::Relation` objects, with the exception of `previous` and `next`, which return a single record. You can call them like this:
 
-    Post.by_month.my_special_scope
+    Post.by_month.your_scope
 
 Where `my_special_scope` is a `named_scope` you have specified.
 
