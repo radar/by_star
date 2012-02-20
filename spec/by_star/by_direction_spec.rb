@@ -72,7 +72,7 @@ describe "previous and next" do
 
   context "next" do
     it "can find the next post" do
-      current_post.next.text.should == "The 'Current' Week"
+      current_post.next.text.should == "Today's post"
     end
 
     it "takes the field option" do
