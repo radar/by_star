@@ -93,9 +93,6 @@ If you have a Time object you can use it to find the posts:
 
 This will find all the posts in November 2008.
 
-When you specify a year *less than* 1902 and *greater than* 2039 using specific versions of Ruby (i.e. 1.8.6p114) an `ArgumentError` will be raised. We recommend you upgrade Ruby to *at least* 1.8.7 to stop this problem occuring.
-
-
 ## Sum By Month (`sum_by_month`)
 
 To sum records for the current month:
