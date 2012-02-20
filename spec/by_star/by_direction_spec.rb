@@ -58,7 +58,7 @@ end
 
 describe "previous and next" do
   let(:current_post) { Post.find_by_text("post 1") }
-  let(:current_event) { Event.find_by_name("Mum's Birthday!") }
+  let(:current_event) { Event.find_by_name("Mum's birthday!") }
 
   context "previous" do
     it "can find the previous post" do
