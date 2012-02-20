@@ -1,6 +1,7 @@
 require 'chronic'
 
 require 'by_star/time_ext'
+require 'by_star/instance_methods'
 
 require 'by_star/by_direction'
 require 'by_star/by_year'
@@ -58,3 +59,5 @@ end
 
 ActiveRecord::Base.send :extend, ByStar
 ActiveRecord::Relation.send :extend, ByStar
+
+ActiveRecord::Base.send :include, ByStar::InstanceMethods

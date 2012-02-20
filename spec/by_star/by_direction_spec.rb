@@ -29,7 +29,7 @@ describe "before" do
   end
 
   it "should be able to find all events before Ryan's birthday using a non-standard field" do
-    Event.before(Time.local(Time.zone.now.year+2), :field => "start_time").count.should eql(9)
+    Event.before(Time.local(Time.zone.now.year+2), :field => "start_time").count.should eql(8)
   end
 end
 
@@ -52,6 +52,31 @@ describe "future" do
   end
 
   it "should be able to find all events before Dad's birthday using a non-standard field" do
-    Event.after(Time.zone.local(Time.zone.now.year, 7, 5), :field => "start_time").count.should eql(4)
+    Event.after(Time.zone.local(Time.zone.now.year, 7, 5), :field => "start_time").count.should eql(3)
+  end
+end
+
+describe "previous and next" do
+  let(:current_post) { Post.find_by_text("post 1") }
+  let(:current_event) { Event.find_by_name("Mum's Birthday!") }
+
+  context "previous" do
+    it "can find the previous post" do
+      current_post.previous.text.should == "Last year"
+    end
+
+    it "takes the field option" do
+      current_event.previous(:field => "start_time").name.should == "Dad's birthday!"
+    end
+  end
+
+  context "next" do
+    it "can find the next post" do
+      current_post.next.text.should == "The 'Current' Week"
+    end
+
+    it "takes the field option" do
+      current_event.next(:field => "start_time").name.should == "Ryan's birthday!"
+    end
   end
 end
