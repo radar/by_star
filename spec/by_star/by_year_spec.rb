@@ -29,15 +29,15 @@ describe "by_year" do
   end
 
   it "should be able to use an alternative field (string)" do
-    Event.by_year(:field => "start_time").count.should eql(7)
+    Event.by_year(:field => "start_time").count.should eql(6)
   end
 
   it "should be able to use an alternative field (symbol)" do
-    Event.by_year(:field => :start_time).count.should eql(7)
+    Event.by_year(:field => :start_time).count.should eql(6)
   end
 
   it "should not have to specify the field when using by_star_field" do
-    Event.by_year.count.should eql(7)
+    Event.by_year.count.should eql(6)
   end
 
   it "should not include yesterday's (Dec 31st <last year>) event in by_year" do
