@@ -28,6 +28,11 @@ describe "by_year" do
     find_posts(Time.zone.now.year-1).map(&:text).should =~ ["Last year", "End of last year", "Yesterday", "Yesterday's post"]
   end
 
+  it "can find posts given a 2-digit year" do
+    # Should be good for at least a couple of years.
+    posts_count(Time.zone.now.year-2001).should eql(4)
+  end
+
   it "should be able to use an alternative field (string)" do
     Event.by_year(:field => "start_time").count.should eql(6)
   end

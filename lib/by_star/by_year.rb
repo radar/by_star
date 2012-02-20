@@ -37,9 +37,24 @@ module ByStar
     alias_method :by_year_Date, :by_year_Time_or_Date
 
     def by_year_String_or_Fixnum(year, options={})
-      by_year_Time("#{year.to_s}-01-01".to_time, options)
+      by_year_Time("#{work_out_year(year)}-01-01".to_time, options)
     end
     alias_method :by_year_String, :by_year_String_or_Fixnum
     alias_method :by_year_Fixnum, :by_year_String_or_Fixnum
+
+    def work_out_year(value)
+      case value.to_i
+      when 0..39
+        2000 + value
+      when 40..99
+        1900 + value
+      when nil
+        Time.zone.now.year
+      else
+        # We may be passed something that's not a straight out integer
+        # These things include: BigDecimals, Floats and Strings.
+        value.to_i
+      end
+    end
   end
 end
