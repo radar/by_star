@@ -194,35 +194,35 @@ You can also pass a string:
 
     Post.yesterday("next tuesday")
 
-## Past (`past`)
+## Before (`before`)
 
 To find all posts before the current time:
 
-    Post.past
+    Post.before
 
 To find all posts before certain time or date:
 
-    Post.past(Date.today + 2)
-    Post.past(Time.now + 5.days)
+    Post.before(Date.today + 2)
+    Post.before(Time.now + 5.days)
 
 You can also pass a string:
 
-    Post.past("next tuesday")
+    Post.before("next tuesday")
 
-## Future (`future`)
+## After (`after`)
 
 To find all posts after the current time:
 
-    Post.future
+    Post.after
 
 To find all posts after certain time or date:
 
-    Post.future(Date.today + 2)
-    Post.future(Time.now + 5.days)
+    Post.after(Date.today + 2)
+    Post.after(Time.now + 5.days)
 
 You can also pass a string:
 
-    Post.future("next tuesday")
+    Post.after("next tuesday")
 
 ## Between (`between`)
 
