@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Ryan Bigg"]
   s.email       = ["radarlistener@gmail.com"]
-  s.homepage    = "http://rubygems.org/gems/by_star"
+  s.homepage    = "http://github.com/radar/by_star"
   s.summary     = "ActiveRecord extension for easier date scopes and time ranges"
   s.description = "ActiveRecord extension for easier date scopes and time ranges"
 
