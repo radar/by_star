@@ -25,6 +25,10 @@ module ByStar
     def by_day_Time(time, options)
       between(time.beginning_of_day, time.end_of_day, options)
     end
+    alias_method :by_day_Date, :by_day_Time
 
+    def by_day_String(string, options)
+      by_day_Time(Time.parse(string), options)
+    end
   end
 end

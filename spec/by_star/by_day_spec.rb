@@ -16,6 +16,14 @@ describe "by day" do
   it "should be able to use an alternative field" do
     Event.by_day(Time.now.yesterday, :field => "start_time").size.should eql(1)
   end
+
+  it "should be able to use a date" do
+    posts_count(Date.today).should eql(4)
+  end
+
+  it "should be able to use a String" do
+    posts_count(Date.today.to_s).should eql(4)
+  end
 end
 
 describe "today" do
