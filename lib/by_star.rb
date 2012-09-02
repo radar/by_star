@@ -15,7 +15,7 @@ module ByStar
 
   def by_star_field(field=nil)
     @by_star_field ||= field
-    @by_star_field || "created_at"
+    @by_star_field || "#{self.table_name}.created_at"
   end
 
   include ByDirection
