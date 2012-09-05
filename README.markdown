@@ -1,7 +1,21 @@
 # by_*
 
 
-by_* (by_star) is a plugin that allows you to find ActiveRecord objects given certain date objects. This was originally crafted for only finding objects within a given month, but now has extended out to much more. It now supports finding objects for:
+by_* (by_star) is a plugin that allows you to find ActiveRecord objects given certain date objects. 
+
+## Installation
+
+Install this gem by adding this to your Gemfile:
+
+```ruby
+gem 'by_star', :git => "git://github.com/radar/by_star"
+```
+
+Then run `bundle install`. Hey presto, it's done!
+
+## What it does
+
+This was originally crafted for only finding objects within a given month, but now has extended out to much more. It now supports finding objects for:
 
 * A given year
 * A given month
