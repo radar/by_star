@@ -18,7 +18,7 @@ module ByStar
     def by_month_String_or_Fixnum(month, options={})
       if valid_month?(month)
         year = options[:year] || Time.zone.now.year
-        by_month_Time("#{year}-#{month}-01".to_time..in_time_zone(Time.zone), options)
+        by_month_Time("#{year}-#{month}-01".to_time.in_time_zone(Time.zone), options)
       else
         raise ParseError, "Month must be a number between 1 and 12 or the full month name (e.g. 'January', 'Feburary', etc.)"
       end
