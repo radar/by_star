@@ -2,3 +2,7 @@ tmp
 spec/fixtures/database.yml
 pkg
 by_star.sqlite3
+
+
+# Rubymine junks
+.idea/*
