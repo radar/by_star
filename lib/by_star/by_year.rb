@@ -37,7 +37,7 @@ module ByStar
     alias_method :by_year_Date, :by_year_Time_or_Date
 
     def by_year_String_or_Fixnum(year, options={})
-      by_year_Time("#{work_out_year(year)}-01-01".to_time, options)
+      by_year_Time("#{work_out_year(year)}-01-01".to_time.in_time_zone(Time.zone), options)
     end
     alias_method :by_year_String, :by_year_String_or_Fixnum
     alias_method :by_year_Fixnum, :by_year_String_or_Fixnum
