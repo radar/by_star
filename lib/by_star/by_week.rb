@@ -21,14 +21,10 @@ module ByStar
     alias_method :by_week_Date, :by_week_Time_or_Date
 
     def by_week_Fixnum(week, options={})
-      time = Time.new(options[:year], 1, 1).in_time_zone(Time.zone) if options[:year]
-      time ||= Time.current
+      year = options[:year] ? options[:year] : Time.current.year
 
-      # This is the nescessary decrement as the beginning_of_year should be
-      # the first-week (week-1). While the calculation of start_time will add
-      # x amount of weeks to the beginning_of_year. (0-based week)
-      week = week - 1
-      start_time = time.beginning_of_year + week.to_i.weeks
+      # get the time in the current zone from the fixnum week (commercial week)
+      start_time = DateTime.commercial year, week, 1, 0, 0, 0, Time.zone.formatted_offset
 
       between(start_time, (start_time + 1.week).end_of_day, options)
     end
