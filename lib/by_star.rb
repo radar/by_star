@@ -57,7 +57,12 @@ module ByStar
 
 end
 
-ActiveRecord::Base.send :extend, ByStar
-ActiveRecord::Relation.send :extend, ByStar
+if defined?(ActiveRecord)
+  ActiveRecord::Base.send :extend, ByStar
+  ActiveRecord::Relation.send :extend, ByStar
+  ActiveRecord::Base.send :include, ByStar::InstanceMethods
+end
 
-ActiveRecord::Base.send :include, ByStar::InstanceMethods
+if defined?(Mongoid)
+  require 'mongoid/by_star'
+end

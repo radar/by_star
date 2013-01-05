@@ -1,7 +1,7 @@
 # by_*
 
 
-by_* (by_star) is a plugin that allows you to find ActiveRecord objects given certain date objects. 
+by_* (by_star) is a plugin that allows you to find ActiveRecord and/or Mongoid objects given certain date objects.
 
 ## Installation
 
@@ -11,7 +11,17 @@ Install this gem by adding this to your Gemfile:
 gem 'by_star', :git => "git://github.com/radar/by_star"
 ```
 
-Then run `bundle install`. Hey presto, it's done!
+Then run `bundle install`.
+
+If you are using ActiveRecord, you're done!
+
+Mongoid users, please include the Mongoid::ByStar module for each model you wish to use the functionality. (This seems to be the convention among Mongoid plugins)
+
+```ruby
+class MyModel
+  include Mongoid::Document
+  include Mongoid::ByStar
+```
 
 ## What it does
 
@@ -281,6 +291,10 @@ Or if you're doing it all the time on your model, then it's best to use `by_star
     class Post < ActiveRecord::Base
       by_star_field :something_else
     end
+
+## Mongoid
+
+Mongoid is only tested/supported on version 3.0+
 
 ## Collaborators
 

@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "mysql2"
   s.add_development_dependency "rspec-rails", "~> 2.8"
   s.add_development_dependency "timecop", "~> 0.3"
+  s.add_development_dependency "mongoid", "~> 3.0"
 
   s.add_dependency "activerecord", "~> 3.0"
   s.add_dependency "chronic"
