@@ -49,11 +49,6 @@ shared_examples_for "by year" do
     it "should not include yesterday's (Dec 31st <last year>) event in by_year" do
       Event.by_year.map(&:name).should_not include("Yesterday")
     end
-
-    it "should be able to order the result set" do
-      scope = find_posts(Time.zone.now.year, :order => "created_at DESC")
-      scope.order_values.should == ["created_at DESC"]
-    end
   end
 end
 
