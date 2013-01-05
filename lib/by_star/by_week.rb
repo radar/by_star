@@ -14,11 +14,13 @@ module ByStar
 
     private
 
-    def by_week_Time_or_Date(time, options={})
+    def by_week_Time(time, options={})
       between(time.beginning_of_week, time.end_of_week, options)
     end
-    alias_method :by_week_Time, :by_week_Time_or_Date
-    alias_method :by_week_Date, :by_week_Time_or_Date
+
+    def by_week_Date(date, options={})
+      by_week_Time(date.to_time, options)
+    end
 
     def by_week_Fixnum(week, options={})
       time = Time.zone.local(options[:year], 1, 1) if options[:year]
