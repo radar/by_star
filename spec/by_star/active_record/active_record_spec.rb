@@ -1,8 +1,7 @@
-require 'active_record'
 require 'spec_helper'
-Dir[File.dirname(__FILE__) + '/../generic/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/../shared/*.rb'].each {|file| require file }
 
-describe "active record" do
+describe ActiveRecord do
   before(:all) do
     ActiveRecord::Base.default_timezone = :utc
 
@@ -15,7 +14,7 @@ describe "active record" do
     ActiveRecord::Base.establish_connection(ENV["DB"] || "sqlite")
     load File.dirname(__FILE__) + "/../../fixtures/active_record/schema.rb"
     load File.dirname(__FILE__) + "/../../fixtures/active_record/models.rb"
-    load File.dirname(__FILE__) + "/../../fixtures/generic/seeds.rb"
+    load File.dirname(__FILE__) + "/../../fixtures/shared/seeds.rb"
 
     ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/../../tmp/activerecord.log")
   end

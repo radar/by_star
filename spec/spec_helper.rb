@@ -3,15 +3,18 @@ require 'bundler'
 Bundler.setup
 require 'fileutils'
 require 'logger'
-FileUtils.mkdir_p(File.dirname(__FILE__) + "/tmp")
 
+FileUtils.mkdir_p(File.dirname(__FILE__) + "/tmp")
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
+require 'active_record'
+require 'mongoid'
 require 'active_support'
 require 'active_support/core_ext/string/conversions'
 require 'by_star'
 require 'rspec'
 require 'timecop'
+
 
 # Define time zone before loading test_helper
 zone = "UTC"

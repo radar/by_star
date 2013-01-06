@@ -1,8 +1,7 @@
-require 'mongoid'
 require 'spec_helper'
-Dir[File.dirname(__FILE__) + '/../generic/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/../shared/*.rb'].each {|file| require file }
 
-describe "mongoid" do
+describe Mongoid do
   before(:all) do
     DATABASE_NAME = "mongoid_#{Process.pid}"
 
@@ -11,7 +10,7 @@ describe "mongoid" do
     end
 
     load File.dirname(__FILE__) + "/../../fixtures/mongoid/models.rb"
-    load File.dirname(__FILE__) + "/../../fixtures/generic/seeds.rb"
+    load File.dirname(__FILE__) + "/../../fixtures/shared/seeds.rb"
   end
 
   after(:all) do
