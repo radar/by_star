@@ -31,4 +31,10 @@ describe ActiveRecord do
     scope = Post.by_year(Time.zone.now.year, :order => "created_at DESC")
     scope.order_values.should == ["created_at DESC"]
   end
+
+  describe "#between" do
+    it "should return an ActiveRecord::Relation object" do
+      Post.between(Date.today - 2, Date.today).class.should == ActiveRecord::Relation
+    end
+  end
 end

@@ -24,4 +24,11 @@ describe Mongoid do
   it_behaves_like "by week"
   it_behaves_like "by weekend"
   it_behaves_like "by year"
+
+  describe "#between" do
+    it "should return a Mongoid::Critera object" do
+      Post.between(Date.today - 2, Date.today).class.should == Mongoid::Criteria
+    end
+  end
+
 end
