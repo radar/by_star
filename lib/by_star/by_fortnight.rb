@@ -23,6 +23,10 @@ module ByStar
       between(start_time, (start_time + 2.weeks).end_of_day, options)
     end
 
+    def by_fortnight_Date(date, options={})
+      by_fortnight_Time(date.to_time, options)
+    end
+
     def by_fortnight_String_or_Fixnum(weeks, options={})
       weeks = weeks.to_i
       current_time = Time.zone.local(options[:year] || Time.zone.now.year)

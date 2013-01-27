@@ -13,5 +13,8 @@ module ByStar
       between(time.beginning_of_weekend, time.end_of_weekend)
     end
 
+    def by_weekend_Date(date, options={})
+      by_weekend_Time(date.to_time, options)
+    end
   end
 end
