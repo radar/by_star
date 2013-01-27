@@ -17,12 +17,16 @@ module ByStar
 
     private
 
-    def by_month_Date_or_Time(time, is_calendar=false, options={})
+    def by_month_Time(time, is_calendar=false, options={})
       if is_calendar
         between(time.beginning_of_month.beginning_of_week, time.end_of_month.end_of_week, options)
       else
         between(time.beginning_of_month, time.end_of_month, options)
       end
+    end
+
+    def by_month_Date(date, is_calendar=false, options={})
+      by_month_Time(date.to_time, is_calendar, options)
     end
 
     def by_month_String_or_Fixnum(month, is_calendar=false, options={})
@@ -36,8 +40,6 @@ module ByStar
       end
     end
 
-    alias_method :by_month_Time, :by_month_Date_or_Time
-    alias_method :by_month_Date, :by_month_Date_or_Time
     alias_method :by_month_String, :by_month_String_or_Fixnum
     alias_method :by_month_Fixnum, :by_month_String_or_Fixnum
 
