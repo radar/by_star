@@ -40,6 +40,7 @@ module ByStar
     scope = scope.order(options[:order]) if options[:order]
     scope
   end
+  alias_method :between_times, :between
 
   private
 

@@ -16,6 +16,7 @@ module Mongoid::ByStar
       scope = scope.order_by([[field.to_sym, options[:order]]]) if options[:order]
       scope
     end
+    alias_method :between_times, :between
 
     # override private methods in ByStar::ByDirection
     def before_Time_or_Date(time_or_date, options={})
