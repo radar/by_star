@@ -66,4 +66,44 @@ shared_examples_for "by month" do
       posts_count(Date.today - 1.year).should eql(1)
     end
   end
+
+  describe "by calendar month" do
+    def find_posts(time=Time.zone.now, options={})
+      Post.by_calendar_month(time, options)
+    end
+
+    def posts_count(time=Time.zone.now, options={})
+      find_posts(time, options).count
+    end
+
+    it "should be able to find posts for the current calendar month" do
+      posts_count.should eql(8)
+    end
+
+    it "should be able to find a single post for January calendar month" do
+      # If it is January we'll have all the "current" posts in there.
+      # This makes the count 10.
+      # I'm sure you can guess what happens when it's not January.
+      posts_count("January").should eql(8)
+    end
+
+    it "should be able to find two posts for the 2nd calendar month" do
+      # If it is February we'll have all the "current" posts in there.
+      # This makes the count 10.
+      # I'm sure you can guess what happens when it's not February.
+      posts_count(2).should eql(2)
+    end
+
+    it "should be able to find three posts for the 3rd calendar month, using time instance" do
+      # If it is March we'll have all the "current" posts in there.
+      # This makes the count 10.
+      # I'm sure you can guess what happens when it's not March.
+      time = Time.local(Time.zone.now.year, 3, 1)
+      posts_count(time).should eql(1)
+    end
+
+    it "should be able to find a single post from January last year" do
+      posts_count("January", :year => Time.zone.now.year - 1).should eql(1)
+    end
+  end
 end
