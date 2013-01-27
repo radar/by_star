@@ -22,6 +22,7 @@ describe 'mongoid', :if => Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version
   it_behaves_like "by direction"
   it_behaves_like "by fortnight"
   it_behaves_like "by month"
+  it_behaves_like "by quarter"
   it_behaves_like "by week"
   it_behaves_like "by weekend"
   it_behaves_like "by year"
