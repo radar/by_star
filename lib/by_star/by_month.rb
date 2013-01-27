@@ -11,7 +11,7 @@ module ByStar
 
     private
 
-    def by_month_Time(time, options={})
+    def by_month_Date_or_Time(time, options={})
       between(time.beginning_of_month, time.end_of_month, options)
     end
 
@@ -26,6 +26,8 @@ module ByStar
       end
     end
 
+    alias_method :by_month_Time, :by_month_Date_or_Time
+    alias_method :by_month_Date, :by_month_Date_or_Time
     alias_method :by_month_String, :by_month_String_or_Fixnum
     alias_method :by_month_Fixnum, :by_month_String_or_Fixnum
 

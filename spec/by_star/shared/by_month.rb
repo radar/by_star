@@ -57,5 +57,13 @@ shared_examples_for "by month" do
     it "should be able to specify the year as a string" do
       posts_count(1, :year => (Time.zone.now.year - 1).to_s).should eql(1)
     end
+
+    it "should be able to accept time datatype" do
+      posts_count(Time.now - 1.year).should eql(1)
+    end
+
+    it "should be able to accept date datatype" do
+      posts_count(Date.today - 1.year).should eql(1)
+    end
   end
 end
