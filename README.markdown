@@ -15,7 +15,7 @@ Then run `bundle install`.
 
 If you are using ActiveRecord, you're done!
 
-Mongoid users, please include the Mongoid::ByStar module for each model you wish to use the functionality. (This seems to be the convention among Mongoid plugins)
+Mongoid users, please include the Mongoid::ByStar module for each model you wish to use the functionality. This is the convention among Mongoid plugins.
 
 ```ruby
 class MyModel
