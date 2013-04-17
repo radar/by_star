@@ -21,7 +21,7 @@ class Event
   include Mongoid::Document
   include Mongoid::ByStar
 
-  field :start_time, type: DateTime
+  field :st, as: :start_time, type: DateTime
   field :end_time,   type: DateTime
   field :name,       type: String
   field :public,     type: Boolean, default: true
