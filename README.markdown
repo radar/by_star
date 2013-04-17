@@ -1,7 +1,7 @@
 # by_*
 
 
-by_* (by_star) is a plugin that allows you to find ActiveRecord objects given certain date objects. 
+by_* (by_star) is a plugin that allows you to find ActiveRecord and/or Mongoid objects given certain date objects.
 
 ## Installation
 
@@ -11,7 +11,17 @@ Install this gem by adding this to your Gemfile:
 gem 'by_star', :git => "git://github.com/radar/by_star"
 ```
 
-Then run `bundle install`. Hey presto, it's done!
+Then run `bundle install`.
+
+If you are using ActiveRecord, you're done!
+
+Mongoid users, please include the Mongoid::ByStar module for each model you wish to use the functionality. This is the convention among Mongoid plugins.
+
+```ruby
+class MyModel
+  include Mongoid::Document
+  include Mongoid::ByStar
+```
 
 ## What it does
 
@@ -23,6 +33,8 @@ This was originally crafted for only finding objects within a given month, but n
 * A given week
 * A given weekend
 * A given day
+* A given quarter
+* The weeks of a given month as shown on a calendar
 * The current weekend
 * The current work week
 * The Past
@@ -107,6 +119,14 @@ If you have a Time object you can use it to find the posts:
 
 This will find all the posts in November 2012.
 
+## By Calendar Month (`by_calendar_month`)
+
+Finds records for a given month as shown on a calendar. Includes all the results of `by_month`, plus any results which fall in the same week as the first and last of the month. Useful for working with UI calendars which show rows of weeks.
+
+    Post.by_calendar_month
+
+Parameter behavior is otherwise the same as `by_month`
+
 ## By Fortnight (`by_fortnight`)
 
 Fortnight numbering starts at 0. The beginning of a fortnight is Monday, 12am.
@@ -141,11 +161,11 @@ To find records based on a week, you can pass in a number (representing the week
 
     Post.by_week(36)
 
-This will return all posts in the 36th week of the current year.
+This will return all posts in the 37th week of the current year (remember week numbering starts at 0).
 
     Post.by_week(36, :year => 2012)
 
-This will return all posts in the 36th week of 2012.
+This will return all posts in the 37th week of 2012.
 
     Post.by_week(Time.local(2012,1,1))
 
@@ -173,6 +193,28 @@ You can also pass a string:
     Post.by_day("next tuesday")
 
 This will return all posts for the given day.
+
+## By Quarter (`by_quarter`)
+
+Finds records by 3-month quarterly period of year. Quarter numbering starts at 1. The four quarters of the year begin on Jan 1, Apr 1, Jul 1, and Oct 1 respectively.
+
+To find records from the current quarter:
+
+    Post.by_quarter
+
+To find records based on a quarter, you can pass in a number (representing the quarter number) or a time object:
+
+    Post.by_quarter(4)
+
+This will return all posts in the 4th quarter of the current year.
+
+    Post.by_quarter(2, :year => 2012)
+
+This will return all posts in the 2nd quarter of 2012.
+
+    Post.by_week(Time.local(2012,1,1))
+
+This will return all posts from the first quarter of 2012.
 
 ## Tomorrow (`tomorrow`)
 
@@ -238,7 +280,7 @@ You can also pass a string:
 
     Post.after("next tuesday")
 
-## Between (`between`)
+## Between (`between` or `between_times`)
 
 To find records between two times:
 
@@ -247,6 +289,10 @@ To find records between two times:
 Also works with dates:
 
     Post.between(date1, date2)
+
+`between_times` is an alias for `between`:
+
+    Post.between_times(time1, time2)  #=> results identical to above
 
 ## Previous (`previous`)
 
@@ -281,6 +327,10 @@ Or if you're doing it all the time on your model, then it's best to use `by_star
     class Post < ActiveRecord::Base
       by_star_field :something_else
     end
+
+## Mongoid
+
+Mongoid is only tested/supported on version 3.0+
 
 ## Collaborators
 

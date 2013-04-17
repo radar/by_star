@@ -10,6 +10,7 @@ require 'by_star/by_fortnight'
 require 'by_star/by_week'
 require 'by_star/by_weekend'
 require 'by_star/by_day'
+require 'by_star/by_quarter'
 
 module ByStar
 
@@ -25,6 +26,7 @@ module ByStar
   include ByWeek
   include ByWeekend
   include ByDay
+  include ByQuarter
 
   class ParseError < StandardError
 
@@ -40,6 +42,7 @@ module ByStar
     scope = scope.order(options[:order]) if options[:order]
     scope
   end
+  alias_method :between_times, :between
 
   private
 
@@ -57,7 +60,12 @@ module ByStar
 
 end
 
-ActiveRecord::Base.send :extend, ByStar
-ActiveRecord::Relation.send :extend, ByStar
+if defined?(ActiveRecord)
+  ActiveRecord::Base.send :extend, ByStar
+  ActiveRecord::Relation.send :extend, ByStar
+  ActiveRecord::Base.send :include, ByStar::InstanceMethods
+end
 
-ActiveRecord::Base.send :include, ByStar::InstanceMethods
+if defined?(Mongoid)
+  require 'mongoid/by_star'
+end
