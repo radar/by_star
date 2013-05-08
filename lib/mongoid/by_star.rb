@@ -12,7 +12,7 @@ module Mongoid::ByStar
     # override ByStar method
     def between(start, finish, options={})
       field = by_star_field_class(options)
-      scope = gte(field => start).lte(field => finish)
+      scope = gte(field => start.beginning_of_day).lte(field => finish.end_of_day)
       scope = scope.order_by(field => options[:order]) if options[:order]
       scope
     end
