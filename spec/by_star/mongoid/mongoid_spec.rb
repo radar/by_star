@@ -41,4 +41,10 @@ describe 'mongoid', :if => Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version
       Post.between_times(Date.today - 2, Date.today).should == Post.between(Date.today - 2, Date.today)
     end
   end
+
+  describe "#between_days" do
+    it "should return a result set between two days" do
+      Post.between_days(Date.today - 2, Date.today).count.should == 5
+    end
+  end
 end
