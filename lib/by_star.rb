@@ -44,6 +44,10 @@ module ByStar
   end
   alias_method :between_times, :between
 
+  def between_days(start, finish, options={})
+    between_times(start.beginning_of_day,finish.end_of_day,options)
+  end
+
   private
 
   # Used inside the by_* methods to determine what kind of object "time" is.

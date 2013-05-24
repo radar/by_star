@@ -18,6 +18,10 @@ module Mongoid::ByStar
     end
     alias_method :between_times, :between
 
+    def between_days(start, finish, options={})
+      between(start.beginning_of_day,finish.end_of_day,options)
+    end
+
     # override private methods in ByStar::ByDirection
     def before_Time_or_Date(time_or_date, options={})
       field = by_star_field_class(options)
