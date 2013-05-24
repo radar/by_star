@@ -47,4 +47,13 @@ describe ActiveRecord do
       Post.between_times(Date.today - 2, Date.today).should == Post.between(Date.today - 2, Date.today)
     end
   end
+
+  describe "#between_days" do
+    it "should return an ActiveRecord::Relation object" do
+      Post.between_days(Date.today - 2, Date.today).class.should == ActiveRecord::Relation
+    end
+    it "should return a result set between two times" do
+      Post.between_days(Date.today - 2, Date.today).count.should == 5
+    end
+  end
 end

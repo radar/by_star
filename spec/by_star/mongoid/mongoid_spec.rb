@@ -43,6 +43,9 @@ describe 'mongoid', :if => Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version
   end
 
   describe "#between_days" do
+    it "should return a Mongoid::Critera object" do
+      Post.between_days(Date.today - 2, Date.today).class.should == Mongoid::Criteria
+    end
     it "should return a result set between two days" do
       Post.between_days(Date.today - 2, Date.today).count.should == 5
     end
