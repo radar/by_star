@@ -9,12 +9,8 @@ $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'active_record'
 require 'mongoid' if Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version.create('1.9.3')
-require 'active_support'
-require 'active_support/core_ext/string/conversions'
 require 'by_star'
-require 'rspec'
 require 'timecop'
-
 
 # Define time zone before loading test_helper
 zone = "UTC"
