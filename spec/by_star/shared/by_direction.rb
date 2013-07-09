@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 shared_examples_for "by direction" do
-  describe "before" do
-    def posts_count(*args)
-      Post.before(*args).count
+  describe "before" do    
+    def posts(*args)
+      Post.before(*args)
     end
 
     it "should show the correct number of posts in the past" do
-      posts_count.should == 5
+      posts.count.should == 5
     end
 
     it "is aliased as before_now" do
@@ -15,19 +15,30 @@ shared_examples_for "by direction" do
     end
 
     it "should find for a given time" do
-      posts_count(Time.zone.now - 2.days).should eql(2)
+      posts(Time.zone.now - 2.days).count.should eql(2)
     end
 
     it "should find for a given date" do
-      posts_count(Date.today - 2).should eql(2)
+      posts(Date.today - 2).count.should eql(2)
     end
 
     it "should find for a given string" do
-      posts_count("next tuesday").should eql(8)
+      posts = posts("next tuesday").map(&:text)
+      posts.should include("This time, last year")
+      posts.should include("Yesterday's post")
+      posts.should include("post 1")
+      posts.should include("Today's post")
+      posts.should include("The 'Current' Fortnight")
+      posts.should include("The 'Current' Week")
+      posts.should include("Tomorrow's post")
+      # Next tuesday falls on different days each year, causing this post to sometimes be there, sometimes not.
+      if Post.find_by_text("Weekend").created_at < Chronic.parse("next tuesday")
+        posts.should include("Weekend")
+      end
     end
 
     it "raises an exception when Chronic can't parse" do
-      lambda { posts_count(";aosdjbjisdabdgofbi") }.should raise_error(ByStar::ParseError)
+      lambda { posts(";aosdjbjisdabdgofbi").count }.should raise_error(ByStar::ParseError)
     end
 
     it "should be able to find all events before Ryan's birthday using a non-standard field" do
