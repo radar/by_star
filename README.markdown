@@ -1,7 +1,9 @@
 # by_*
 
+[![Build Status](https://travis-ci.org/radar/by_star.png)](https://travis-ci.org/radar/by_star)
 
 by_* (by_star) is a plugin that allows you to find ActiveRecord and/or Mongoid objects given certain date objects.
+
 
 ## Installation
 
