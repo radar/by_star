@@ -47,4 +47,4 @@ describe ActiveRecord do
       Post.between_times(Date.today - 2, Date.today).should == Post.between(Date.today - 2, Date.today)
     end
   end
-end
+end if testing_active_record?

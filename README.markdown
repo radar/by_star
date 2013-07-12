@@ -334,6 +334,16 @@ Or if you're doing it all the time on your model, then it's best to use `by_star
 
 Mongoid is only tested/supported on version 3.0+
 
+## Testing
+
+Specify a database by supplying a `DB` environmental variable:
+
+`bundle exec rake spec DB=sqlite`
+
+You can also take an ORM-specific test task for a ride:
+
+`bundle exec rake spec:active_record`
+
 ## Collaborators
 
 Thanks to Thomas Sinclair for the original bump for implementing it. I would like to thank #rubyonrails for their support and the following people:
