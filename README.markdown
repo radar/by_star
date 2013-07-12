@@ -344,6 +344,20 @@ You can also take an ORM-specific test task for a ride:
 
 `bundle exec rake spec:active_record`
 
+
+Have an Active Record or Mongoid version in mind? Set the environemtnal variables
+`ACTIVE_RECORD_VERSION` and `MONGOID_VERSION` to a version of your choice. A
+version number provided will translate to `~> VERSION`, and the string `master`
+will grab the latest from Github.
+
+```bash
+# Update your bundle appropriately...
+ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master bundle update
+
+# ...then run the specs
+ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master bundle exec rpsec spec
+```
+
 ## Collaborators
 
 Thanks to Thomas Sinclair for the original bump for implementing it. I would like to thank #rubyonrails for their support and the following people:
