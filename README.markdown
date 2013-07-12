@@ -334,6 +334,21 @@ Or if you're doing it all the time on your model, then it's best to use `by_star
 
 Mongoid is only tested/supported on version 3.0+
 
+## Testing
+
+Have an Active Record or Mongoid version in mind? Set the environemtnal variables
+`ACTIVE_RECORD_VERSION` and `MONGOID_VERSION` to a version of your choice. A
+version number provided will translate to `~> VERSION`, and the string `master`
+will grab the latest from Github.
+
+```bash
+# Update your bundle appropriately...
+ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master bundle update
+
+# ...then run the specs
+ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master bundle exec rpsec spec
+```
+
 ## Collaborators
 
 Thanks to Thomas Sinclair for the original bump for implementing it. I would like to thank #rubyonrails for their support and the following people:
