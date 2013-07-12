@@ -12,7 +12,6 @@ require 'mongoid' if Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version.creat
 require 'active_support'
 require 'active_support/core_ext/string/conversions'
 require 'by_star'
-require 'rspec'
 require 'timecop'
 
 
