@@ -41,4 +41,4 @@ describe 'mongoid', :if => Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version
       Post.between_times(Date.today - 2, Date.today).should == Post.between(Date.today - 2, Date.today)
     end
   end
-end
+end if testing_mongoid?
