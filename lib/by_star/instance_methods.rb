@@ -5,7 +5,7 @@ module ByStar
       (options[:scope] || self.class).where("#{field} < ?", self.send(field)).reorder("#{field} DESC").first
     end
 
-    def next(options={}, scope = nil)
+    def next(options={})
       field = options[:field] || self.class.by_star_field
       (options[:scope] || self.class).where("#{field} > ?", self.send(field)).reorder("#{field} ASC").first
     end
