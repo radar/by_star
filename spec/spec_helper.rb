@@ -28,8 +28,20 @@ Timecop.travel(Time.zone.local(Time.zone.now.year, 1, 1, 0, 0, 1, 0))
 #   super caller.first if caller.first.index("shoulda.rb") == -1
 #   super str
 # end
-# 
+#
 # def p obj
 #   puts caller.first
 #   super obj
 # end
+
+#
+# Tests should be according to the database specified at runtime
+#
+
+def testing_mongoid?
+  ENV['DB'] == 'mongodb' || ENV['DB'].nil?
+end
+
+def testing_active_record?
+  ENV['DB'] != 'mongodb'
+end
