@@ -69,6 +69,13 @@ Want to count records? Simple:
 
    Post.by_month.count
 
+## Time-Range Type Objects
+
+If your object has both a start and end time, you may pass both params to `by_star_field`:
+
+   by_star_field :start_time, :end_time
+
+In this case, ByStar queries will return all objects whose range has any overlap within the desired period (permissive)
 
 ## By Year (`by_year`)
 

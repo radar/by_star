@@ -14,17 +14,18 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "by_star"
 
+  s.add_dependency "activesupport"
+  s.add_dependency "chronic"
+
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "activerecord"
+  s.add_development_dependency "mongoid" if Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version.create('1.9.3')
   s.add_development_dependency "pg"
   s.add_development_dependency "mysql2"
   s.add_development_dependency "rspec-rails", "~> 2.14"
   s.add_development_dependency "timecop", "~> 0.3"
-  s.add_development_dependency "mongoid" if Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version.create('1.9.3')
   s.add_development_dependency "pry"
-
-  s.add_dependency "activerecord"
-  s.add_dependency "chronic"
 
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact

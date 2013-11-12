@@ -14,39 +14,22 @@ module ByStar
     end
     alias_method :after_now, :after
 
-    private
-
-    def before_Time_or_Date(time_or_date, options={})
-      field = options[:field] || by_star_field
-      where("#{field} <= ?", time_or_date)
-    end
-    alias_method :before_Time, :before_Time_or_Date
-    alias_method :before_Date, :before_Time_or_Date
+    protected
 
     def before_String(string, options={})
-      field = options[:field] || by_star_field
       if time = Chronic.parse(string)
-        where("#{field} <= ?", time)
+        before_Time_or_Date(time, options)
       else
         raise ParseError, "Chronic couldn't understand #{string.inspect}. Please try something else."
       end
     end
-
-    def after_Time_or_Date(time_or_date, options={})
-      field = options[:field] || by_star_field
-      where("#{field} >= ?", time_or_date)
-    end
-    alias_method :after_Time, :after_Time_or_Date
-    alias_method :after_Date, :after_Time_or_Date
 
     def after_String(string, options={})
-      field = options[:field] || by_star_field
       if time = Chronic.parse(string)
-        where("#{field} >= ?", time)
+        after_Time_or_Date(time, options)
       else
         raise ParseError, "Chronic couldn't understand #{string.inspect}. Please try something else."
       end
     end
-
   end
 end

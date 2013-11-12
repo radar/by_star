@@ -1,7 +1,7 @@
 require 'spec_helper'
 Dir[File.dirname(__FILE__) + '/../shared/*.rb'].each {|file| require file }
 
-describe 'mongoid', :if => Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version.create('1.9.3') do
+describe 'Mongoid', :if => Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version.create('1.9.3') do
 
   before(:all) do
     DATABASE_NAME = "mongoid_#{Process.pid}"
