@@ -18,19 +18,18 @@ module ByStar
     end
 
     def by_star_start_field(options={})
-      field = @by_star_start_field ||
-              options[:start_field] ||
+      field = options[:start_field] ||
               options[:field] ||
+              @by_star_start_field ||
               by_star_field_created_at_field
       field.to_s
     end
 
     def by_star_end_field(options={})
-      field = @by_star_end_field ||
-              options[:end_field] ||
+      field = options[:end_field] ||
               options[:field] ||
-              by_star_start_field ||
-              by_star_field_created_at_field
+              @by_star_end_field ||
+              by_star_start_field
       field.to_s
     end
 
