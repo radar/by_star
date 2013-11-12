@@ -32,7 +32,7 @@ module ByStar
       alias_method :before_Date, :before_Time_or_Date
 
       def after_Time_or_Date(time_or_date, options={})
-        field = by_star_end_field
+        field = by_star_start_field
         where("#{field} >= ?", time_or_date)
       end
       alias_method :after_Time, :after_Time_or_Date
