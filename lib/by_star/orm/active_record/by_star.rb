@@ -11,7 +11,11 @@ module ByStar
       def between(start, finish, options={})
         start_field = by_star_start_field
         end_field   = by_star_end_field
-        scope = where("#{end_field} >= ? AND #{start_field} <= ?", start, finish)
+        scope = if options[:strict] || by_star_start_field == by_star_end_field
+          where("#{start_field} >= ? AND #{end_field} <= ?", start, finish)
+        else
+          where("#{end_field} > ? AND #{start_field} < ?", start, finish)
+        end
         scope = scope.order(options[:order]) if options[:order]
         scope
       end

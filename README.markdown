@@ -75,7 +75,14 @@ If your object has both a start and end time, you may pass both params to `by_st
 
    by_star_field :start_time, :end_time
 
-In this case, ByStar queries will return all objects whose range has any overlap within the desired period (permissive)
+By default, ByStar queries will return all objects whose range has any overlap within the desired period (permissive):
+
+   MultiDayEvent.by_month("January")  #=> returns MultiDayEvents that overlap in January,
+                                          even if they start in December and/or end in February
+
+If you'd like to confine results to starting and ending within the given range, use the `:strict` option:
+
+   MultiDayEvent.by_month("January", strict => true)  #=> returns MultiDayEvents that both start AND end in January
 
 ## By Year (`by_year`)
 
@@ -274,6 +281,8 @@ You can also pass a string:
 
     Post.before("next tuesday")
 
+For Time-Range type objects, only the start time is considered for `before`.
+
 ## After (`after`)
 
 To find all posts after the current time:
@@ -288,6 +297,8 @@ To find all posts after certain time or date:
 You can also pass a string:
 
     Post.after("next tuesday")
+
+For Time-Range type objects, only the start time is considered for `after`.
 
 ## Between (`between` or `between_times`)
 
@@ -313,6 +324,8 @@ You can specify a field also:
 
     Post.last.previous("published_at")
 
+For Time-Range type objects, only the start time is considered for `previous`.
+
 ## Next (`next`)
 
 To find the record after this one call `next` on any model instance:
@@ -322,6 +335,8 @@ To find the record after this one call `next` on any model instance:
 You can specify a field also:
 
     Post.last.next("published_at")
+
+For Time-Range type objects, only the start time is considered for `next`.
 
 ## Not using created_at? No worries!
 
