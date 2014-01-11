@@ -18,17 +18,17 @@ module ByStar
       end
 
       def end_of_weekend
-        beginning_of_weekend + 60.hours
+        (beginning_of_weekend + 59.hours).end_of_hour
       end
 
       # A "Fortnight" is defined as a two week period, with the first fortnight of the
       # year beginning on 1st January.
       def beginning_of_fortnight
-        beginning_of_year + ((self - beginning_of_year) / 2.weeks) * 2.weeks
+        beginning_of_year + ((self - beginning_of_year) / 2.weeks).to_i * 2.weeks
       end
 
       def end_of_fortnight
-        (beginning_of_fortnight + 2.weeks).end_of_day
+        (beginning_of_fortnight + 13.days).end_of_day
       end
 
       # A "Calendar Month" is defined as a month as it appears on a calendar, including days
