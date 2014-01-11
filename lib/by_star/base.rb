@@ -34,25 +34,15 @@ module ByStar
 
     protected
 
-    # NOTE: We would define this as this:
+    # Wrapper function which extracts time and options for each by_star query.
+    # Note the following syntax examples are valid:
     #
-    #  def by_year(time=Time.zone.now, options={})
+    #   Post.by_month                      # defaults to current time
+    #   Post.by_month(2, :year => 2004)    # February, 2004
+    #   Post.by_month(Time.now)
+    #   Post.by_month(Time.now, :field => "published_at")
+    #   Post.by_month(:field => "published_at")
     #
-    # But, there's a potential situation where people want to just pass options.
-    # Like this:
-    #
-    #   Post.by_year(:field => "published_at")
-    #
-    # And so, we support any number of arguments and just parse them as necessary.
-    # By doing it this way, we can support *both* this:
-    #
-    #   Post.by_year(2012, :field => "published_at")
-    #
-    # And this:
-    #
-    #   Post.by_year(:field => "published_at")
-    #
-    # This is because the time variable is going to be defaulting to the current time.
     def with_by_star_options(*args, &block)
       options = args.extract_options!.symbolize_keys!
       time = args.first

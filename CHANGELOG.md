@@ -13,4 +13,5 @@
 * by_week and by_calendar_month now supports optional :start_day option (:monday, :tuesday, etc)
 * Separate by_calendar_month into it's own class
 * by_weekend can now take a fixnum (parsing logic is same as by_week)
+* Add Time kernel extensions for fortnight and calendar_month
 * Add Johnny Shields as a gem co-author

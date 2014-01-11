@@ -12,7 +12,7 @@ module ByStar
 
     def by_calendar_month_query(time, options={})
       start_day = Array(options[:start_day])
-      between(time.beginning_of_month.beginning_of_week(*start_day), time.end_of_month.end_of_week(*start_day), options)
+      between(time.beginning_of_calendar_month(*start_day), time.end_of_calendar_month(*start_day), options)
     end
   end
 end

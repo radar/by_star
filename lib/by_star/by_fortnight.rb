@@ -11,13 +11,7 @@ module ByStar
     private
 
     def by_fortnight_query(time, options={})
-
-      # We want to get the current fortnight and so...
-      # We need to find the current week number and take one from it,
-      # so that we are correctly offset from the start of the year.
-      # The first fortnight of the year should of course start on the 1st January,
-      # and not the beginning of that week.
-      between(time, (time + 2.weeks).end_of_day, options)
+      between(time.beginning_of_fortnight, time.end_of_fortnight, options)
     end
   end
 end
