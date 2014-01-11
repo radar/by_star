@@ -7,7 +7,7 @@ module ByStar
     def by_week(*args)
       options = args.extract_options!.symbolize_keys!
       time = args.first
-      time ||= Time.zone.local(options[:year], 1, 1) if options[:year]
+      time ||= Time.zone.local(options[:year]) if options[:year]
       time ||= Time.zone.now
       time = ByStar::Normalization.week(time, options)
       by_week_query(time, options)

@@ -36,7 +36,7 @@ shared_examples_for "by fortnight" do
     end
 
     it "should raise an error when given an invalid argument" do
-      lambda { find_posts(27) }.should raise_error(ByStar::ParseError, "by_fortnight takes only a Time, Date or a Fixnum (less than or equal to 26).")
+      lambda { find_posts(27) }.should raise_error(ByStar::ParseError, "Fortnight number must be between 0 and 26")
     end
 
     it "should be able to use an alternative field" do

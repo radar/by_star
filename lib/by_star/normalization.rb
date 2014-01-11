@@ -42,7 +42,9 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Fixnum then fortnight_fixnum(value, options)
-          else time(value)
+          else
+            time = time(value)
+            time.beginning_of_year + (time.strftime("%U").to_i - 1).weeks
         end
       end
 
@@ -55,7 +57,7 @@ module ByStar
       def quarter(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then quarter_fixnum(value)
+          when Fixnum then quarter_fixnum(value, options)
           else time(value)
         end
       end

@@ -15,7 +15,7 @@ shared_examples_for "by week" do
     end
 
     it "should be able to find posts in the 1st week" do
-      posts_count(0).should eql(6)
+      posts_count(0).should eql(7)
     end
 
     it "should be able to find posts in the 1st week of last year" do
@@ -31,7 +31,7 @@ shared_examples_for "by week" do
     end
 
     it "should find posts at the start of the year" do
-      posts_count(0).should eql(6)
+      posts_count(0).should eql(7)
     end
 
     it "should find posts at the end of the year" do
