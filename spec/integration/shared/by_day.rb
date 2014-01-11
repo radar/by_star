@@ -22,6 +22,10 @@ shared_examples_for 'by day' do
     it 'should be able to use an alternative field' do
       Event.by_day(:field => 'end_time').count.should eq 4
     end
+
+    it 'should support :offset option' do
+      Post.by_day('2014-01-01', :offset => -16.hours).count.should eq 1
+    end
   end
 
   describe '#today' do # 2014-01-01
