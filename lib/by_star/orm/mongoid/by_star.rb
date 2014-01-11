@@ -34,23 +34,21 @@ module Mongoid
 
       protected
 
-      def by_star_field_created_at_field
+      def by_star_default_field
         :created_at
       end
 
-      # override private methods in ByStar::ByDirection
-      def before_query(time_or_date, options={})
+      def before_query(time, options={})
         field = by_star_start_field
-        lte(field => time_or_date)
+        lte(field => time)
       end
 
-      def after_query(time_or_date, options={})
+      def after_query(time, options={})
         field = by_star_start_field
-        gte(field => time_or_date)
+        gte(field => time)
       end
     end
 
-    # override ByStar::InstanceMethods methods
     def previous(options={})
       field = self.class.by_star_start_field
       self.class.lt(field => self.send(field)).desc(field).first

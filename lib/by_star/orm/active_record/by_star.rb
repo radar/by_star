@@ -23,23 +23,21 @@ module ByStar
 
       protected
 
-      def by_star_field_created_at_field
+      def by_star_default_field
         "#{self.table_name}.created_at"
       end
 
-      # override private methods in ByStar::ByDirection
-      def before_query(time_or_date, options={})
+      def before_query(time, options={})
         field = by_star_start_field
-        where("#{field} <= ?", time_or_date)
+        where("#{field} <= ?", time)
       end
 
-      def after_query(time_or_date, options={})
+      def after_query(time, options={})
         field = by_star_start_field
-        where("#{field} >= ?", time_or_date)
+        where("#{field} >= ?", time)
       end
     end
 
-    # override ByStar::InstanceMethods methods
     def previous(options={})
       field = self.class.by_star_start_field
       field = field.split(".").last

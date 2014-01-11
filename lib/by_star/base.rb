@@ -20,7 +20,7 @@ module ByStar
       field = options[:start_field] ||
               options[:field] ||
               @by_star_start_field ||
-              by_star_field_created_at_field
+              by_star_default_field
       field.to_s
     end
 
