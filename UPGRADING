@@ -1,0 +1,5 @@
+Upgrading to ByStar 2.2.0
+-------------------------
+Chronic gem (used for time string parsing) has been removed as a dependency for ByStar,
+however it is still supported. If you would like to use Chronic with ByStar, please explictly
+include `gem chronic` into your Gemfile.

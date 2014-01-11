@@ -1,7 +1,7 @@
 require 'chronic'
 
-require 'by_star/time_ext'
-
+require 'by_star/kernel/time'
+require 'by_star/normalization'
 require 'by_star/by_direction'
 require 'by_star/by_year'
 require 'by_star/by_month'

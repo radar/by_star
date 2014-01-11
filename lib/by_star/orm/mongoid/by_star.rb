@@ -39,19 +39,15 @@ module Mongoid
       end
 
       # override private methods in ByStar::ByDirection
-      def before_Time_or_Date(time_or_date, options={})
+      def before_query(time_or_date, options={})
         field = by_star_start_field
         lte(field => time_or_date)
       end
-      alias_method :before_Time, :before_Time_or_Date
-      alias_method :before_Date, :before_Time_or_Date
 
-      def after_Time_or_Date(time_or_date, options={})
+      def after_query(time_or_date, options={})
         field = by_star_start_field
         gte(field => time_or_date)
       end
-      alias_method :after_Time, :after_Time_or_Date
-      alias_method :after_Date, :after_Time_or_Date
     end
 
     # override ByStar::InstanceMethods methods

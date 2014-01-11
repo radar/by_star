@@ -367,7 +367,7 @@ You can also take an ORM-specific test task for a ride:
 `bundle exec rake spec:active_record`
 
 
-Have an Active Record or Mongoid version in mind? Set the environemtnal variables
+Have an Active Record or Mongoid version in mind? Set the environment variables
 `ACTIVE_RECORD_VERSION` and `MONGOID_VERSION` to a version of your choice. A
 version number provided will translate to `~> VERSION`, and the string `master`
 will grab the latest from Github.
@@ -390,6 +390,7 @@ Thanks to Thomas Sinclair for the original bump for implementing it. I would lik
 * Sam Elliott (lenary)
 * The people who created Chronic
 * Erik Fonselius
+* Johnny Shields (johnnyshields)
 
 ## Suggestions?
 

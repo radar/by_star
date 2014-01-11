@@ -4,17 +4,14 @@ module ByStar
       options = args.extract_options!.symbolize_keys!
       time = args.first
       time ||= Time.zone.now
-      send("by_weekend_#{time_klass(time)}", time, options)
+      time = ByStar::Normalization.week(time, options)
+      by_weekend_query(time, options)
     end
 
     private
 
-    def by_weekend_Time(time, options={})
+    def by_weekend_query(time, options={})
       between(time.beginning_of_weekend, time.end_of_weekend)
-    end
-
-    def by_weekend_Date(date, options={})
-      by_weekend_Time(date.to_time, options)
     end
   end
 end
