@@ -46,5 +46,10 @@ shared_examples_for 'by calendar month' do
     it 'should be able to use an alternative field' do
       Event.by_calendar_month(:field => 'end_time').count.should eq 8
     end
+
+    context ':start_day option' do
+      subject { Post.by_calendar_month(1, :start_day => :wednesday) }
+      its(:count){ should eq 7 }
+    end
   end
 end
