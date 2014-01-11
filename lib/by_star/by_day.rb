@@ -1,12 +1,11 @@
 module ByStar
   module ByDay
+
     def by_day(*args)
-      options = args.extract_options!.symbolize_keys!
-      time = args.first
-      time ||= Time.zone.local(options[:year]) if options[:year]
-      time ||= Time.zone.now
-      time = ByStar::Normalization.time(time)
-      by_day_query(time, options)
+      with_by_star_options(*args) do |time, options|
+        time = ByStar::Normalization.time(time)
+        by_day_query(time, options)
+      end
     end
 
     def today(options={})

@@ -1,11 +1,11 @@
 module ByStar
   module ByWeekend
+
     def by_weekend(*args)
-      options = args.extract_options!.symbolize_keys!
-      time = args.first
-      time ||= Time.zone.now
-      time = ByStar::Normalization.week(time, options)
-      by_weekend_query(time, options)
+      with_by_star_options(*args) do |time, options|
+        time = ByStar::Normalization.week(time, options)
+        by_weekend_query(time, options)
+      end
     end
 
     private

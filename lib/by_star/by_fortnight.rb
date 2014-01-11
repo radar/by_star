@@ -1,20 +1,17 @@
 module ByStar
   module ByFortnight
-    # For reasoning why I use *args rather than variables here,
-    # please see the by_year method comments in lib/by_star/by_year.rb
 
     def by_fortnight(*args)
-      options = args.extract_options!.symbolize_keys!
-      time = args.first
-      time ||= Time.zone.local(options[:year]) if options[:year]
-      time ||= Time.zone.now
-      time = ByStar::Normalization.fortnight(time, options)
-      by_fortnight_query(time, options)
+      with_by_star_options(*args) do |time, options|
+        time = ByStar::Normalization.fortnight(time, options)
+        by_fortnight_query(time, options)
+      end
     end
 
     private
 
     def by_fortnight_query(time, options={})
+
       # We want to get the current fortnight and so...
       # We need to find the current week number and take one from it,
       # so that we are correctly offset from the start of the year.
