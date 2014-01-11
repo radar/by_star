@@ -1,41 +1,49 @@
 require 'spec_helper'
 
-shared_examples_for "by week" do
-  describe "by week" do
-    def posts_count(*args)
-      find_posts(*args).count
+shared_examples_for 'by week' do
+
+  describe '#by_week' do
+
+    context 'point-in-time' do
+      subject { Post.by_week('2014-01-01') }
+      its(:count){ should eq 4 }
     end
 
-    def find_posts(*args)
-      Post.by_week(*args)
+    context 'timespan' do
+      subject { Event.by_week(0) }
+      its(:count){ should eq 5 }
     end
 
-    it "should be able to find posts in the current week" do
-      posts_count.should eql(5)
+    context 'timespan strict' do
+      subject { Event.by_week(Date.parse('2014-01-01'), strict: true) }
+      its(:count){ should eq 0 }
     end
 
-    it "should be able to find posts in the 1st week" do
-      posts_count(0).should eql(7)
+    context 'with :year option' do
+
+      context 'point-in-time' do
+        subject { Post.by_week(52, year: 2013) }
+        its(:count){ should eq 4 }
+      end
+
+      context 'timespan' do
+        subject { Event.by_week(52, year: 2013) }
+        its(:count){ should eq 5 }
+      end
+
+      context 'timespan strict' do
+        subject { Event.by_week(52, year: 2013, strict: true) }
+        its(:count){ should eq 0 }
+      end
     end
 
-    it "should be able to find posts in the 1st week of last year" do
-      posts_count(0, :year => Time.zone.now.year-1).should eql(1)
+    it 'should raise an error when given an invalid argument' do
+      lambda { Post.by_weekend(-1) }.should raise_error(ByStar::ParseError, 'Week number must be between 0 and 52')
+      lambda { Post.by_weekend(53) }.should raise_error(ByStar::ParseError, 'Week number must be between 0 and 52')
     end
 
-    it "should not find any posts from a week ago" do
-      posts_count(1.week.ago).should eql(1)
-    end
-
-    it "should be able to use an alternative field" do
-      Event.by_week(:field => "start_time").size.should eql(2)
-    end
-
-    it "should find posts at the start of the year" do
-      posts_count(0).should eql(7)
-    end
-
-    it "should find posts at the end of the year" do
-      posts_count(Time.zone.now.end_of_year).should eql(1)
+    it 'should be able to use an alternative field' do
+      Event.by_week(:field => 'end_time').count.should eq 5
     end
   end
 end

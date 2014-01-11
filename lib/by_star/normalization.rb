@@ -39,8 +39,8 @@ module ByStar
       end
 
       def week_fixnum(value, options={})
-        time = Time.zone.local(options[:year], 1, 1) if options[:year]
-        time ||= Time.zone.now
+        raise ParseError, 'Week number must be between 0 and 52' unless value.in?(0..52)
+        time = Time.zone.local(options[:year] || Time.zone.now.year)
         time.beginning_of_year + value.to_i.weeks
       end
 
@@ -54,8 +54,8 @@ module ByStar
 
       def fortnight_fixnum(value, options={})
         raise ParseError, 'Fortnight number must be between 0 and 26' unless value.in?(0..26)
-        current_time = Time.zone.local(options[:year] || Time.zone.now.year)
-        current_time + (value * 2).weeks
+        time = Time.zone.local(options[:year] || Time.zone.now.year)
+        time + (value * 2).weeks
       end
 
       def quarter(value, options={})
@@ -68,8 +68,7 @@ module ByStar
 
       def quarter_fixnum(value, options={})
         raise ParseError, 'Quarter number must be between 1 and 4' unless value.in?(1..4)
-        time = Time.zone.local(options[:year], 1, 1) if options[:year]
-        time ||= Time.zone.now
+        time = Time.zone.local(options[:year] || Time.zone.now.year)
         time.beginning_of_year + ((value - 1) * 3).months
       end
 
@@ -85,7 +84,7 @@ module ByStar
         year = options[:year] || Time.zone.now.year
         Time.zone.parse "#{year}-#{value}-01"
       rescue
-        raise ParseError, "Month must be a number between 1 and 12 or the full month name (e.g. 'January')"
+        raise ParseError, 'Month must be a number between 1 and 12 or a month name'
       end
 
       def year(value, options={})

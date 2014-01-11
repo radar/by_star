@@ -1,47 +1,48 @@
 require 'spec_helper'
 
-shared_examples_for "by fortnight" do
-  describe "by fortnight" do
-    def find_posts(*args)
-      Post.by_fortnight(*args)
+shared_examples_for 'by fortnight' do
+
+  describe '#by_fortnight' do
+
+    context 'point-in-time' do
+      subject { Post.by_fortnight('2014-01-01') }
+      its(:count){ should eq 5 }
     end
 
-    def posts_count(*args)
-      find_posts(*args).count
+    context 'timespan' do
+      subject { Event.by_fortnight(0) }
+      its(:count){ should eq 6 }
     end
 
-    it "should be able to find posts in the current fortnight" do
-      posts_count.should eql(6)
+    context 'timespan strict' do
+      subject { Event.by_fortnight(Date.parse('2014-01-01'), strict: true) }
+      its(:count){ should eq 0 }
     end
 
-    it "should be able to find posts in the 1st fortnight of the current year" do
-      posts_count(0).should eql(6)
-      posts_count("0").should eql(6)
-      # There was previously a situation where incorrect time zone math
-      # caused the 'post 1' post to NOT appear, so count would be 7, rather than 8.
-      # So this line simply regression tests that problem.
-      Post.by_fortnight(0).map(&:text).should include("post 1")
+    context 'with :year option' do
+
+      context 'point-in-time' do
+        subject { Post.by_fortnight(26, year: 2013) }
+        its(:count){ should eq 6 }
+      end
+
+      context 'timespan' do
+        subject { Event.by_fortnight(26, year: 2013) }
+        its(:count){ should eq 6 }
+      end
+
+      context 'timespan strict' do
+        subject { Event.by_fortnight(26, year: 2013, strict: true) }
+        its(:count){ should eq 1 }
+      end
     end
 
-    it "should be able to find posts for a fortnight ago" do
-      posts_count(2.weeks.ago).should eql(2)
+    it 'should raise an error when given an invalid argument' do
+      lambda { Post.by_fortnight(27) }.should raise_error(ByStar::ParseError, 'Fortnight number must be between 0 and 26')
     end
 
-    it "should be able to find posts for a given fortnight in a year" do
-      posts_count(0, :year => Time.zone.now.year - 1).should eql(1)
-    end
-
-    it "should be able to find posts for the current fortnight in a specific year" do
-      posts_count(:year => Time.zone.now.year - 1).should eql(1)
-    end
-
-    it "should raise an error when given an invalid argument" do
-      lambda { find_posts(27) }.should raise_error(ByStar::ParseError, "Fortnight number must be between 0 and 26")
-    end
-
-    it "should be able to use an alternative field" do
-      Event.by_fortnight(nil, :field => "start_time").count.should eql(2)
+    it 'should be able to use an alternative field' do
+      Event.by_fortnight(:field => 'end_time').count.should eq 6
     end
   end
 end
-

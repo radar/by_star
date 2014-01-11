@@ -99,8 +99,8 @@ describe ByStar::Normalization do
     end
 
     context 'out of range' do
-      specify { ->{ ByStar::Normalization.fortnight(-1) }.should raise_error }
-      specify { ->{ ByStar::Normalization.fortnight(27) }.should raise_error }
+      specify { ->{ ByStar::Normalization.fortnight(-1) }.should raise_error(ByStar::ParseError, 'Fortnight number must be between 0 and 26') }
+      specify { ->{ ByStar::Normalization.fortnight(27) }.should raise_error(ByStar::ParseError, 'Fortnight number must be between 0 and 26') }
     end
 
     context 'with year option' do
@@ -140,6 +140,11 @@ describe ByStar::Normalization do
     context 'Fixnum' do
       let(:input){ 2 }
       it { should eq Time.zone.parse('2014-02-01 00:00:00') }
+    end
+
+    context 'out of range' do
+      specify { ->{ ByStar::Normalization.month(0) }.should raise_error(ByStar::ParseError, 'Month must be a number between 1 and 12 or a month name') }
+      specify { ->{ ByStar::Normalization.month(13) }.should raise_error(ByStar::ParseError, 'Month must be a number between 1 and 12 or a month name') }
     end
 
     context 'with year option' do
@@ -192,8 +197,8 @@ describe ByStar::Normalization do
     end
 
     context 'out of range' do
-      specify { ->{ ByStar::Normalization.quarter(0) }.should raise_error }
-      specify { ->{ ByStar::Normalization.quarter(5) }.should raise_error }
+      specify { ->{ ByStar::Normalization.quarter(0) }.should raise_error(ByStar::ParseError, 'Quarter number must be between 1 and 4') }
+      specify { ->{ ByStar::Normalization.quarter(5) }.should raise_error(ByStar::ParseError, 'Quarter number must be between 1 and 4') }
     end
   end
 

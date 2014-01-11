@@ -22,16 +22,16 @@ module ByStar
     end
 
     def by_star_start_field(options={})
-      field = options[:start_field] ||
-              options[:field] ||
+      field = options[:field] ||
+              options[:start_field] ||
               @by_star_start_field ||
               by_star_default_field
       field.to_s
     end
 
     def by_star_end_field(options={})
-      field = options[:end_field] ||
-              options[:field] ||
+      field = options[:field] ||
+              options[:end_field] ||
               @by_star_end_field ||
               by_star_start_field
       field.to_s
