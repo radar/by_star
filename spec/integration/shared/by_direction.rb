@@ -10,7 +10,7 @@ shared_examples_for 'by direction' do
     end
 
     context 'timespan' do
-      subject { Event.before(DateTime.parse '2014-01-05') }
+      subject { Event.before(Time.parse '2014-01-05') }
       its(:count){ should eq 4 }
     end
 

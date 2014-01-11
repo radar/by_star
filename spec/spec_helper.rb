@@ -8,13 +8,17 @@ FileUtils.mkdir_p(File.dirname(__FILE__) + "/tmp")
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'active_record'
-require 'mongoid' if Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version.create('1.9.3')
+require 'mongoid'
 require 'active_support'
 require 'active_support/core_ext/string/conversions'
 require 'timecop'
 require 'by_star'
 
-Time.zone = 'UTC'
+# Specs should pass regardless of timezone
+Time.zone = %w(Asia/Tokyo America/New_York UTC).sample
+puts "Running specs in #{Time.zone} timezone..."
+
+# Set Rails time to 2014-01-01 00:00:00
 Timecop.travel(Time.zone.local(2014))
 
 def testing_mongoid?

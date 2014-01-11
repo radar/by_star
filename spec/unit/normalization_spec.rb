@@ -24,7 +24,7 @@ describe ByStar::Normalization do
     end
 
     context 'DateTime' do
-      let(:input){ DateTime.parse('2014-01-01 15:00:00') }
+      let(:input){ DateTime.parse("2014-01-01 15:00:00 #{Time.zone}") }
       it { should eq Time.zone.parse('2014-01-01 15:00:00') }
     end
 
