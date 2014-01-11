@@ -13,6 +13,7 @@
 * `by_week` and `by_calendar_month` now supports optional `:start_day` option (:monday, :tuesday, etc)
 * Separate `by_calendar_month` into it's own class
 * Rename `between` to `between_times` internally, as Mongoid already defines `between`. ActiveRecord has an alias of `between` to interface stays consistent.
+* Add `:offset` option to all query methods, in order to offset the time the day begins/ends (for example supposing business cycle begins at 8:00 each day until 7:59:59 the next day)
 * `by_weekend` can now take a fixnum (parsing logic is same as by_week)
 * Add Time kernel extensions for fortnight and calendar_month
 * Add Johnny Shields as a gem co-author
