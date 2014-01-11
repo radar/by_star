@@ -141,7 +141,7 @@ Finds records for a given month as shown on a calendar. Includes all the results
 
     Post.by_calendar_month
 
-Parameter behavior is otherwise the same as `by_month`
+Parameter behavior is otherwise the same as `by_month`. Also, `:start_day` option is supported to specify the start day of the week (`:monday`, `:tuesday`, etc.)
 
 ## By Fortnight (`by_fortnight`)
 
@@ -186,6 +186,8 @@ This will return all posts in the 37th week of 2012.
     Post.by_week(Time.local(2012,1,1))
 
 This will return all posts from the first week of 2012.
+
+You may pass in a `:start_day` option (`:monday`, `:tuesday`, etc.) to specify the starting day of the week. This may also be configured in Rails.
 
 ## By Weekend (`by_weekend`)
 
@@ -300,19 +302,19 @@ You can also pass a string:
 
 For Time-Range type objects, only the start time is considered for `after`.
 
-## Between (`between` or `between_times`)
+## Between (`between_times`)
 
 To find records between two times:
 
-    Post.between(time1, time2)
+    Post.between_times(time1, time2)
 
 Also works with dates:
 
-    Post.between(date1, date2)
+    Post.between_times(date1, date2)
 
-`between_times` is an alias for `between`:
+ActiveRecord only: `between` is an alias for `between_times`:
 
-    Post.between_times(time1, time2)  #=> results identical to above
+    Post.between(time1, time2)  #=> results identical to between_times above
 
 ## Previous (`previous`)
 
@@ -337,6 +339,13 @@ You can specify a field also:
     Post.last.next("published_at")
 
 For Time-Range type objects, only the start time is considered for `next`.
+
+## Offset option
+
+All ByStar finders support an `:offset` option which offsets the time period for which the query is performed.
+This is useful in cases where the daily cycle occurs at a time other than midnight.
+
+    Post.by_day('2014-03-05', offset: 9.hours)
 
 ## Not using created_at? No worries!
 
