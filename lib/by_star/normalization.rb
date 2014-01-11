@@ -9,19 +9,25 @@ module ByStar
       def time(value)
         case value
           when String then time_string(value)
-          when Date, DateTime then value.to_time
+          when DateTime then value.to_time
+          when Date then value.to_time_in_current_zone
           else value
         end
       end
 
       def time_string(value)
-        if defined?(Chronic)
-          time = Chronic.parse(value)
-          raise ByStar::ParseError, "Chronic could not parse #{value.inspect}" unless time
-          time
-        else
-          Time.parse(value)
-        end
+        defined?(Chronic) ? time_string_chronic(value) : time_string_fallback(value)
+      end
+
+      def time_string_chronic(value)
+        Chronic.time_class = Time.zone
+        time = Chronic.parse(value)
+        raise ByStar::ParseError, "Chronic could not parse #{value.inspect}" unless time
+        time
+      end
+
+      def time_string_fallback(value)
+        Time.zone.parse(value)
       end
 
       def week(value, options={})
@@ -68,6 +74,7 @@ module ByStar
       end
 
       def month(value, options={})
+        value = try_string_to_int(value)
         case value
           when Fixnum, String then month_fixnum(value, options)
           else time(value)
@@ -76,7 +83,7 @@ module ByStar
 
       def month_fixnum(value, options={})
         year = options[:year] || Time.zone.now.year
-        Date.parse("#{year}-#{value}-01").to_time
+        Time.zone.parse "#{year}-#{value}-01"
       rescue
         raise ParseError, "Month must be a number between 1 and 12 or the full month name (e.g. 'January')"
       end
@@ -90,14 +97,14 @@ module ByStar
       end
 
       def year_fixnum(value)
-        "#{extrapolate_year(value)}-01-01".to_time
+        Time.zone.local(extrapolate_year(value))
       end
 
       def extrapolate_year(value)
         case value.to_i
-          when 0..39
+          when 0..69
             2000 + value
-          when 40..99
+          when 70..99
             1900 + value
           else
             value.to_i
