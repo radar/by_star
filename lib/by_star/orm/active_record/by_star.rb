@@ -8,18 +8,17 @@ module ByStar
       # Returns all records between a given start and finish time.
       #
       # Currently only supports Time objects.
-      def between(start, finish, options={})
-        start_field = by_star_start_field
-        end_field   = by_star_end_field
+      def between_times_query(start, finish, options={})
         scope = if options[:strict] || by_star_start_field == by_star_end_field
-          where("#{start_field} >= ? AND #{end_field} <= ?", start, finish)
+          where("#{by_star_start_field} >= ? AND #{by_star_end_field} <= ?", start, finish)
         else
-          where("#{end_field} > ? AND #{start_field} < ?", start, finish)
+          where("#{by_star_end_field} > ? AND #{by_star_start_field} < ?", start, finish)
         end
         scope = scope.order(options[:order]) if options[:order]
         scope
       end
-      alias_method :between_times, :between
+
+      alias_method :between, :between_times
 
       protected
 

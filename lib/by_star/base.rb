@@ -11,6 +11,11 @@ module ByStar
     include ByStar::ByDay
     include ByStar::ByQuarter
 
+    def between_times(start, finish, options={})
+      offset = (options[:offset] || 0).seconds
+      between_times_query(start + offset, finish + offset, options)
+    end
+
     def by_star_field(start_field = nil, end_field = nil)
       @by_star_start_field ||= start_field
       @by_star_end_field   ||= end_field

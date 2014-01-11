@@ -4,7 +4,7 @@ module ByStar
     def by_weekend(*args)
       with_by_star_options(*args) do |time, options|
         time = ByStar::Normalization.week(time, options)
-        between(time.beginning_of_weekend, time.end_of_weekend, options)
+        between_times(time.beginning_of_weekend, time.end_of_weekend, options)
       end
     end
   end

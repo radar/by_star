@@ -16,8 +16,7 @@ require 'timecop'
 
 
 # Define time zone before loading test_helper
-zone = "UTC"
-Time.zone = zone
+Time.zone = 'UTC'
 
 # Freeze time to Jan 1st of this year
 Timecop.travel(Time.zone.local(Time.zone.now.year, 1, 1, 0, 0, 1, 0))

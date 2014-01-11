@@ -9,18 +9,15 @@ module Mongoid
     module ClassMethods
       include ::ByStar::Base
 
-      def between(start, finish, options={})
-        start_field = by_star_start_field
-        end_field   = by_star_end_field
+      def between_times_query(start, finish, options={})
         scope = if options[:strict] || by_star_start_field == by_star_end_field
-          gte(start_field => start).lte(end_field => finish)
+          gte(by_star_start_field => start).lte(by_star_end_field => finish)
         else
-          gt(end_field => start).lt(start_field => finish)
+          gt(by_star_end_field => start).lt(by_star_start_field => finish)
         end
         scope = scope.order_by(field => options[:order]) if options[:order]
         scope
       end
-      alias_method :between_times, :between
 
       def by_star_end_field_with_mongoid(options = {})
         database_field_name by_star_end_field_without_mongoid(options)

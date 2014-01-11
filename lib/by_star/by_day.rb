@@ -4,7 +4,7 @@ module ByStar
     def by_day(*args)
       with_by_star_options(*args) do |time, options|
         time = ByStar::Normalization.time(time)
-        between(time.beginning_of_day, time.end_of_day, options)
+        between_times(time.beginning_of_day, time.end_of_day, options)
       end
     end
 

@@ -27,18 +27,18 @@ describe 'Mongoid', :if => Gem::Version.create(RUBY_VERSION.dup) >= Gem::Version
   it_behaves_like "by weekend"
   it_behaves_like "by year"
 
-  describe "#between" do
+  describe "#between_times" do
     it "should return a Mongoid::Critera object" do
-      Post.between(Date.today - 2, Date.today).class.should == Mongoid::Criteria
+      Post.between_times(Date.today - 2, Date.today).class.should == Mongoid::Criteria
     end
     it "should return a result set between two times" do
-      Post.between(Date.today - 2, Date.today).count.should == 1
+      Post.between_times(Date.today - 2, Date.today).count.should == 1
     end
   end
 
-  describe "#between_times" do
-    it "should be an alias of #between" do
-      Post.between_times(Date.today - 2, Date.today).should == Post.between(Date.today - 2, Date.today)
+  describe "#between" do
+    it "should not override Origin#between method" do
+      Post.between(created_at: (Date.today - 2)..Date.today).count.should == 1
     end
   end
 end if testing_mongoid?
