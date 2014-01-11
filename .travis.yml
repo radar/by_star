@@ -10,8 +10,6 @@ env:
   - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=mysql
   - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=postgres
 
-script: "DISPLAY=:99.0 bundle exec rspec spec/by_star"
-
 notifications:
   email:
     - radarlistener@gmail.com
