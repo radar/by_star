@@ -362,6 +362,13 @@ Or if you're doing it all the time on your model, then it's best to use `by_star
       by_star_field :something_else
     end
 
+## Chronic Support
+
+If [Chronic](https://github.com/mojombo/chronic) gem is present, it will be used to parse natural-language date/time
+strings in all ByStar finder methods. Otherwise, the Ruby `Time.parse` kernel method will be used as a fallback.
+
+As of ByStar 2.2.0, you must explicitly include `gem chronic` into your Gemfile in order to use Chronic.
+
 ## Mongoid
 
 Mongoid is only tested/supported on version 3.0+
@@ -398,7 +405,7 @@ Thanks to Thomas Sinclair for the original bump for implementing it. I would lik
 * August Lilleas (leethal)
 * gte351s
 * Sam Elliott (lenary)
-* The people who created Chronic
+* The people who created [Chronic](https://github.com/mojombo/chronic) gem
 * Erik Fonselius
 * Johnny Shields (johnnyshields)
 
