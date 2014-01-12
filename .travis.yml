@@ -6,9 +6,11 @@ env:
   - DB=sqlite
   - DB=mysql
   - DB=postgres
+  - DB=mongodb
   - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=sqlite
   - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=mysql
   - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=postgres
+  - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=mongodb
 
 notifications:
   email:
