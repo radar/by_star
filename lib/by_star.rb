@@ -1,14 +1,7 @@
-require 'by_star/kernel/time'
+require 'by_star/kernel'
 require 'by_star/normalization'
-require 'by_star/by_direction'
-require 'by_star/by_year'
-require 'by_star/by_month'
-require 'by_star/by_calendar_month'
-require 'by_star/by_fortnight'
-require 'by_star/by_week'
-require 'by_star/by_weekend'
-require 'by_star/by_day'
-require 'by_star/by_quarter'
+require 'by_star/between'
+require 'by_star/directional'
 require 'by_star/base'
 
 if defined?(ActiveRecord)

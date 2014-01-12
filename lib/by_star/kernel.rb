@@ -1,5 +1,7 @@
 module ByStar
+
   module Kernel
+
     module Time
 
       # A "Weekend" is defined as the 60-hour period from 15:00 Friday to 03:00 Monday.

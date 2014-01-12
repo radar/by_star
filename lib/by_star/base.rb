@@ -1,20 +1,9 @@
 module ByStar
 
   module Base
-    include ByStar::ByDirection
-    include ByStar::ByYear
-    include ByStar::ByMonth
-    include ByStar::ByCalendarMonth
-    include ByStar::ByFortnight
-    include ByStar::ByWeek
-    include ByStar::ByWeekend
-    include ByStar::ByDay
-    include ByStar::ByQuarter
 
-    def between_times(start, finish, options={})
-      offset = by_star_offset(options)
-      between_times_query(start + offset, finish + offset, options)
-    end
+    include ByStar::Between
+    include ByStar::Directional
 
     def by_star_field(start_field = nil, end_field = nil, options = {})
       @by_star_start_field ||= start_field
@@ -28,17 +17,17 @@ module ByStar
 
     def by_star_start_field(options={})
       field = options[:field] ||
-              options[:start_field] ||
-              @by_star_start_field ||
-              by_star_default_field
+          options[:start_field] ||
+          @by_star_start_field ||
+          by_star_default_field
       field.to_s
     end
 
     def by_star_end_field(options={})
       field = options[:field] ||
-              options[:end_field] ||
-              @by_star_end_field ||
-              by_star_start_field
+          options[:end_field] ||
+          @by_star_end_field ||
+          by_star_start_field
       field.to_s
     end
 

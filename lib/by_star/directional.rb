@@ -1,5 +1,6 @@
 module ByStar
-  module ByDirection
+
+  module Directional
 
     def before(*args)
       with_by_star_options(*args) do |time, options|
