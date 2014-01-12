@@ -39,14 +39,14 @@ module ByStar
 
     def previous(options={})
       field = self.class.by_star_start_field
-      field = field.split(".").last
-      self.class.where("#{field} < ?", self.send(field)).reorder("#{field} DESC").first
+      value = self.send(field.split(".").last)
+      self.class.where("#{field} < ?", value).reorder("#{field} DESC").first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
-      field = field.split(".").last
-      self.class.where("#{field} > ?", self.send(field)).reorder("#{field} ASC").first
+      value = self.send(field.split(".").last)
+      self.class.where("#{field} > ?", value).reorder("#{field} ASC").first
     end
   end
 end
