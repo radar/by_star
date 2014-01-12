@@ -1,5 +1,3 @@
-require 'chronic'
-
 require 'by_star/kernel/time'
 require 'by_star/normalization'
 require 'by_star/by_direction'
