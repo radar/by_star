@@ -21,13 +21,11 @@ module ByStar
 
       def time_string_chronic(value)
         Chronic.time_class = Time.zone
-        time = Chronic.parse(value)
-        raise ByStar::ParseError, "Chronic could not parse #{value.inspect}" unless time
-        time
+        Chronic.parse(value) || raise(ByStar::ParseError, "Chronic could not parse String #{value.inspect}")
       end
 
       def time_string_fallback(value)
-        Time.zone.parse(value)
+        Time.zone.parse(value) || raise(ByStar::ParseError, "Cannot parse String #{value.inspect}")
       end
 
       def week(value, options={})

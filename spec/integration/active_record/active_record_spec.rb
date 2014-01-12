@@ -28,6 +28,7 @@ describe ActiveRecord do
   it_behaves_like 'by week'
   it_behaves_like 'by weekend'
   it_behaves_like 'by year'
+  it_behaves_like 'offset parameter'
 
   it 'should be able to order the result set' do
     scope = Post.by_year(Time.zone.now.year, :order => 'created_at DESC')

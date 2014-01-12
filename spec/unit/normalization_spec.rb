@@ -6,14 +6,42 @@ describe ByStar::Normalization do
 
   shared_examples_for 'time normalization from string' do
 
-    context 'date String' do
-      let(:input){ '2014-01-01' }
-      it { should eq Time.zone.parse('2014-01-01 12:00:00') }
+    context 'when Chronic is defined' do
+
+      context 'date String' do
+        let(:input){ '2014-01-01' }
+        it { should eq Time.zone.parse('2014-01-01 12:00:00') }
+      end
+
+      context 'time String' do
+        let(:input){ '2014-01-01 15:00:00' }
+        it { should eq Time.zone.parse('2014-01-01 15:00:00') }
+      end
+
+      context 'natural language String' do
+        let(:input){ 'tomorrow at 3:30 pm' }
+        it { should eq Time.zone.parse('2014-01-02 15:30:00') }
+      end
     end
 
-    context 'time String' do
-      let(:input){ '2014-01-01 15:00:00' }
-      it { should eq Time.zone.parse('2014-01-01 15:00:00') }
+    context 'when Chronic is not defined' do
+
+      before { hide_const('Chronic') }
+
+      context 'date String' do
+        let(:input){ '2014-01-01' }
+        it { should eq Time.zone.parse('2014-01-01 00:00:00') }
+      end
+
+      context 'time String' do
+        let(:input){ '2014-01-01 15:00:00' }
+        it { should eq Time.zone.parse('2014-01-01 15:00:00') }
+      end
+
+      context 'natural language String' do
+        let(:input){ 'tomorrow at noon' }
+        it { ->{subject}.should raise_error(ByStar::ParseError, "Cannot parse String #{input.inspect}") }
+      end
     end
   end
 
@@ -24,7 +52,7 @@ describe ByStar::Normalization do
     end
 
     context 'DateTime' do
-      let(:input){ DateTime.parse("2014-01-01 15:00:00 #{Time.zone}") }
+      let(:input){ Time.zone.parse('2014-01-01 15:00:00').to_datetime }
       it { should eq Time.zone.parse('2014-01-01 15:00:00') }
     end
 
@@ -38,19 +66,6 @@ describe ByStar::Normalization do
     subject { ByStar::Normalization.time(input) }
     it_behaves_like 'time normalization from string'
     it_behaves_like 'time normalization from date/time'
-  end
-
-  describe '#time_string_fallback' do
-
-    it 'should parse date String to Time at beginning of day' do
-      d = '2014-01-01'
-      subject.time_string_fallback(d).should eq Time.zone.parse('2014-01-01 00:00:00')
-    end
-
-    it 'should parse time String to Time' do
-      dt = '2014-01-01 15:00:00'
-      subject.time_string_fallback(dt).should eq Time.zone.parse('2014-01-01 15:00:00')
-    end
   end
 
   describe '#week' do

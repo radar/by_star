@@ -9,11 +9,12 @@ $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'active_record'
 require 'mongoid'
+require 'chronic'
 require 'timecop'
 require 'by_star'
 
 # Specs should pass regardless of timezone
-Time.zone = %w(Asia/Tokyo America/New_York UTC).sample
+Time.zone = %w(Asia/Tokyo America/New_York Australia/Sydney UTC).sample
 puts "Running specs in #{Time.zone} timezone..."
 
 # Set Rails time to 2014-01-01 00:00:00

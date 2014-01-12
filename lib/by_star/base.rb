@@ -12,13 +12,18 @@ module ByStar
     include ByStar::ByQuarter
 
     def between_times(start, finish, options={})
-      offset = (options[:offset] || 0).seconds
+      offset = by_star_offset(options)
       between_times_query(start + offset, finish + offset, options)
     end
 
-    def by_star_field(start_field = nil, end_field = nil)
+    def by_star_field(start_field = nil, end_field = nil, options = {})
       @by_star_start_field ||= start_field
       @by_star_end_field   ||= end_field
+      @by_star_offset      ||= options[:offset]
+    end
+
+    def by_star_offset(options = {})
+      (options[:offset] || @by_star_offset || 0).seconds
     end
 
     def by_star_start_field(options={})

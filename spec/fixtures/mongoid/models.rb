@@ -11,5 +11,5 @@ class Event
   field :st, as: :start_time, type: Time
   field :end_time,            type: Time
 
-  by_star_field :start_time, :end_time
+  by_star_field :start_time, :end_time, offset: 3.hours
 end
