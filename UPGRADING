@@ -1,0 +1,10 @@
+Upgrading to ByStar 2.2.0
+-------------------------
+
+* For Mongoid only, ByStar's `.between` method has been removed and replaced with `.between_times`
+(previously `.between_times` was an alias to `.between`). Mongoid already provides a native `.between`
+finder method that we do not want to mask. ActiveRecord users may continue to use either method.
+
+* Chronic gem (used for time string parsing) has been removed as a hard dependency for ByStar,
+however it is still supported. If you would like to use Chronic with ByStar, please explicitly
+include `gem chronic` into your Gemfile.
