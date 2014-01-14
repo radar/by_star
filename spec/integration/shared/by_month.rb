@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 shared_examples_for 'by month' do
-  
+
   describe '#by_month' do
 
     context 'point-in-time' do
