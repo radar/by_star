@@ -76,5 +76,17 @@ module ByStar
         between_times(time.beginning_of_year, time.end_of_year, options)
       end
     end
+
+    def past_week(options={})
+      between_times(Time.zone.now - 1.week, Time.zone.now, options)
+    end
+
+    def past_fortnight(options={})
+      between_times(Time.zone.now - 2.weeks, Time.zone.now, options)
+    end
+
+    def past_month(options={})
+      between_times(Time.zone.now - 1.month, Time.zone.now, options)
+    end
   end
 end

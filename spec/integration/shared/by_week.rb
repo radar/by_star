@@ -11,7 +11,7 @@ shared_examples_for 'by week' do
 
     context 'timespan' do
       subject { Event.by_week(0) }
-      its(:count){ should eq 5 }
+      its(:count){ should eq 7 }
     end
 
     context 'timespan strict' do
@@ -28,7 +28,7 @@ shared_examples_for 'by week' do
 
       context 'timespan' do
         subject { Event.by_week(52, year: 2013) }
-        its(:count){ should eq 5 }
+        its(:count){ should eq 7 }
       end
 
       context 'timespan strict' do
@@ -43,7 +43,7 @@ shared_examples_for 'by week' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_week(:field => 'end_time').count.should eq 5
+      Event.by_week(:field => 'end_time').count.should eq 7
     end
 
     context ':start_day option' do

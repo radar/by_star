@@ -11,7 +11,7 @@ shared_examples_for 'by day' do
 
     context 'timespan' do
       subject { Event.by_day(Time.parse '2014-01-01') }
-      its(:count){ should eq 4 }
+      its(:count){ should eq 5 }
     end
 
     context 'timespan strict' do
@@ -20,7 +20,7 @@ shared_examples_for 'by day' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_day(:field => 'end_time').count.should eq 4
+      Event.by_day(:field => 'end_time').count.should eq 5
     end
 
     it 'should support :offset option' do
@@ -37,7 +37,7 @@ shared_examples_for 'by day' do
 
     context 'timespan' do
       subject { Event.today }
-      its(:count){ should eq 4 }
+      its(:count){ should eq 5 }
     end
 
     context 'timespan strict' do
@@ -55,7 +55,7 @@ shared_examples_for 'by day' do
 
     context 'timespan' do
       subject { Event.yesterday }
-      its(:count){ should eq 4 }
+      its(:count){ should eq 5 }
     end
 
     context 'timespan strict' do
@@ -73,7 +73,7 @@ shared_examples_for 'by day' do
 
     context 'timespan' do
       subject { Event.tomorrow }
-      its(:count){ should eq 4 }
+      its(:count){ should eq 5 }
     end
 
     context 'timespan strict' do

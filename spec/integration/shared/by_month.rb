@@ -11,7 +11,7 @@ shared_examples_for 'by month' do
 
     context 'timespan' do
       subject { Event.by_month(1) }
-      its(:count){ should eq 8 }
+      its(:count){ should eq 9 }
     end
 
     context 'timespan strict' do
@@ -23,17 +23,17 @@ shared_examples_for 'by month' do
 
       context 'point-in-time' do
         subject { Post.by_month(12, year: 2013) }
-        its(:count){ should eq 1 }
+        its(:count){ should eq 8 }
       end
 
       context 'timespan' do
         subject { Event.by_month('December', year: 2013) }
-        its(:count){ should eq 4 }
+        its(:count){ should eq 12 }
       end
 
       context 'timespan strict' do
         subject { Event.by_month('Dec', year: 2013, strict: true) }
-        its(:count){ should eq 0 }
+        its(:count){ should eq 4 }
       end
     end
 
@@ -44,7 +44,7 @@ shared_examples_for 'by month' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_month(:field => 'end_time').count.should eq 8
+      Event.by_month(:field => 'end_time').count.should eq 9
     end
   end
 end

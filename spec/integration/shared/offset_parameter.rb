@@ -10,17 +10,17 @@ shared_examples_for 'offset parameter' do
 
     context 'between_times with model offset' do
       subject { Event.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-10')) }
-      its(:count) { should eq 6 }
+      its(:count) { should eq 7 }
     end
 
     context 'between_times with offset override' do
       subject { Event.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-10'), offset: 16.hours) }
-      its(:count) { should eq 6 }
+      its(:count) { should eq 7 }
     end
 
     context 'by_day with model offset' do
       subject { Event.by_day(Time.parse('2014-01-01')) }
-      its(:count) { should eq 4 }
+      its(:count) { should eq 5 }
     end
 
     context 'by_day with offset override' do

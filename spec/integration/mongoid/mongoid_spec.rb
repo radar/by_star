@@ -28,6 +28,7 @@ describe 'Mongoid' do
   it_behaves_like 'by weekend'
   it_behaves_like 'by year'
   it_behaves_like 'offset parameter'
+  it_behaves_like 'past'
 
   describe '#between_times' do
     subject { Post.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-06')) }
