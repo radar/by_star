@@ -11,7 +11,7 @@ shared_examples_for 'by fortnight' do
 
     context 'timespan' do
       subject { Event.by_fortnight(0) }
-      its(:count){ should eq 6 }
+      its(:count){ should eq 7 }
     end
 
     context 'timespan strict' do
@@ -28,7 +28,7 @@ shared_examples_for 'by fortnight' do
 
       context 'timespan' do
         subject { Event.by_fortnight(26, year: 2013) }
-        its(:count){ should eq 6 }
+        its(:count){ should eq 7 }
       end
 
       context 'timespan strict' do
@@ -42,7 +42,7 @@ shared_examples_for 'by fortnight' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_fortnight(:field => 'end_time').count.should eq 6
+      Event.by_fortnight(:field => 'end_time').count.should eq 7
     end
   end
 end

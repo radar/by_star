@@ -11,7 +11,7 @@ shared_examples_for 'by year' do
 
     context 'timespan' do
       subject { Event.by_year(13) }
-      its(:count){ should eq 4 }
+      its(:count){ should eq 13 }
     end
 
     context 'timespan strict' do
@@ -23,26 +23,26 @@ shared_examples_for 'by year' do
 
       context 'point-in-time' do
         subject { Post.by_year(year: 2013) }
-        its(:count){ should eq 1 }
+        its(:count){ should eq 10 }
       end
 
       context 'timespan' do
         subject { Event.by_year(year: 2014) }
-        its(:count){ should eq 13 }
+        its(:count){ should eq 14 }
       end
 
       context 'timespan strict' do
         subject { Event.by_year(year: 2013, strict: true) }
-        its(:count){ should eq 0 }
+        its(:count){ should eq 8 }
       end
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_year(:field => 'end_time').count.should eq 13
+      Event.by_year(:field => 'end_time').count.should eq 14
     end
 
     it 'can use a 2-digit year' do
-      Post.by_year(13).count.should eq 1
+      Post.by_year(13).count.should eq 10
     end
   end
 end

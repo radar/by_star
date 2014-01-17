@@ -6,17 +6,17 @@ shared_examples_for 'by direction' do
 
     context 'point-in-time' do
       subject { Post.before(Date.parse '2014-01-05') }
-      its(:count){ should eq 3 }
+      its(:count){ should eq 12 }
     end
 
     context 'timespan' do
       subject { Event.before(Time.parse '2014-01-05') }
-      its(:count){ should eq 4 }
+      its(:count){ should eq 13 }
     end
 
     context 'timespan strict' do
       subject { Event.before('2014-01-05', strict: true) }
-      its(:count){ should eq 4 }
+      its(:count){ should eq 13 }
     end
   end
 

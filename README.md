@@ -41,6 +41,9 @@ This was originally crafted for only finding objects within a given month, but n
 * The current weekend
 * The current work week
 * The Past
+* The past month
+* The past fortnight
+* The past week
 * The Future
 * Between certain times
 * Before a specific record
@@ -268,6 +271,24 @@ To find all posts before a given Date or Time object:
 You can also pass a string:
 
     Post.yesterday("next tuesday")
+
+## Past Month (`past_month`)
+
+To find all posts in the past month:
+
+    Post.past_month
+
+## Past Fortnight (`past_fortnight`)
+
+To find all posts in the past fortnight:
+
+    Post.past_fortnight
+
+## Past Week (`past_week`)
+
+To find all posts in the past week:
+
+    Post.past_week
 
 ## Before (`before`)
 
