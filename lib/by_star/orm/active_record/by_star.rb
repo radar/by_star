@@ -18,7 +18,10 @@ module ByStar
         scope
       end
 
-      alias_method :between, :between_times
+      def between(*args)
+        ActiveSupport::Deprecation.warn 'ByStar `between` method will be removed in v3.0.0. Please use `between_times`'
+        between_times(*args)
+      end
 
       protected
 
