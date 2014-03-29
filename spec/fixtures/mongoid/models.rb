@@ -2,6 +2,8 @@ class Post
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::ByStar
+
+  field :day_of_month,        type: Integer
 end
 
 class Event
