@@ -1,71 +1,15 @@
-require 'chronic'
-
-require 'by_star/time_ext'
-require 'by_star/instance_methods'
-
-require 'by_star/by_direction'
-require 'by_star/by_year'
-require 'by_star/by_month'
-require 'by_star/by_fortnight'
-require 'by_star/by_week'
-require 'by_star/by_weekend'
-require 'by_star/by_day'
-require 'by_star/by_quarter'
-
-module ByStar
-
-  def by_star_field(field=nil)
-    @by_star_field ||= field
-    @by_star_field || "#{self.table_name}.created_at"
-  end
-
-  include ByDirection
-  include ByYear
-  include ByMonth
-  include ByFortnight
-  include ByWeek
-  include ByWeekend
-  include ByDay
-  include ByQuarter
-
-  class ParseError < StandardError
-
-  end
-
-  # Returns all records between a given start and finish time.
-  #
-  # Currently only supports Time objects.
-  def between(start, finish, options={})
-    field = options[:field] || by_star_field
-    scope = where("#{field} >= ? AND #{field} <= ?",
-              start, finish)
-    scope = scope.order(options[:order]) if options[:order]
-    scope
-  end
-  alias_method :between_times, :between
-
-  private
-
-  # Used inside the by_* methods to determine what kind of object "time" is.
-  # These methods take the result of the time_klass method, and call other methods
-  # using it, such as by_year_Time and by_year_String.
-  def time_klass(time)
-    case time
-    when ActiveSupport::TimeWithZone
-      Time
-    else
-      time.class
-    end
-  end
-
-end
+require 'by_star/kernel'
+require 'by_star/normalization'
+require 'by_star/between'
+require 'by_star/directional'
+require 'by_star/base'
 
 if defined?(ActiveRecord)
-  ActiveRecord::Base.send :extend, ByStar
-  ActiveRecord::Relation.send :extend, ByStar
-  ActiveRecord::Base.send :include, ByStar::InstanceMethods
+  require 'by_star/orm/active_record/by_star'
+  ActiveRecord::Base.send :include, ByStar::ActiveRecord
+  ActiveRecord::Relation.send :extend, ByStar::ActiveRecord::ClassMethods
 end
 
 if defined?(Mongoid)
-  require 'mongoid/by_star'
+  require 'by_star/orm/mongoid/by_star'
 end

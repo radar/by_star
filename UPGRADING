@@ -1,0 +1,12 @@
+Upgrading to ByStar 2.2.0
+-------------------------
+
+* ActiveRecord: the `between` method has been deprecated as of version 2.2.0, and will be removed in version 3.3.0.
+Please use `between_times` instead.
+
+* Mongoid: the `between` method has been removed as of version 2.2.0, as it conflicts with the native Mongoid `between`
+method. Please use `between_times` instead.
+
+* Chronic gem (used for time string parsing) has been removed as a hard dependency for ByStar,
+however it is still supported. If you would like to use Chronic with ByStar, please explicitly
+include `gem chronic` into your Gemfile.
