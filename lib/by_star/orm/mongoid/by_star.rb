@@ -48,12 +48,12 @@ module Mongoid
 
     def previous(options={})
       field = self.class.by_star_start_field
-      self.class.lt(field => self.send(field)).desc(field).first
+      (options[:scope] || self.class).lt(field => self.send(field)).desc(field).first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
-      self.class.gt(field => self.send(field)).asc(field).first
+      (options[:scope] || self.class).gt(field => self.send(field)).asc(field).first
     end
   end
 end
