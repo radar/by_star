@@ -43,13 +43,13 @@ module ByStar
     def previous(options={})
       field = self.class.by_star_start_field
       value = self.send(field.split(".").last)
-      self.class.where("#{field} < ?", value).reorder("#{field} DESC").first
+      (options[:scope] || self.class).where("#{field} < ?", value).reorder("#{field} DESC").first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
       value = self.send(field.split(".").last)
-      self.class.where("#{field} > ?", value).reorder("#{field} ASC").first
+      (options[:scope] || self.class).where("#{field} > ?", value).reorder("#{field} ASC").first
     end
   end
 end

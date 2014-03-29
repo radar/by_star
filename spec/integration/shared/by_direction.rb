@@ -51,5 +51,11 @@ shared_examples_for 'by direction' do
       it{ subject.previous.start_time.should eq Time.zone.parse('2013-12-31 17:00:00') }
       it{ subject.next.start_time.should eq Time.zone.parse('2014-01-07 17:00:00') }
     end
+
+    context 'scoped' do
+      subject { Post.where(created_at: Time.zone.parse('2014-01-05 17:00:00')).first }
+      it{ subject.previous({ scope: Post.where(day_of_month: subject.day_of_month) }).created_at.day.should eq subject.day_of_month }
+      it{ subject.next({ scope: Post.where(day_of_month: 1) }).created_at.day.should eq 1 }
+    end
   end
 end
