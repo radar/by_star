@@ -73,6 +73,12 @@ Want to count records? Simple:
 
    Post.by_month.count
 
+You may pass a `:scope` option to the `previous` and `next` like so:
+
+   @post.next(scope: Post.where(category: @post.category)).count
+
+This would return the next Post that matches `@post`s category
+
 ## Time-Range Type Objects
 
 If your object has both a start and end time, you may pass both params to `by_star_field`:
@@ -121,9 +127,9 @@ If you like being verbose:
 
     Post.by_month("January")
 
-This will return all posts created in January of the current year. 
+This will return all posts created in January of the current year.
 
-If you want to find all posts in January of last year just do 
+If you want to find all posts in January of last year just do
 
     Post.by_month(1, :year => 2007)
 

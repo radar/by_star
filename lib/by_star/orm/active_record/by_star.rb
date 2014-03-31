@@ -12,10 +12,11 @@ module ByStar
         start_field = by_star_start_field(options)
         end_field = by_star_end_field(options)
 
+        scope = by_star_scope(options)
         scope = if options[:strict] || start_field == end_field
-          where("#{start_field} >= ? AND #{end_field} <= ?", start, finish)
+          scope.where("#{start_field} >= ? AND #{end_field} <= ?", start, finish)
         else
-          where("#{end_field} > ? AND #{start_field} < ?", start, finish)
+          scope.where("#{end_field} > ? AND #{start_field} < ?", start, finish)
         end
         scope = scope.order(options[:order]) if options[:order]
         scope
@@ -33,26 +34,26 @@ module ByStar
       end
 
       def before_query(time, options={})
-        field = by_star_start_field
-        where("#{field} <= ?", time)
+        field = by_star_start_field(options)
+        by_star_scope(options).where("#{field} <= ?", time)
       end
 
       def after_query(time, options={})
-        field = by_star_start_field
-        where("#{field} >= ?", time)
+        field = by_star_start_field(options)
+        by_star_scope(options).where("#{field} >= ?", time)
       end
     end
 
     def previous(options={})
       field = self.class.by_star_start_field
       value = self.send(field.split(".").last)
-      self.class.where("#{field} < ?", value).reorder("#{field} DESC").first
+      self.class.by_star_scope(options).where("#{field} < ?", value).reorder("#{field} DESC").first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
       value = self.send(field.split(".").last)
-      self.class.where("#{field} > ?", value).reorder("#{field} ASC").first
+      self.class.by_star_scope(options).where("#{field} > ?", value).reorder("#{field} ASC").first
     end
   end
 end

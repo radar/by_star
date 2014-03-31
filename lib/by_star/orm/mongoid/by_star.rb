@@ -13,10 +13,11 @@ module Mongoid
         start_field = by_star_start_field(options)
         end_field = by_star_end_field(options)
 
+        scope = by_star_scope(options)
         scope = if options[:strict] || start_field == end_field
-          gte(start_field => start).lte(end_field => finish)
+          scope.gte(start_field => start).lte(end_field => finish)
         else
-          gt(end_field => start).lt(start_field => finish)
+          scope.gt(end_field => start).lt(start_field => finish)
         end
         scope = scope.order_by(field => options[:order]) if options[:order]
         scope
@@ -39,24 +40,24 @@ module Mongoid
       end
 
       def before_query(time, options={})
-        field = by_star_start_field
-        lte(field => time)
+        field = by_star_start_field(options)
+        by_star_scope(options).lte(field => time)
       end
 
       def after_query(time, options={})
-        field = by_star_start_field
-        gte(field => time)
+        field = by_star_start_field(options)
+        by_star_scope(options).gte(field => time)
       end
     end
 
     def previous(options={})
       field = self.class.by_star_start_field
-      self.class.lt(field => self.send(field)).desc(field).first
+      self.class.by_star_scope(options).lt(field => self.send(field)).desc(field).first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
-      self.class.gt(field => self.send(field)).asc(field).first
+      self.class.by_star_scope(options).gt(field => self.send(field)).asc(field).first
     end
   end
 end

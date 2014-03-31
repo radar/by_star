@@ -9,6 +9,7 @@ module ByStar
       @by_star_start_field ||= start_field
       @by_star_end_field   ||= end_field
       @by_star_offset      ||= options[:offset]
+      @by_star_scope       ||= options[:scope]
     end
 
     def by_star_offset(options = {})
@@ -29,6 +30,19 @@ module ByStar
           @by_star_end_field ||
           by_star_start_field
       field.to_s
+    end
+
+    def by_star_scope(options={})
+      scope = options[:scope] || @by_star_scope || self
+      if scope.is_a?(Proc)
+        if scope.arity == 0
+          return instance_exec(&scope)
+        else
+          return instance_exec(self, &scope)
+        end
+      else
+        return scope
+      end
     end
 
     protected
