@@ -1,9 +1,10 @@
 # CHANGELOG
 
-## Unreleased
+## v2.2.1 (Unreleased)
 
-* Feature: Add past_week, past_month, and past_fornight finders
-* Bug Fix: :field, :start_field, and :end_field options were being ignored on finder
+* Add `:scope` parameter support on all finders
+* Feature: Add `past_week`, `past_month`, and `past_fortnight` finders
+* Bug Fix: `:field`, `:start_field`, and `:end_field` options were being ignored on finder
 
 ## v2.2.0
 
