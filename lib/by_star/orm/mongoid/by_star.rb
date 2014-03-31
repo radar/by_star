@@ -10,10 +10,13 @@ module Mongoid
       include ::ByStar::Base
 
       def between_times_query(start, finish, options={})
-        scope = if options[:strict] || by_star_start_field == by_star_end_field
-          gte(by_star_start_field => start).lte(by_star_end_field => finish)
+        start_field = by_star_start_field(options)
+        end_field = by_star_end_field(options)
+
+        scope = if options[:strict] || start_field == end_field
+          gte(start_field => start).lte(end_field => finish)
         else
-          gt(by_star_end_field => start).lt(by_star_start_field => finish)
+          gt(end_field => start).lt(start_field => finish)
         end
         scope = scope.order_by(field => options[:order]) if options[:order]
         scope

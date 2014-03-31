@@ -9,10 +9,13 @@ module ByStar
       #
       # Currently only supports Time objects.
       def between_times_query(start, finish, options={})
-        scope = if options[:strict] || by_star_start_field == by_star_end_field
-          where("#{by_star_start_field} >= ? AND #{by_star_end_field} <= ?", start, finish)
+        start_field = by_star_start_field(options)
+        end_field = by_star_end_field(options)
+
+        scope = if options[:strict] || start_field == end_field
+          where("#{start_field} >= ? AND #{end_field} <= ?", start, finish)
         else
-          where("#{by_star_end_field} > ? AND #{by_star_start_field} < ?", start, finish)
+          where("#{end_field} > ? AND #{start_field} < ?", start, finish)
         end
         scope = scope.order(options[:order]) if options[:order]
         scope

@@ -44,7 +44,7 @@ shared_examples_for 'by calendar month' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_calendar_month(:field => 'end_time').count.should eq 10
+      Event.by_calendar_month(:field => 'end_time').count.should eq 9
     end
 
     context ':start_day option' do

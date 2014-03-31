@@ -42,7 +42,7 @@ shared_examples_for 'by fortnight' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_fortnight(:field => 'end_time').count.should eq 7
+      Event.by_fortnight(:field => 'end_time').count.should eq 5
     end
   end
 end
