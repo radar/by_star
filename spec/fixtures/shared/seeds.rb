@@ -21,5 +21,5 @@
    2014-04-01
    2014-04-15).map{|d| Time.zone.parse(d) + 17.hours }.each do |d|
   Post.create!(:created_at => d)
-  Event.create!(:start_time => d - 5.days, :end_time => d + 5.days)
+  Event.create!(:created_at => d, :start_time => d - 5.days, :end_time => d + 5.days)
 end

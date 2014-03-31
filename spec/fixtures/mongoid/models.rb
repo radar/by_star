@@ -6,6 +6,7 @@ end
 
 class Event
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Mongoid::ByStar
 
   field :st, as: :start_time, type: Time

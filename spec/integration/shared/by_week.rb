@@ -43,7 +43,7 @@ shared_examples_for 'by week' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_week(:field => 'end_time').count.should eq 7
+      Event.by_week(:field => 'end_time').count.should eq 3
     end
 
     context ':start_day option' do

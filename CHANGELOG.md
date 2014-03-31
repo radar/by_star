@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Unreleased
+
+* Feature: Add past_week, past_month, and past_fornight finders
+* Bug Fix: :field, :start_field, and :end_field options were being ignored on finder
+
 ## v2.2.0
 
 * Begin tracking CHANGELOG

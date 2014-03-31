@@ -20,7 +20,7 @@ shared_examples_for 'by day' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_day(:field => 'end_time').count.should eq 5
+      Event.by_day(:field => 'end_time').count.should eq 0
     end
 
     it 'should support :offset option' do
@@ -44,6 +44,14 @@ shared_examples_for 'by day' do
       subject { Event.today(strict: true) }
       its(:count){ should eq 0 }
     end
+
+    it 'should be able to use an alternative field' do
+      Event.today(:field => 'created_at').count.should eq 2
+    end
+
+    it 'should support :offset option' do
+      Post.today(:offset => -24.hours).count.should eq 1
+    end
   end
 
   describe '#yesterday' do # 2013-12-31
@@ -62,6 +70,14 @@ shared_examples_for 'by day' do
       subject { Event.yesterday(strict: true) }
       its(:count){ should eq 0 }
     end
+
+    it 'should be able to use an alternative field' do
+      Event.yesterday(:field => 'created_at').count.should eq 1
+    end
+
+    it 'should support :offset option' do
+      Post.yesterday(:offset => 24.hours).count.should eq 2
+    end
   end
 
   describe '#tomorrow' do # 2014-01-02
@@ -79,6 +95,14 @@ shared_examples_for 'by day' do
     context 'timespan strict' do
       subject { Event.tomorrow(strict: true) }
       its(:count){ should eq 0 }
+    end
+
+    it 'should be able to use an alternative field' do
+      Event.tomorrow(:field => 'created_at').count.should eq 0
+    end
+
+    it 'should support :offset option' do
+      Post.tomorrow(:offset => -24.hours).count.should eq 2
     end
   end
 end

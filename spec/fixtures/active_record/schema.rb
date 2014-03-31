@@ -6,6 +6,7 @@ ActiveRecord::Schema.define do
   end
 
   create_table :events, :force => true do |t|
+    t.timestamps
     t.datetime :start_time, :end_time
   end
 end

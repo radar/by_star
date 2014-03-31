@@ -43,7 +43,7 @@ shared_examples_for 'by weekend' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_weekend(:field => 'end_time').count.should eq 5
+      Event.by_weekend(:field => 'end_time').count.should eq 1
     end
   end
 end

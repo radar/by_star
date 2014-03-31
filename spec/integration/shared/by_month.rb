@@ -44,7 +44,7 @@ shared_examples_for 'by month' do
     end
 
     it 'should be able to use an alternative field' do
-      Event.by_month(:field => 'end_time').count.should eq 9
+      Event.by_month(:field => 'end_time').count.should eq 8
     end
   end
 end
