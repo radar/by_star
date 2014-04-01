@@ -8,7 +8,7 @@ shared_examples_for 'offset parameter' do
       Post.instance_variable_get(:@by_star_offset).should be_nil
     end
 
-    context 'between_times with model offset' do
+    context 'between_times with default offset' do
       subject { Event.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-10')) }
       its(:count) { should eq 7 }
     end
@@ -18,7 +18,7 @@ shared_examples_for 'offset parameter' do
       its(:count) { should eq 7 }
     end
 
-    context 'by_day with model offset' do
+    context 'by_day with default offset' do
       subject { Event.by_day(Time.parse('2014-01-01')) }
       its(:count) { should eq 5 }
     end

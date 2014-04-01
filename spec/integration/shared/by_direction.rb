@@ -23,6 +23,21 @@ shared_examples_for 'by direction' do
       subject { Event.before('2014-01-05', field: 'created_at') }
       its(:count){ should eq 12 }
     end
+
+    context 'with default scope' do
+      subject { Appointment.before('2014-01-05', field: 'created_at') }
+      its(:count){ should eq 4 }
+    end
+
+    context 'with scope as a query criteria' do
+      subject { Post.before('2014-01-05', field: 'created_at', scope: Post.where(day_of_month: 5)) }
+      its(:count){ should eq 1 }
+    end
+
+    context 'with scope as a proc' do
+      subject { Post.before('2014-01-05', field: 'created_at', scope: ->{ where(day_of_month: 5) }) }
+      its(:count){ should eq 1 }
+    end
   end
 
   describe '#after' do
@@ -46,6 +61,21 @@ shared_examples_for 'by direction' do
       subject { Event.after('2014-01-05', field: 'created_at') }
       its(:count){ should eq 10 }
     end
+
+    context 'with default scope' do
+      subject { Appointment.after('2014-01-05', field: 'created_at') }
+      its(:count){ should eq 3 }
+    end
+
+    context 'with scope as a query criteria' do
+      subject { Post.after('2014-01-05', field: 'created_at', scope: Post.where(day_of_month: 5)) }
+      its(:count){ should eq 1 }
+    end
+
+    context 'with scope as a proc' do
+      subject { Post.after('2014-01-05', field: 'created_at', scope: ->{ where(day_of_month: 5) }) }
+      its(:count){ should eq 1 }
+    end
   end
 
   describe '#previous and #next' do
@@ -62,17 +92,23 @@ shared_examples_for 'by direction' do
       it{ subject.next.start_time.should eq Time.zone.parse('2014-01-07 17:00:00') }
     end
 
+    context 'with default scope' do
+      subject { Appointment.where(created_at: Time.zone.parse('2014-01-05 17:00:00')).first }
+      it{ subject.previous.created_at.should eq Time.zone.parse('2014-01-01 17:00:00') }
+      it{ subject.next.created_at.should eq Time.zone.parse('2014-02-01 17:00:00') }
+    end
+
     context 'with scope as a query criteria' do
       subject { Post.where(created_at: Time.zone.parse('2014-01-05 17:00:00')).first }
-      it{ subject.previous({ scope: Post.where(day_of_month: subject.day_of_month) }).created_at.day.should eq subject.day_of_month }
-      it{ subject.next({ scope: Post.where(day_of_month: 1) }).created_at.day.should eq 1 }
+      it{ subject.previous({ scope: Post.where(day_of_month: 5) }).created_at.should eq Time.zone.parse('2013-12-05 17:00:00')  }
+      it{ subject.next({ scope: Post.where(day_of_month: 1) }).created_at.should eq Time.zone.parse('2014-02-01 17:00:00')  }
     end
 
     context 'with scope as a proc' do
       subject { Post.where(created_at: Time.zone.parse('2014-01-05 17:00:00')).first }
-      it{ subject.previous({ scope: Proc.new{ where(day_of_month: 5) } }).created_at.day.should eq 5 }
-      it{ subject.next({ scope: ->{ where(day_of_month: 1) } }).created_at.day.should eq 1 }
-      it{ subject.next({ scope: ->(klass){ klass.where(day_of_month: 1) } }).created_at.day.should eq 1 }
+      it{ subject.previous({ scope: Proc.new{ where(day_of_month: 5) } }).created_at.should eq Time.zone.parse('2013-12-05 17:00:00') }
+      it{ subject.next({ scope: ->{ where(day_of_month: 1) } }).created_at.should eq Time.zone.parse('2014-02-01 17:00:00') }
+      it{ subject.next({ scope: ->(klass){ klass.where(day_of_month: 1) } }).created_at.should eq Time.zone.parse('2014-02-01 17:00:00') }
     end
   end
 end

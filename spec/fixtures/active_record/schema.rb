@@ -11,4 +11,9 @@ ActiveRecord::Schema.define do
     t.datetime :start_time, :end_time
     t.integer  :day_of_month
   end
+
+  create_table :appointments, :force => true do |t|
+    t.timestamps
+    t.integer :day_of_month
+  end
 end

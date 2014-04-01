@@ -6,6 +6,16 @@ class Post
   field :day_of_month,        type: Integer
 end
 
+class Appointment
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  include Mongoid::ByStar
+
+  field :day_of_month,        type: Integer
+
+  by_star_field scope: ->{ where(day_of_month: 1) }
+end
+
 class Event
   include Mongoid::Document
   include Mongoid::Timestamps

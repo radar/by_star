@@ -5,6 +5,7 @@ describe 'Mongoid' do
 
   before(:all) do
     DATABASE_NAME = "mongoid_#{Process.pid}"
+    # Moped.logger = Logger.new(STDOUT)
 
     Mongoid.configure do |config|
       config.connect_to DATABASE_NAME
@@ -28,6 +29,7 @@ describe 'Mongoid' do
   it_behaves_like 'by weekend'
   it_behaves_like 'by year'
   it_behaves_like 'offset parameter'
+  it_behaves_like 'scope parameter'
   it_behaves_like 'past'
 
   describe '#between_times' do

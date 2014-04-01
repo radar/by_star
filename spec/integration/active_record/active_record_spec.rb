@@ -4,6 +4,7 @@ Dir[File.dirname(__FILE__) + '/../shared/*.rb'].each {|file| require file }
 describe ActiveRecord do
   before(:all) do
     ActiveRecord::Base.default_timezone = :utc
+    # ActiveRecord::Base.logger = Logger.new(STDOUT)
 
     db_config = YAML::load_file(File.dirname(__FILE__) + '/../../database.yml')
     if db_config.has_key?('sqlite') && db_config['sqlite'].has_key?('database')
@@ -29,6 +30,7 @@ describe ActiveRecord do
   it_behaves_like 'by weekend'
   it_behaves_like 'by year'
   it_behaves_like 'offset parameter'
+  it_behaves_like 'scope parameter'
   it_behaves_like 'past'
 
   it 'should be able to order the result set' do

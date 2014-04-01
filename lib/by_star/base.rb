@@ -5,9 +5,10 @@ module ByStar
     include ByStar::Between
     include ByStar::Directional
 
-    def by_star_field(start_field = nil, end_field = nil, options = {})
-      @by_star_start_field ||= start_field
-      @by_star_end_field   ||= end_field
+    def by_star_field(*args)
+      options = args.extract_options!
+      @by_star_start_field ||= args[0]
+      @by_star_end_field   ||= args[1]
       @by_star_offset      ||= options[:offset]
       @by_star_scope       ||= options[:scope]
     end
