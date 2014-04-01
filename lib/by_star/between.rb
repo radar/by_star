@@ -14,18 +14,6 @@ module ByStar
       end
     end
 
-    def today(options={})
-      by_day(Time.zone.now, options)
-    end
-
-    def yesterday(options={})
-      by_day(Time.zone.now.yesterday, options)
-    end
-
-    def tomorrow(options={})
-      by_day(Time.zone.now.tomorrow, options)
-    end
-
     def by_week(*args)
       with_by_star_options(*args) do |time, options|
         time = ByStar::Normalization.week(time, options)
@@ -77,6 +65,22 @@ module ByStar
       end
     end
 
+    def today(options={})
+      by_day(Time.zone.now, options)
+    end
+
+    def yesterday(options={})
+      by_day(Time.zone.now.yesterday, options)
+    end
+
+    def tomorrow(options={})
+      by_day(Time.zone.now.tomorrow, options)
+    end
+
+    def past_day(options={})
+      between_times(Time.zone.now - 1.day, Time.zone.now, options)
+    end
+
     def past_week(options={})
       between_times(Time.zone.now - 1.week, Time.zone.now, options)
     end
@@ -87,6 +91,30 @@ module ByStar
 
     def past_month(options={})
       between_times(Time.zone.now - 1.month, Time.zone.now, options)
+    end
+
+    def past_year(options={})
+      between_times(Time.zone.now - 1.year, Time.zone.now, options)
+    end
+
+    def next_day(options={})
+      between_times(Time.zone.now, Time.zone.now + 1.day, options)
+    end
+
+    def next_week(options={})
+      between_times(Time.zone.now, Time.zone.now  + 1.week, options)
+    end
+
+    def next_fortnight(options={})
+      between_times(Time.zone.now, Time.zone.now + 2.weeks, options)
+    end
+
+    def next_month(options={})
+      between_times(Time.zone.now, Time.zone.now + 1.month, options)
+    end
+
+    def next_year(options={})
+      between_times(Time.zone.now, Time.zone.now + 1.year, options)
     end
   end
 end

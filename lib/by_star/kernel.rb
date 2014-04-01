@@ -25,7 +25,7 @@ module ByStar
         (beginning_of_fortnight.to_date + 13).end_of_day
       end
 
-      # A "Calendar Month" is defined as a month as it appears on a calendar, including days
+      # A "Calendar Month" is defined as a month as it appears on a calendar, including days form
       # previous/following months which are part of the first/last weeks of the given month.
       def beginning_of_calendar_month(*args)
         beginning_of_month.beginning_of_week(*args)

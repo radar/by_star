@@ -1,13 +1,14 @@
 # CHANGELOG
 
-## v2.2.1
+## v2.2.0 - 2014-04-01
 
-* Add `:scope` parameter support on all finders
-* Feature: Add `past_week`, `past_month`, and `past_fortnight` finders
-* Bug Fix: `:field`, `:start_field`, and `:end_field` options were being ignored on finder
-* Bug Fix: `by_star_field` should accept options without start/end_time args
+* Add `:scope` parameter support on all finders - @pnomolos / @johnnyshields
+* Feature: Add `past_*` and `next_*` finders - @davegudge
+* Bug Fix: `:field`, `:start_field`, and `:end_field` options were being ignored on finder - @johnnyshields / @gamov
+* Bug Fix: `by_star_field` should accept options without start/end_time args - @johnnyshields
+* Improve readme documentation - @johnnyshields
 
-## v2.2.0
+## v2.2.0.rc1 - 2014-01-14
 
 * Begin tracking CHANGELOG
 * Drop official support for Ruby <= 1.9.2
