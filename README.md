@@ -8,12 +8,12 @@ ByStar (by_*) allows you easily and reliably query ActiveRecord and/or Mongoid o
 Examples:
 
 ```ruby
-   Post.by_year(2013)                      # all posts in 2013
-   Post.before(Date.today)                 # all posts for before today
-   Post.yesterday                          # all posts in 2013
-   Post.between(Time.zone.now,             # all posts in last 3 hours
-                Time.zone.now - 3.hours)
-   @post.next                              # next post after a given post
+   Post.by_year(2013)                           # all posts in 2013
+   Post.before(Date.today)                      # all posts for before today
+   Post.yesterday                               # all posts in 2013
+   Post.between_times(Time.zone.now - 3.hours,  # all posts in last 3 hours
+                      Time.zone.now)
+   @post.next                                   # next post after a given post
 ```
 
 ## Installation
