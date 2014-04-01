@@ -44,9 +44,9 @@ class MyModel
 ByStar adds the following finder scopes (class methods) to your model to query time ranges.
 These accept a `Date`, `Time`, or `DateTime` object as an argument, which defaults to `Time.zone.now` if not specified:
 
-* `between_times(start_time, end_time)`: Finds all records occurring between the two given times
-* `before(end_time)`: Finds all records occurring before the given time
-* `after(start_time)`: Finds all records occurring after the given time
+* `between_times(start_time, end_time)` Finds all records occurring between the two given times
+* `before(end_time)` Finds all records occurring before the given time
+* `after(start_time)` Finds all records occurring after the given time
 
 ### Time Range Scopes
 
@@ -55,11 +55,11 @@ See sections below for detailed argument usage of each:
 
 * `by_day`
 * `by_week`
-* `by_weekend`: 60-hour period from 15:00 Friday to 03:00 Monday
-* `by_fortnight`: A two-week period, with the first fortnight of the year beginning on 1st January
+* `by_weekend` 60-hour period from 15:00 Friday to 03:00 Monday
+* `by_fortnight` A two-week period, with the first fortnight of the year beginning on 1st January
 * `by_month`
-* `by_calendar_month`: Month as it appears on a calendar; days form previous/following months which are part of the first/last weeks of the given month
-* `by_quarter`: 3-month intervals of the year
+* `by_calendar_month` Month as it appears on a calendar; days form previous/following months which are part of the first/last weeks of the given month
+* `by_quarter` 3-month intervals of the year
 * `by_year`
 
 ### Relative Scopes
@@ -68,19 +68,19 @@ ByStar also adds scopes which are relative to the current time.
 Note the `past_*` and `next_*` methods represent a time distance from current time (`Time.zone.now`),
 and do not strictly end/begin evenly on a calendar week/month/year (unlike `by_*` methods which do.)
 
-* `today`: Finds all occurrences on today's date
-* `yesterday`: Finds all occurrences on yesterday's date
-* `tomorrow`: Finds all occurrences on tomorrow's date
-* `past_day`: Prior 24-hour period from current time
-* `past_week`: Prior 7-day period from current time
-* `past_fortnight`: Prior 14-day period from current time
-* `past_month`: Prior 30-day period from current time
-* `past_year`: Prior 365-day period from current time
-* `next_day`: Subsequent 24-hour period from current time
-* `next_week`: Subsequent 7-day period from current time
-* `next_fortnight`: Subsequent 14-day period from current time
-* `next_month`: Subsequent 30-day period from current time
-* `next_year`: Subsequent 365-day period from current time
+* `today` Finds all occurrences on today's date
+* `yesterday` Finds all occurrences on yesterday's date
+* `tomorrow` Finds all occurrences on tomorrow's date
+* `past_day` Prior 24-hour period from current time
+* `past_week` Prior 7-day period from current time
+* `past_fortnight` Prior 14-day period from current time
+* `past_month` Prior 30-day period from current time
+* `past_year` Prior 365-day period from current time
+* `next_day` Subsequent 24-hour period from current time
+* `next_week` Subsequent 7-day period from current time
+* `next_fortnight` Subsequent 14-day period from current time
+* `next_month` Subsequent 30-day period from current time
+* `next_year` Subsequent 365-day period from current time
 
 ### Instance Methods
 
