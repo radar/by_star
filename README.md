@@ -91,7 +91,7 @@ In addition, ByStar adds instance methods to return the next / previous record i
 
 ### Kernel Extensions
 
-Lastly, ByStar extends the kernel `Date`, `Time`, and `DateTime` objects with the following instance methods,
+ByStar extends the kernel `Date`, `Time`, and `DateTime` objects with the following instance methods,
 which mirror the ActiveSupport methods `beginning_of_day`, `end_of_week`, etc:
 
 * `beginning_of_weekend`
@@ -100,6 +100,8 @@ which mirror the ActiveSupport methods `beginning_of_day`, `end_of_week`, etc:
 * `end_of_fortnight`
 * `beginning_of_calendar_month`
 * `end_of_calendar_month`
+
+Lastly, ByStar aliases Rails 3 `Date#to_time_in_current_zone` to the Rails 4 syntax `#in_time_zone`, if it has not already been defined.
 
 ## Usage
 

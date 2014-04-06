@@ -1,4 +1,5 @@
-require 'by_star/kernel'
+require 'by_star/kernel/time'
+require 'by_star/kernel/date'
 require 'by_star/normalization'
 require 'by_star/between'
 require 'by_star/directional'

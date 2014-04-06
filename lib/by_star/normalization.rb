@@ -8,15 +8,9 @@ module ByStar
 
       def time(value)
         case value
-          when String then time_string(value)
+          when String   then time_string(value)
           when DateTime then value.to_time
-          when Date
-            begin
-              value.in_time_zone
-            rescue NoMethodError
-              # fallback to deprecated method
-              value.to_time_in_current_zone
-            end
+          when Date     then value.in_time_zone
           else value
         end
       end
