@@ -3,6 +3,7 @@
 ## Unreleased
 
 * Alias `Date#in_time_zone` to `#to_time_in_current_zone` if not already defined (e.g. for Rails <= 3) - @jcypret / @johnnyshields
+* Add `oldest` and `newest` methods
 
 ## v2.2.0 - 2014-04-01
 

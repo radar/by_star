@@ -78,6 +78,44 @@ shared_examples_for 'by direction' do
     end
   end
 
+  describe '#oldest and #newest' do
+
+    context 'point-in-time' do
+      it { Post.newest.created_at.should eq Time.zone.parse('2014-04-15 17:00:00') }
+      it { Post.oldest.created_at.should eq Time.zone.parse('2013-11-01 17:00:00') }
+    end
+
+    context 'timespan' do
+      it { Event.newest.created_at.should eq Time.zone.parse('2014-04-15 17:00:00') }
+      it { Event.oldest.created_at.should eq Time.zone.parse('2013-11-01 17:00:00') }
+    end
+
+    context 'timespan strict' do
+      it { Event.newest(strict: true).created_at.should eq Time.zone.parse('2014-04-15 17:00:00') }
+      it { Event.oldest(strict: true).created_at.should eq Time.zone.parse('2013-11-01 17:00:00') }
+    end
+
+    context 'alternative field' do
+      it { Event.newest(field: 'created_at').created_at.should eq Time.zone.parse('2014-04-15 17:00:00') }
+      it { Event.oldest(field: 'created_at').created_at.should eq Time.zone.parse('2013-11-01 17:00:00') }
+    end
+
+    context 'with default scope' do
+      it { Appointment.newest(field: 'created_at').created_at.should eq Time.zone.parse('2014-04-01 17:00:00') }
+      it { Appointment.oldest(field: 'created_at').created_at.should eq Time.zone.parse('2013-11-01 17:00:00') }
+    end
+
+    context 'with scope as a query criteria' do
+      it { Post.newest(field: 'created_at', scope: Post.where(day_of_month: 5)).created_at.should eq Time.zone.parse('2014-01-05 17:00:00') }
+      it { Post.oldest(field: 'created_at', scope: Post.where(day_of_month: 5)).created_at.should eq Time.zone.parse('2013-12-05 17:00:00') }
+    end
+
+    context 'with scope as a proc' do
+      it { Post.newest(field: 'created_at', scope: ->{ where(day_of_month: 5) }).created_at.should eq Time.zone.parse('2014-01-05 17:00:00') }
+      it { Post.oldest(field: 'created_at', scope: ->{ where(day_of_month: 5) }).created_at.should eq Time.zone.parse('2013-12-05 17:00:00') }
+    end
+  end
+
   describe '#previous and #next' do
 
     context 'point-in-time' do

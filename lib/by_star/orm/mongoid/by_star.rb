@@ -48,6 +48,16 @@ module Mongoid
         field = by_star_start_field(options)
         by_star_scope(options).gte(field => time)
       end
+
+      def oldest_query(options={})
+        field = by_star_start_field(options)
+        by_star_scope(options).order_by(field => :asc).first
+      end
+
+      def newest_query(options={})
+        field = by_star_start_field(options)
+        by_star_scope(options).order_by(field => :desc).first
+      end
     end
 
     def previous(options={})

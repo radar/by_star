@@ -42,6 +42,16 @@ module ByStar
         field = by_star_start_field(options)
         by_star_scope(options).where("#{field} >= ?", time)
       end
+
+      def oldest_query(options={})
+        field = by_star_start_field(options)
+        by_star_scope(options).reorder("#{field} ASC").first
+      end
+
+      def newest_query(options={})
+        field = by_star_start_field(options)
+        by_star_scope(options).reorder("#{field} DESC").first
+      end
     end
 
     def previous(options={})

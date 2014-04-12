@@ -82,9 +82,17 @@ and do not strictly end/begin evenly on a calendar week/month/year (unlike `by_*
 * `next_month` Subsequent 30-day period from current time
 * `next_year` Subsequent 365-day period from current time
 
+### Superlative Finders
+
+Find the oldest or newest records. Returns an object instance (not a relation):
+
+* `newest`
+* `oldest`
+
 ### Instance Methods
 
-In addition, ByStar adds instance methods to return the next / previous record in the timewise sequence:
+In addition, ByStar adds instance methods to return the next / previous record in the timewise sequence.
+Returns an object instance (not a relation):
 
 * `object.next`
 * `object.previous`
@@ -124,7 +132,8 @@ Alternatively, you may set a default in your model using the `by_star_field` mac
 
 ### Scoping the Find
 
-All ByStar methods (except `previous` and `next`) return `ActiveRecord::Relation` and/or `Mongoid::Criteria` objects, which can be daisy-chained with other scopes/finder methods:
+All ByStar methods (except `oldest`, `newest`, `previous`, `next`) return `ActiveRecord::Relation` and/or
+`Mongoid::Criteria` objects, which can be daisy-chained with other scopes/finder methods:
 
 ```ruby
    Post.by_month.your_scope
@@ -146,7 +155,7 @@ You may pass a `:scope` option as a Relation or Proc to all ByStar methods like 
    @post.next(scope: ->{ where(category: 'blog') })
 ```
 
-This is particularly useful for `previous` and `next`, which return a model instance rather than
+This is particularly useful for `oldest`, `newest`, `previous`, `next` which return a model instance rather than
 a Relation and hence cannot be daisy-chained with other scopes.
 
 You may also set a default scope in the `by_star_field` macro. (It is recommended this be a Proc):

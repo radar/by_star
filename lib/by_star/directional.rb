@@ -17,5 +17,17 @@ module ByStar
       end
     end
     alias_method :after_now, :after
+
+    def oldest(*args)
+      with_by_star_options(*args) do |time, options|
+        oldest_query(options)
+      end
+    end
+
+    def newest(*args)
+      with_by_star_options(*args) do |time, options|
+        newest_query(options)
+      end
+    end
   end
 end
