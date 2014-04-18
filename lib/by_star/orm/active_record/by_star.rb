@@ -57,13 +57,13 @@ module ByStar
     def previous(options={})
       field = self.class.by_star_start_field
       value = self.send(field.split(".").last)
-      self.class.by_star_scope(options).where("#{field} < ?", value).reorder("#{field} DESC").first
+      self.class.by_star_scope(options.merge(scope_args: self)).where("#{field} < ?", value).reorder("#{field} DESC").first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
       value = self.send(field.split(".").last)
-      self.class.by_star_scope(options).where("#{field} > ?", value).reorder("#{field} ASC").first
+      self.class.by_star_scope(options.merge(scope_args: self)).where("#{field} > ?", value).reorder("#{field} ASC").first
     end
   end
 end

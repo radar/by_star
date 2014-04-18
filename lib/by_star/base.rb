@@ -38,8 +38,10 @@ module ByStar
       if scope.is_a?(Proc)
         if scope.arity == 0
           return instance_exec(&scope)
+        elsif options[:scope_args]
+          return instance_exec(*Array(options[:scope_args]), &scope)
         else
-          return instance_exec(self, &scope)
+          raise 'ByStar :scope does not accept arguments'
         end
       else
         return scope

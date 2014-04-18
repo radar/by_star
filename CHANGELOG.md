@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Allow `previous` and `next` to take the current record in their scope - @pnomolos / @johnnyshields
 * Alias `Date#in_time_zone` to `#to_time_in_current_zone` if not already defined (e.g. for Rails <= 3) - @jcypret / @johnnyshields
 * Add `oldest` and `newest` methods
 

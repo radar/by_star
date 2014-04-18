@@ -62,12 +62,12 @@ module Mongoid
 
     def previous(options={})
       field = self.class.by_star_start_field
-      self.class.by_star_scope(options).lt(field => self.send(field)).desc(field).first
+      self.class.by_star_scope(options.merge(scope_args: self)).lt(field => self.send(field)).desc(field).first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
-      self.class.by_star_scope(options).gt(field => self.send(field)).asc(field).first
+      self.class.by_star_scope(options.merge(scope_args: self)).gt(field => self.send(field)).asc(field).first
     end
   end
 end

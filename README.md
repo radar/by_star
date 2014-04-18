@@ -158,6 +158,12 @@ You may pass a `:scope` option as a Relation or Proc to all ByStar methods like 
 This is particularly useful for `oldest`, `newest`, `previous`, `next` which return a model instance rather than
 a Relation and hence cannot be daisy-chained with other scopes.
 
+`previous` and `next` support a special feature that the `:scope` option may take the subject record as an argument:
+
+```ruby
+   @post.next(scope: ->(record){ where(category: record.category) })
+```
+
 You may also set a default scope in the `by_star_field` macro. (It is recommended this be a Proc):
 
 ```ruby

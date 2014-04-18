@@ -19,9 +19,24 @@ shared_examples_for 'scope parameter' do
       its(:count) { should eq 14 }
     end
 
-    context 'between_times with scope override as a Proc' do
+    context 'between_times with scope override as a Lambda' do
       subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), scope: ->{ unscoped }) }
       its(:count) { should eq 14 }
+    end
+
+    context 'between_times with scope override as a Lambda' do
+      subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), scope: ->(x){ unscoped }) }
+      it{ ->{subject}.should raise_error }
+    end
+
+    context 'between_times with scope override as a Proc with arguments' do
+      subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), scope: Proc.new{ unscoped }) }
+      its(:count) { should eq 14 }
+    end
+
+    context 'between_times with scope override as a Proc with arguments' do
+      subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), scope: Proc.new{|x,y| unscoped }) }
+      it{ ->{subject}.should raise_error }
     end
 
     context 'by_month with default scope' do
@@ -34,9 +49,24 @@ shared_examples_for 'scope parameter' do
       its(:count) { should eq 6 }
     end
 
-    context 'by_month with scope override as a Proc' do
+    context 'by_month with scope override as a Lambda' do
       subject { Appointment.by_month(Date.parse('2014-01-01'), scope: ->{ unscoped }) }
       its(:count) { should eq 6 }
+    end
+
+    context 'by_month with scope override as a Lambda with arguments' do
+      subject { Appointment.by_month(Date.parse('2014-01-01'), scope: ->(x){ unscoped }) }
+      it{ ->{subject}.should raise_error }
+    end
+
+    context 'by_month with scope override as a Proc' do
+      subject { Appointment.by_month(Date.parse('2014-01-01'), scope: Proc.new{ unscoped }) }
+      its(:count) { should eq 6 }
+    end
+
+    context 'by_month with scope override as a Proc with arguments' do
+      subject { Appointment.by_month(Date.parse('2014-01-01'), scope: Proc.new{|x| unscoped }) }
+      it{ ->{subject}.should raise_error }
     end
   end
 end
