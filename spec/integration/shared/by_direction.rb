@@ -145,6 +145,7 @@ shared_examples_for 'by direction' do
     context 'with scope as a proc' do
       subject { Post.where(created_at: Time.zone.parse('2014-01-05 17:00:00')).first }
       it{ subject.previous({ scope: Proc.new{ where(day_of_month: 5) } }).created_at.should eq Time.zone.parse('2013-12-05 17:00:00') }
+      it{ subject.previous({ scope: Proc.new{|record| where(day_of_month: record.day_of_month) } }).created_at.should eq Time.zone.parse('2013-12-05 17:00:00') }
       it{ subject.next({ scope: ->{ where(day_of_month: 1) } }).created_at.should eq Time.zone.parse('2014-02-01 17:00:00') }
       it{ subject.next({ scope: ->(record){ where(day_of_month: record.day_of_month - 4) } }).created_at.should eq Time.zone.parse('2014-02-01 17:00:00') }
     end
