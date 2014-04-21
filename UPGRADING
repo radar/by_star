@@ -1,5 +1,5 @@
-Upgrading to ByStar 2.2.0
--------------------------
+Upgrading ByStar
+----------------
 
 * ActiveRecord: the `between` method has been deprecated as of version 2.2.0, and will be removed in version 3.0.0.
 Please use `between_times` instead.
