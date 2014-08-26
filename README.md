@@ -337,6 +337,7 @@ or
 
 ```ruby
    Post.by_month("January", :year => 2007)
+```
 
 This will perform a find using the column you've specified.
 
