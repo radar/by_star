@@ -8,12 +8,12 @@ describe Date do
 
     before do
       stub_const('Date', Class.new)
-      Date.any_instance.stub(:to_time_in_current_zone)
+      allow_any_instance_of(Date).to receive(:to_time_in_current_zone)
     end
 
     context 'when #in_time_zone is already defined' do
       before do
-        Date.any_instance.should_receive(:in_time_zone)
+        expect_any_instance_of(Date).to receive(:in_time_zone)
       end
 
       context 'when ByStar::Kernel::Date included' do
@@ -22,7 +22,7 @@ describe Date do
         end
 
         it 'should not be aliased to #to_time_in_current_zone' do
-          subject.should_not_receive(:to_time_in_current_zone)
+          expect(subject).not_to receive(:to_time_in_current_zone)
           subject.in_time_zone
         end
       end
@@ -30,7 +30,7 @@ describe Date do
       context 'when ByStar::Kernel::Date not included' do
 
         it 'should not be aliased to #to_time_in_current_zone' do
-          subject.should_not_receive(:to_time_in_current_zone)
+          expect(subject).not_to receive(:to_time_in_current_zone)
           subject.in_time_zone
         end
       end
@@ -44,7 +44,7 @@ describe Date do
         end
 
         it 'should be aliased to #to_time_in_current_zone' do
-          subject.should_receive(:to_time_in_current_zone)
+          expect(subject).to receive(:to_time_in_current_zone)
           subject.in_time_zone
         end
       end
@@ -52,7 +52,7 @@ describe Date do
       context 'when ByStar::Kernel::Date not included' do
 
         it 'should raise NoMethodError' do
-          ->{ subject.in_time_zone }.should raise_error(NoMethodError)
+          expect{ subject.in_time_zone }.to raise_error(NoMethodError)
         end
       end
     end

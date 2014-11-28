@@ -35,12 +35,13 @@ describe 'Mongoid' do
   describe '#between_times' do
     subject { Post.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-06')) }
     it { should be_a(Mongoid::Criteria) }
-    its(:count) { should eq 3 }
+    it { expect(subject.count).to eql(3) }
   end
 
   describe '#between' do
     it 'should not override Mongoid between method' do
-      Post.between(created_at: Time.parse('2014-01-01')..Time.parse('2014-01-06')).count.should eq 3
+      posts = Post.between(created_at: Time.parse('2014-01-01')..Time.parse('2014-01-06'))
+      expect(posts.count).to eql(3)
     end
   end
 end if testing_mongoid?
