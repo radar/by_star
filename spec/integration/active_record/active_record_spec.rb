@@ -35,19 +35,19 @@ describe ActiveRecord do
 
   it 'should be able to order the result set' do
     scope = Post.by_year(Time.zone.now.year, :order => 'created_at DESC')
-    scope.order_values.should == ['created_at DESC']
+    expect(scope.order_values).to eq ['created_at DESC']
   end
 
   describe '#between_times' do
     subject { Post.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-06')) }
-    it { should be_a(ActiveRecord::Relation) }
-    its(:count) { should eq 3 }
+    it { expect be_a(ActiveRecord::Relation) }
+    it { expect(subject.count).to eql(3) }
   end
 
   describe '#between' do
     subject { Post.between(Time.parse('2014-01-01'), Time.parse('2014-01-06')) }
     it 'should be an alias of #between_times' do
-      subject.count.should eq 3
+      expect(subject.count).to eql(3)
     end
   end
 end if testing_active_record?
