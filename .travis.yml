@@ -7,10 +7,13 @@ env:
   - DB=mysql
   - DB=postgres
   - DB=mongodb
-  - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=sqlite
-  - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=mysql
-  - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=postgres
-  - ACTIVE_RECORD_VERSION=4.0.0 MONGOID_VERSION=master DB=mongodb
+
+gemfile:
+  - spec/gemfiles/Gemfile.rails32
+  - spec/gemfiles/Gemfile.rails40
+  - spec/gemfiles/Gemfile.rails41
+  - spec/gemfiles/Gemfile.rails42
+  - spec/gemfiles/Gemfile.master
 
 notifications:
   email:
@@ -23,13 +26,18 @@ branches:
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.0
+  - 2.1.5
+  - 2.2.0
   - rbx
   - jruby
 
 matrix:
+  exclude:
+    - rvm: 2.2.0
+      gemfile: spec/gemfiles/Gemfile.rails32
   allow_failures:
     - rvm: rbx
     - rvm: jruby
+    - gemfile: spec/gemfiles/Gemfile.master
 
 services: mongodb

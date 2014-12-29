@@ -1,25 +1,18 @@
 source 'http://rubygems.org'
 
-# Specify your gem's dependencies in by_star.gemspec
 gemspec
 
-active_record_version = ENV['ACTIVE_RECORD_VERSION'] || 'default'
+ar_version = ENV['ACTIVE_RECORD_VERSION']
+ar_version = case ar_version
+               when 'master' then {github: 'rails'}
+               when String   then "~> #{ar_version}"
+             end
 
-active_record_opts =
-  case active_record_version
-  when 'master'  then {github: 'rails/rails'}
-  when 'default' then '~> 3.0'
-  else "~> #{active_record_version}"
-  end
+mo_version = ENV['MONGOID_VERSION']
+mo_version = case mo_version
+               when 'master' then {github: 'mongoid'}
+               when String   then "~> #{mo_version}"
+             end
 
-mongoid_version = ENV['MONGOID_VERSION'] || 'default'
-
-mongoid_opts =
-  case mongoid_version
-  when 'master'  then {github: 'mongoid/mongoid'}
-  when 'default' then '~> 3.0'
-  else "~> #{mongoid_version}"
-  end
-
-gem 'activerecord', active_record_opts
-gem 'mongoid', mongoid_opts
+gem 'activerecord', ar_version if ar_version
+gem 'mongoid',      mo_version if mo_version

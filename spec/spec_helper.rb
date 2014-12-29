@@ -21,9 +21,9 @@ puts "Running specs in #{Time.zone} timezone..."
 Timecop.travel(Time.zone.local(2014))
 
 def testing_mongoid?
-  ENV['DB'] == 'mongodb' || ENV['DB'].nil?
+  ENV['DB'] == 'mongodb'
 end
 
 def testing_active_record?
-  ENV['DB'] != 'mongodb'
+  !testing_mongoid?
 end
