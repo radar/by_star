@@ -39,5 +39,8 @@ matrix:
     - rvm: rbx
     - rvm: jruby
     - gemfile: spec/gemfiles/Gemfile.master
+    # `previous/next` with `default_scope` fails on Postgres Rails 3.2
+    - env: DB=postgres
+      gemfile: spec/gemfiles/Gemfile.rails32
 
 services: mongodb
