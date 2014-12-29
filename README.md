@@ -491,6 +491,11 @@ ByStar is tested against the following versions:
 * Rails/ActiveRecord 3.0+
 * Mongoid 3.0+
 
+Note that ByStar automatically adds the following version compatibility shims:
+
+* ActiveSupport 3.x: `Date#to_time_in_current_zone` is aliased to `Date#in_time_zone` from version 4+
+* Mongoid 3.x: Adds support for `Criteria#reorder` method from version 4+
+
 
 ## Testing
 
