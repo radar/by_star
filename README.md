@@ -183,7 +183,7 @@ You may also set a offset scope in the `by_star_field` macro:
 
 ```ruby
    class Post < ActiveRecord::Base
-     by_star_field offset: offset: 9.hours
+     by_star_field offset: 9.hours
    end
 ```
 
