@@ -12,5 +12,6 @@ if defined?(ActiveRecord)
 end
 
 if defined?(Mongoid)
+  require 'by_star/orm/mongoid/reorder'
   require 'by_star/orm/mongoid/by_star'
 end

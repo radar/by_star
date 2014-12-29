@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v2.2.2 - Unreleased
+
+* Mongoid `newest`, `oldest`, `previous`, and `next` now use `reorder` to ignore any default scope, consistent with ActiveRecord - @johnnyshields
+* Mongoid 3.x: Add support for `Criteria#reorder` method from version 4+ - @johnnyshields
+* Upgrade Rspec tests to version 3.1 - @nhocki
+* Upgrade Travis for broader coverage of Ruby, ActiveRecord, and Mongoid versions - @johnnyshields
+
 ## v2.2.1 - 2014-04-21
 
 * Allow `previous` and `next` to take the current record in their scope - @pnomolos / @johnnyshields

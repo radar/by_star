@@ -51,23 +51,23 @@ module Mongoid
 
       def oldest_query(options={})
         field = by_star_start_field(options)
-        by_star_scope(options).order_by(field => :asc).first
+        by_star_scope(options).all.reorder(field => :asc).first
       end
 
       def newest_query(options={})
         field = by_star_start_field(options)
-        by_star_scope(options).order_by(field => :desc).first
+        by_star_scope(options).all.reorder(field => :desc).first
       end
     end
 
     def previous(options={})
       field = self.class.by_star_start_field
-      self.class.by_star_scope(options.merge(scope_args: self)).lt(field => self.send(field)).desc(field).first
+      self.class.by_star_scope(options.merge(scope_args: self)).lt(field => self.send(field)).reorder(field => :desc).first
     end
 
     def next(options={})
       field = self.class.by_star_start_field
-      self.class.by_star_scope(options.merge(scope_args: self)).gt(field => self.send(field)).asc(field).first
+      self.class.by_star_scope(options.merge(scope_args: self)).gt(field => self.send(field)).reorder(field => :asc).first
     end
   end
 end

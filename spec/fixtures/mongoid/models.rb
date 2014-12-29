@@ -26,4 +26,6 @@ class Event
   field :day_of_month,        type: Integer
 
   by_star_field :start_time, :end_time, offset: 3.hours
+
+  default_scope ->{ order_by(day_of_month: :asc) }
 end
