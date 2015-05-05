@@ -149,5 +149,14 @@ shared_examples_for 'by direction' do
       it{ expect(subject.next({ scope: ->{ where(day_of_month: 1) } }).created_at).to eq Time.zone.parse('2014-02-01 17:00:00') }
       it{ expect(subject.next({ scope: ->(record){ where(day_of_month: record.day_of_month - 4) } }).created_at).to eq Time.zone.parse('2014-02-01 17:00:00') }
     end
+
+    context 'specify a field' do
+      subject { Post.where(created_at: Time.zone.parse('2014-01-01 17:00:00')).first }
+      it{ expect(subject.previous.created_at).to eq Time.zone.parse('2013-12-31 17:00:00') }
+      it{ expect(subject.next.created_at).to eq Time.zone.parse('2014-01-05 17:00:00') }
+      it{ expect(subject.previous(field: 'updated_at').created_at).to eq Time.zone.parse('2013-12-31 17:00:00') }
+      it{ expect(subject.next(field: 'updated_at').created_at).to eq Time.zone.parse('2014-01-01 17:00:00') }
+    end
+
   end
 end

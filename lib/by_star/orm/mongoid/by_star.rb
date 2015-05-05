@@ -61,12 +61,12 @@ module Mongoid
     end
 
     def previous(options={})
-      field = self.class.by_star_start_field
+      field = self.class.by_star_start_field(options)
       self.class.by_star_scope(options.merge(scope_args: self)).lt(field => self.send(field)).reorder(field => :desc).first
     end
 
     def next(options={})
-      field = self.class.by_star_start_field
+      field = self.class.by_star_start_field(options)
       self.class.by_star_scope(options.merge(scope_args: self)).gt(field => self.send(field)).reorder(field => :asc).first
     end
   end
