@@ -37,7 +37,7 @@ module ByStar
       end
 
       def week_fixnum(value, options={})
-        raise ParseError, 'Week number must be between 0 and 53' unless value.in?(0..53)
+        raise ParseError, 'Week number must be between 0 and 52' unless value.in?(0..52)
         time = Time.zone.local(options[:year] || Time.zone.now.year)
         time.beginning_of_year + value.to_i.weeks
       end
