@@ -2,6 +2,7 @@
 
 ## v2.2.2 - Unreleased
 
+* Deprecate the `:order` option of ByStar queries, as the same can be achieved by using the order method of ActiveRecord - @johnnyshields
 * Remove arbitrarily silly logic of `#by_weekend` and make it just use Saturday and Sunday only - @johnnyshields
 * Add fortnight, weekend, and calendar_month kernel methods to Date class - @johnnyshields
 * Add `#by_cweek` scope - @johnnyshields

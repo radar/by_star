@@ -9,7 +9,7 @@ shared_examples_for 'by day' do
     end
 
     context 'timespan' do
-      it { expect(Event.by_day(Time.parse '2014-01-01').count).to eql(5) }
+      it { expect(Event.by_day(Time.zone.parse '2014-01-01').count).to eql(5) }
     end
 
     context 'timespan strict' do
