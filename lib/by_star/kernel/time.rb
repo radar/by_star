@@ -4,15 +4,15 @@ module ByStar
 
     module Time
 
-      # A "Weekend" is defined as the 60-hour period from 15:00 Friday to 03:00 Monday.
+      # A "Weekend" is defined as beginning of Saturday to end of Sunday.
       # The weekend for a given date will be the the next weekend if the day Mon-Thurs,
       # otherwise the current weekend if the day is Fri-Sun.
       def beginning_of_weekend
-        beginning_of_week(:monday).advance(:days => 4) + 15.hours
+        beginning_of_week(:monday).advance(:days => 5)
       end
 
       def end_of_weekend
-        (beginning_of_weekend + 59.hours).end_of_hour
+        (beginning_of_weekend + 47.hours).end_of_hour
       end
 
       # A "Fortnight" is defined as a two week period, with the first fortnight of the

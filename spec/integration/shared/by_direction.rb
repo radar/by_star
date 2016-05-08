@@ -10,7 +10,7 @@ shared_examples_for 'by direction' do
     end
 
     context 'timespan' do
-      subject { Event.before(Time.parse '2014-01-05') }
+      subject { Event.before(Time.zone.parse '2014-01-05') }
       it { expect(subject.count).to eql(13) }
     end
 

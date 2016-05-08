@@ -7,8 +7,8 @@ describe Time do
     (0..6).each do |n|
       context "Monday plus #{n} days" do
         subject { Time.zone.parse('2014-01-06') + n.days }
-        it { expect(subject.beginning_of_weekend).to eq Time.zone.parse('2014-01-10 15:00') }
-        it { expect(subject.end_of_weekend).to eq Time.zone.parse('2014-01-13 02:00').end_of_hour }
+        it { expect(subject.beginning_of_weekend).to eq Time.zone.parse('2014-01-11') }
+        it { expect(subject.end_of_weekend).to eq Time.zone.parse('2014-01-12').end_of_day }
       end
     end
   end

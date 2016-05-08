@@ -12,7 +12,7 @@ describe ActiveRecord do
     end
 
     ActiveRecord::Base.configurations = db_config
-    ActiveRecord::Base.establish_connection(ENV['DB'] || 'sqlite')
+    ActiveRecord::Base.establish_connection(ENV['DB'] || :sqlite)
     load File.dirname(__FILE__) + '/../../fixtures/active_record/schema.rb'
     load File.dirname(__FILE__) + '/../../fixtures/active_record/models.rb'
     load File.dirname(__FILE__) + '/../../fixtures/shared/seeds.rb'
@@ -27,25 +27,36 @@ describe ActiveRecord do
   it_behaves_like 'by calendar month'
   it_behaves_like 'by quarter'
   it_behaves_like 'by week'
+  it_behaves_like 'by cweek'
   it_behaves_like 'by weekend'
   it_behaves_like 'by year'
   it_behaves_like 'relative'
   it_behaves_like 'offset parameter'
   it_behaves_like 'scope parameter'
 
-  it 'should be able to order the result set' do
-    scope = Post.by_year(Time.zone.now.year, :order => 'created_at DESC')
-    expect(scope.order_values).to eq ['created_at DESC']
-  end
-
   describe '#between_times' do
-    subject { Post.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-06')) }
+    subject { Post.between_times(Time.zone.parse('2014-01-01'), Time.zone.parse('2014-01-06')) }
     it { expect be_a(ActiveRecord::Relation) }
     it { expect(subject.count).to eql(3) }
+
+    context ':order option' do
+
+      it 'should be able to order the result set asc' do
+        scope = Post.by_year(Time.zone.now.year, :order => 'created_at ASC')
+        expect(scope.order_values).to eq ['created_at ASC']
+        expect(scope.first.created_at).to eq Time.zone.parse('2014-01-01 17:00:00')
+      end
+
+      it 'should be able to order the result set desc' do
+        scope = Post.by_year(Time.zone.now.year, :order => 'created_at DESC')
+        expect(scope.order_values).to eq ['created_at DESC']
+        expect(scope.first.created_at).to eq Time.zone.parse('2014-04-15 17:00:00')
+      end
+    end
   end
 
   describe '#between' do
-    subject { Post.between(Time.parse('2014-01-01'), Time.parse('2014-01-06')) }
+    subject { Post.between(Time.zone.parse('2014-01-01'), Time.zone.parse('2014-01-06')) }
     it 'should be an alias of #between_times' do
       expect(subject.count).to eql(3)
     end

@@ -9,22 +9,22 @@ shared_examples_for 'offset parameter' do
     end
 
     context 'between_times with default offset' do
-      subject { Event.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-10')) }
+      subject { Event.between_times(Time.zone.parse('2014-01-01'), Time.zone.parse('2014-01-10')) }
       it { expect(subject.count).to eql(7) }
     end
 
     context 'between_times with offset override' do
-      subject { Event.between_times(Time.parse('2014-01-01'), Time.parse('2014-01-10'), offset: 16.hours) }
+      subject { Event.between_times(Time.zone.parse('2014-01-01'), Time.zone.parse('2014-01-10'), offset: 16.hours) }
       it { expect(subject.count).to eql(7) }
     end
 
     context 'by_day with default offset' do
-      subject { Event.by_day(Time.parse('2014-01-01')) }
+      subject { Event.by_day(Time.zone.parse('2014-01-01')) }
       it { expect(subject.count).to eql(5) }
     end
 
     context 'by_day with offset override' do
-      subject { Event.by_day(Time.parse('2014-12-26'), field: :start_time, offset: 5.hours) }
+      subject { Event.by_day(Time.zone.parse('2014-12-26'), field: :start_time, offset: 5.hours) }
       it { expect(subject.count).to eql(0) }
     end
   end

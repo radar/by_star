@@ -1,3 +1,7 @@
+before_install:
+  - gem update --system
+  - gem update bundler
+
 before_script:
   - "mysql -e 'create database by_star_test;'"
   - "psql -c 'create database by_star_test;' -U postgres"
@@ -26,15 +30,13 @@ branches:
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.5
-  - 2.2.0
+  - 2.1.9
+  - 2.2.5
+  - 2.3.1
   - rbx
   - jruby
 
 matrix:
-  exclude:
-    - rvm: 2.2.0
-      gemfile: spec/gemfiles/Gemfile.rails32
   allow_failures:
     - rvm: rbx
     - rvm: jruby

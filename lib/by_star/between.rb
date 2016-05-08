@@ -22,6 +22,12 @@ module ByStar
       end
     end
 
+    def by_cweek(*args)
+      with_by_star_options(*args) do |time, options|
+        by_week(ByStar::Normalization.cweek(time, options), options)
+      end
+    end
+
     def by_weekend(*args)
       with_by_star_options(*args) do |time, options|
         time = ByStar::Normalization.week(time, options)

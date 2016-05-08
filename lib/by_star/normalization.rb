@@ -42,6 +42,15 @@ module ByStar
         time.beginning_of_year + value.to_i.weeks
       end
 
+      def cweek(value, options={})
+        _value = value
+        if _value.is_a?(Fixnum)
+          raise ParseError, 'cweek number must be between 1 and 53' unless value.in?(1..53)
+          _value -= 1
+        end
+        week(_value, options)
+      end
+
       def fortnight(value, options={})
         value = try_string_to_int(value)
         case value
