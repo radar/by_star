@@ -2,6 +2,9 @@
 
 ## v2.2.2 - Unreleased
 
+* Remove arbitrarily silly logic of `#by_weekend` and make it just use Saturday and Sunday only - @johnnyshields
+* Add fortnight, weekend, and calendar_month kernel methods to Date class - @johnnyshields
+* Add `#by_cweek` scope - @johnnyshields
 * Mongoid `newest`, `oldest`, `previous`, and `next` now use `reorder` to ignore any default scope, consistent with ActiveRecord - @johnnyshields
 * Mongoid 3.x: Add support for `Criteria#reorder` method from version 4+ - @johnnyshields
 * Upgrade Rspec tests to version 3.1 - @nhocki

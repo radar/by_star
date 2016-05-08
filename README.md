@@ -56,7 +56,7 @@ See sections below for detailed argument usage of each:
 * `by_day`
 * `by_week` Allows zero-based week value from 0 to 52
 * `by_cweek` Allows one-based week value from 1 to 53
-* `by_weekend` 60-hour period from 15:00 Friday to 03:00 Monday
+* `by_weekend` Saturday and Sunday only of the given week
 * `by_fortnight` A two-week period, with the first fortnight of the year beginning on 1st January
 * `by_month`
 * `by_calendar_month` Month as it appears on a calendar; days form previous/following months which are part of the first/last weeks of the given month
@@ -426,7 +426,7 @@ You may pass in a `:start_day` option (`:monday`, `:tuesday`, etc.) to specify t
 
 ### by_weekend
 
-If the time passed in (or the time now is a weekend) it will return posts from 12am Saturday to 11:59:59PM Sunday. If the time is a week day, it will show all posts for the coming weekend.
+If the time passed in (or the time now is a weekend) it will return posts from 0:00 Saturday to 23:59:59 Sunday. If the time is a week day, it will show all posts for the coming weekend.
 
 ```ruby
    Post.by_weekend(Time.now)
