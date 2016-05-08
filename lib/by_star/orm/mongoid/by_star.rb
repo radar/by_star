@@ -19,7 +19,7 @@ module Mongoid
         else
           scope.gt(end_field => start).lt(start_field => finish)
         end
-        scope = scope.order_by(field => options[:order]) if options[:order]
+        scope = scope.order_by(start_field => options[:order]) if options[:order]
         scope
       end
 
