@@ -12,7 +12,7 @@ describe ActiveRecord do
     end
 
     ActiveRecord::Base.configurations = db_config
-    ActiveRecord::Base.establish_connection(ENV['DB'] || 'sqlite')
+    ActiveRecord::Base.establish_connection(ENV['DB'] || :sqlite)
     load File.dirname(__FILE__) + '/../../fixtures/active_record/schema.rb'
     load File.dirname(__FILE__) + '/../../fixtures/active_record/models.rb'
     load File.dirname(__FILE__) + '/../../fixtures/shared/seeds.rb'

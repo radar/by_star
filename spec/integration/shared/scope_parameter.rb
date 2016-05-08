@@ -26,7 +26,7 @@ shared_examples_for 'scope parameter' do
 
     context 'between_times with scope override as a Lambda' do
       subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), scope: ->(x){ unscoped }) }
-      it{ expect{ subject }.to raise_error }
+      it{ expect{ subject }.to raise_error(RuntimeError, 'ByStar :scope does not accept arguments') }
     end
 
     context 'between_times with scope override as a Proc with arguments' do
@@ -36,7 +36,7 @@ shared_examples_for 'scope parameter' do
 
     context 'between_times with scope override as a Proc with arguments' do
       subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), scope: Proc.new{|x,y| unscoped }) }
-      it{ expect{ subject }.to raise_error }
+      it{ expect{ subject }.to raise_error(RuntimeError, 'ByStar :scope does not accept arguments') }
     end
 
     context 'by_month with default scope' do
@@ -56,7 +56,7 @@ shared_examples_for 'scope parameter' do
 
     context 'by_month with scope override as a Lambda with arguments' do
       subject { Appointment.by_month(Date.parse('2014-01-01'), scope: ->(x){ unscoped }) }
-      it{ expect{ subject }.to raise_error }
+      it{ expect{ subject }.to raise_error(RuntimeError, 'ByStar :scope does not accept arguments') }
     end
 
     context 'by_month with scope override as a Proc' do
@@ -66,7 +66,7 @@ shared_examples_for 'scope parameter' do
 
     context 'by_month with scope override as a Proc with arguments' do
       subject { Appointment.by_month(Date.parse('2014-01-01'), scope: Proc.new{|x| unscoped }) }
-      it{ expect{ subject }.to raise_error }
+      it{ expect{ subject }.to raise_error(RuntimeError, 'ByStar :scope does not accept arguments') }
     end
   end
 end

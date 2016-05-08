@@ -75,7 +75,7 @@ describe ByStar::Normalization do
 
     context 'Fixnum -1' do
       let(:input){ -1 }
-      it { expect{subject}.to raise_error(ByStar::ParseError) }
+      it { expect{subject}.to raise_error(ByStar::ParseError, 'Week number must be between 0 and 52') }
     end
 
     context 'Fixnum 0' do
@@ -90,7 +90,7 @@ describe ByStar::Normalization do
 
     context 'Fixnum 53' do
       let(:input){ 53 }
-      it { expect{subject}.to raise_error(ByStar::ParseError) }
+      it { expect{subject}.to raise_error(ByStar::ParseError, 'Week number must be between 0 and 52') }
     end
 
     context 'with year option' do
@@ -115,7 +115,7 @@ describe ByStar::Normalization do
 
     context 'Fixnum 9' do
       let(:input){ 0 }
-      it { expect{subject}.to raise_error(ByStar::ParseError) }
+      it { expect{subject}.to raise_error(ByStar::ParseError, 'cweek number must be between 1 and 53') }
     end
 
     context 'Fixnum 1' do
@@ -130,7 +130,7 @@ describe ByStar::Normalization do
 
     context 'Fixnum 54' do
       let(:input){ 54 }
-      it { expect{subject}.to raise_error(ByStar::ParseError) }
+      it { expect{subject}.to raise_error(ByStar::ParseError, 'cweek number must be between 1 and 53') }
     end
 
     context 'with year option' do
