@@ -27,6 +27,7 @@ describe ActiveRecord do
   it_behaves_like 'by calendar month'
   it_behaves_like 'by quarter'
   it_behaves_like 'by week'
+  it_behaves_like 'by cweek'
   it_behaves_like 'by weekend'
   it_behaves_like 'by year'
   it_behaves_like 'relative'

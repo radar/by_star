@@ -73,6 +73,11 @@ describe ByStar::Normalization do
     it_behaves_like 'time normalization from string'
     it_behaves_like 'time normalization from date/time'
 
+    context 'Fixnum -1' do
+      let(:input){ -1 }
+      it { expect{subject}.to raise_error(ByStar::ParseError) }
+    end
+
     context 'Fixnum 0' do
       let(:input){ 0 }
       it { expect eq Time.zone.parse('2014-01-01 00:00:00') }
@@ -81,6 +86,11 @@ describe ByStar::Normalization do
     context 'Fixnum 20' do
       let(:input){ 20 }
       it { expect eq Time.zone.parse('2014-05-21 00:00:00') }
+    end
+
+    context 'Fixnum 53' do
+      let(:input){ 53 }
+      it { expect{subject}.to raise_error(ByStar::ParseError) }
     end
 
     context 'with year option' do
@@ -93,6 +103,46 @@ describe ByStar::Normalization do
 
       context 'Fixnum 20' do
         let(:input){ 20 }
+        it { expect eq Time.zone.parse('2011-05-21 00:00:00') }
+      end
+    end
+  end
+
+  describe '#cweek' do
+    subject { ByStar::Normalization.cweek(input, options) }
+    it_behaves_like 'time normalization from string'
+    it_behaves_like 'time normalization from date/time'
+
+    context 'Fixnum 9' do
+      let(:input){ 0 }
+      it { expect{subject}.to raise_error(ByStar::ParseError) }
+    end
+
+    context 'Fixnum 1' do
+      let(:input){ 1 }
+      it { expect eq Time.zone.parse('2014-01-01 00:00:00') }
+    end
+
+    context 'Fixnum 21' do
+      let(:input){ 21 }
+      it { expect eq Time.zone.parse('2014-05-21 00:00:00') }
+    end
+
+    context 'Fixnum 54' do
+      let(:input){ 54 }
+      it { expect{subject}.to raise_error(ByStar::ParseError) }
+    end
+
+    context 'with year option' do
+      let(:options){ { :year => 2011 } }
+
+      context 'Fixnum 1' do
+        let(:input){ 1 }
+        it { expect eq Time.zone.parse('2011-01-01 00:00:00') }
+      end
+
+      context 'Fixnum 21' do
+        let(:input){ 21 }
         it { expect eq Time.zone.parse('2011-05-21 00:00:00') }
       end
     end

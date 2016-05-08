@@ -54,7 +54,8 @@ ByStar adds additional shortcut scopes based on commonly used time ranges.
 See sections below for detailed argument usage of each:
 
 * `by_day`
-* `by_week`
+* `by_week` Allows zero-based week value from 0 to 52
+* `by_cweek` Allows one-based week value from 1 to 53
 * `by_weekend` 60-hour period from 15:00 Friday to 03:00 Monday
 * `by_fortnight` A two-week period, with the first fortnight of the year beginning on 1st January
 * `by_month`
@@ -389,35 +390,37 @@ This will return all posts in the 18th fortnight week of 2012.
 
 This will return all posts from the first fortnight of 2012.
 
-### by_week
+### by_week and by_cweek
 
-Week numbering starts at 0. The beginning of a week is Monday, 12am.
+Week numbering starts at 0, and cweek numbering starts at 1 (same as `Date#cweek`). The beginning of a week is as defined in `ActiveSupport#beginning_of_week`, which can be configured.
 
 To find records from the current week:
 
 ```ruby
    Post.by_week
+   Post.by_cweek  # same result
 ```
 
-To find records based on a week, you can pass in a number (representing the week number) or a time object:
+This will return all posts in the 37th week of the current year (remember week numbering starts at 0):
 
 ```ruby
    Post.by_week(36)
+   Post.by_cweek(37)  # same result
 ```
 
-This will return all posts in the 37th week of the current year (remember week numbering starts at 0).
+This will return all posts in the 37th week of 2012:
 
 ```ruby
    Post.by_week(36, :year => 2012)
+   Post.by_cweek(37, :year => 2012)  # same result
 ```
 
-This will return all posts in the 37th week of 2012.
+This will return all posts in the week which contains Jan 1, 2012:
 
 ```ruby
    Post.by_week(Time.local(2012,1,1))
+   Post.by_cweek(Time.local(2012,1,1))  # same result
 ```
-
-This will return all posts from the first week of 2012.
 
 You may pass in a `:start_day` option (`:monday`, `:tuesday`, etc.) to specify the starting day of the week. This may also be configured in Rails.
 
