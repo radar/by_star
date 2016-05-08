@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.add_dependency "activesupport"
 
   s.add_development_dependency "chronic"
-  s.add_development_dependency "bundler", ">= 1.0.0"
+  s.add_development_dependency "bundler"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "activerecord"
   s.add_development_dependency "mongoid"
