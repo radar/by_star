@@ -14,7 +14,7 @@ shared_examples_for 'offset parameter' do
     end
 
     context 'between_times with offset override' do
-      subject { Event.between_times(Time.zone.parse('2014-01-01'), Time.zone.parse('2014-01-10'), offset: 16.hours) }
+      subject { Event.between_times(Time.zone.parse('2014-01-01')..Time.zone.parse('2014-01-10'), offset: 16.hours) }
       it { expect(subject.count).to eql(7) }
     end
 

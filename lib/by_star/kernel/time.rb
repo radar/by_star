@@ -18,11 +18,11 @@ module ByStar
       # A "Fortnight" is defined as a two week period, with the first fortnight of the
       # year beginning on 1st January.
       def beginning_of_fortnight
-        (beginning_of_year.to_date + 14 * ((self - beginning_of_year) / 2.weeks).to_i).beginning_of_day
+        (beginning_of_year + 1.fortnight * ((self - beginning_of_year) / 1.fortnight).to_i).beginning_of_day
       end
 
       def end_of_fortnight
-        (beginning_of_fortnight.to_date + 13).end_of_day
+        (beginning_of_fortnight + 13.days).end_of_day
       end
 
       # A "Calendar Month" is defined as a month as it appears on a calendar, including days form

@@ -54,11 +54,4 @@ describe ActiveRecord do
       end
     end
   end
-
-  describe '#between' do
-    subject { Post.between(Time.zone.parse('2014-01-01'), Time.zone.parse('2014-01-06')) }
-    it 'should be an alias of #between_times' do
-      expect(subject.count).to eql(3)
-    end
-  end
 end if testing_active_record?
