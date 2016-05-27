@@ -19,20 +19,20 @@ shared_examples_for 'by year' do
       it { expect(subject.count).to eql(9) }
     end
 
-    context 'with :year option' do
+    context 'integer' do
 
       context 'point-in-time' do
-        subject { Post.by_year(year: 2013) }
+        subject { Post.by_year(2013) }
         it { expect(subject.count).to eql(10) }
       end
 
       context 'timespan' do
-        subject { Event.by_year(year: 2014) }
+        subject { Event.by_year(2014) }
         it { expect(subject.count).to eql(14) }
       end
 
       context 'timespan strict' do
-        subject { Event.by_year(year: 2013, strict: true) }
+        subject { Event.by_year(2013, strict: true) }
         it { expect(subject.count).to eql(8) }
       end
     end

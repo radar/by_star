@@ -2,9 +2,32 @@ module ByStar
 
   module Between
 
-    def between_times(start, finish, options={})
-      offset = by_star_offset(options)
-      between_times_query(start + offset, finish + offset, options)
+    def between_times(*args)
+      options = args.extract_options!.symbolize_keys!
+
+      # Do not apply default offset here
+      offset = (options[:offset] || 0).seconds
+      range = if args[0].is_a?(Range)
+                (args[0].first + offset)..(args[0].last + offset)
+              else
+                (args[0] + offset)..(args[1] + offset)
+              end
+
+      start_field = by_star_start_field(options)
+      end_field = by_star_end_field(options)
+      scope = by_star_scope(options)
+
+      scope = if start_field == end_field
+                by_star_point_query(scope, start_field, range)
+              elsif options[:strict]
+                by_star_span_strict_query(scope, start_field, end_field, range)
+              else
+                by_star_span_overlap_query(scope, start_field, end_field, range, options)
+              end
+
+      scope = by_star_order(scope, options[:order]) if options[:order]
+
+      scope
     end
 
     def by_day(*args)

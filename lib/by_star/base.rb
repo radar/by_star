@@ -41,7 +41,7 @@ module ByStar
         elsif options[:scope_args]
           return instance_exec(*Array(options[:scope_args]), &scope)
         else
-          raise 'ByStar :scope does not accept arguments'
+          raise 'ByStar :scope Proc requires :scope_args to be specified.'
         end
       else
         return scope
@@ -61,9 +61,7 @@ module ByStar
     #
     def with_by_star_options(*args, &block)
       options = args.extract_options!.symbolize_keys!
-      time = args.first
-      time ||= Time.zone.local(options[:year]) if options[:year]
-      time ||= Time.zone.now
+      time = args.first || Time.zone.now
       block.call(time, options)
     end
   end
