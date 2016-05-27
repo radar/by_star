@@ -20,6 +20,10 @@ describe ActiveRecord do
     ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + '/../../tmp/activerecord.log')
   end
 
+  it_behaves_like 'between_times'
+  it_behaves_like 'offset parameter'
+  it_behaves_like 'order parameter'
+  it_behaves_like 'scope parameter'
   it_behaves_like 'by day'
   it_behaves_like 'by direction'
   it_behaves_like 'by fortnight'
@@ -31,27 +35,4 @@ describe ActiveRecord do
   it_behaves_like 'by weekend'
   it_behaves_like 'by year'
   it_behaves_like 'relative'
-  it_behaves_like 'offset parameter'
-  it_behaves_like 'scope parameter'
-
-  describe '#between_times' do
-    subject { Post.between_times(Time.zone.parse('2014-01-01'), Time.zone.parse('2014-01-06')) }
-    it { expect be_a(ActiveRecord::Relation) }
-    it { expect(subject.count).to eql(3) }
-
-    context ':order option' do
-
-      it 'should be able to order the result set asc' do
-        scope = Post.by_year(Time.zone.now.year, order: 'created_at ASC')
-        expect(scope.order_values).to eq ['created_at ASC']
-        expect(scope.first.created_at).to eq Time.zone.parse('2014-01-01 17:00:00')
-      end
-
-      it 'should be able to order the result set desc' do
-        scope = Post.by_year(Time.zone.now.year, order: 'created_at DESC')
-        expect(scope.order_values).to eq ['created_at DESC']
-        expect(scope.first.created_at).to eq Time.zone.parse('2014-04-15 17:00:00')
-      end
-    end
-  end
 end if testing_active_record?

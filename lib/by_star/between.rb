@@ -5,12 +5,10 @@ module ByStar
     def between_times(*args)
       options = args.extract_options!.symbolize_keys!
 
-      # Do not apply default offset here
       offset = (options[:offset] || 0).seconds
-      range = if args[0].is_a?(Range)
-                (args[0].first + offset)..(args[0].last + offset)
-              else
-                (args[0] + offset)..(args[1] + offset)
+      range = case args[0]
+                when Range, Array then (args[0].first + offset)..(args[0].last + offset)
+                else (args[0] + offset)..(args[1] + offset)
               end
 
       start_field = by_star_start_field(options)

@@ -44,9 +44,9 @@ class MyModel
 ByStar adds the following finder scopes (class methods) to your model to query time ranges.
 These accept a `Date`, `Time`, or `DateTime` object as an argument, which defaults to `Time.zone.now` if not specified:
 
-* `between_times(start_time, end_time)` Finds all records occurring between the two given times
-* `before(end_time)` Finds all records occurring before the given time
-* `after(start_time)` Finds all records occurring after the given time
+* `between_times(start_time, end_time)` - Finds all records occurring between the two given times.
+* `before(end_time)` - Finds all records occurring before the given time.
+* `after(start_time)` - Finds all records occurring after the given time.
 
 ### Time Range Scopes
 
