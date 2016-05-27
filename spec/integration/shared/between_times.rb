@@ -12,6 +12,48 @@ shared_examples_for 'between_times' do
     end
 
     it { expect(subject.count).to eql(3) }
+
+    context 'one-sided query' do
+
+      context 'point query' do
+
+        context 'only start time' do
+          subject { Post.between_times(Time.zone.parse('2014-01-01'), nil) }
+          it { expect(subject.count).to eql(12) }
+        end
+
+        context 'only end time' do
+          subject { Post.between_times(nil, Time.zone.parse('2014-01-01')) }
+          it { expect(subject.count).to eql(10) }
+        end
+      end
+
+      context 'timespan loose query' do
+
+        context 'only start time' do
+          subject { Event.between_times(Time.zone.parse('2014-01-01'), nil, strict: false) }
+          it { expect(subject.count).to eql(9) }
+        end
+
+        context 'only end time' do
+          subject { Event.between_times(nil, Time.zone.parse('2014-01-01'), strict: false) }
+          it { expect(subject.count).to eql(13) }
+        end
+      end
+
+      context 'timespan strict query' do
+
+        context 'only start time' do
+          subject { Event.between_times(Time.zone.parse('2014-01-01'), nil) }
+          it { expect(subject.count).to eql(9) }
+        end
+
+        context 'only end time' do
+          subject { Event.between_times(nil, Time.zone.parse('2014-01-01')) }
+          it { expect(subject.count).to eql(13) }
+        end
+      end
+    end
   end
 
   if testing_mongoid?

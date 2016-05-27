@@ -25,30 +25,30 @@ module Mongoid
         :created_at
       end
 
-      def by_star_point_query(scope, field, range)
+      def by_star_point_query(scope, field, start_time, end_time)
+        range = start_time..end_time
         scope.where(field => range)
       end
 
-      def by_star_span_strict_query(scope, start_field, end_field, range)
+      def by_star_span_strict_query(scope, start_field, end_field, start_time, end_time)
+        range = start_time..end_time
         scope.where(start_field => range).where(end_field => range)
       end
 
-      def by_star_span_overlap_query(scope, start_field, end_field, range, options)
-        scope.gt(end_field => range.first).lt(start_field => range.last)
+      def by_star_span_overlap_query(scope, start_field, end_field, start_time, end_time, options)
+        scope.gt(end_field => start_time).lt(start_field => end_time)
+      end
+
+      def by_star_before_query(scope, field, time)
+        scope.lte(field => time)
+      end
+
+      def by_star_after_query(scope, field, time)
+        scope.gte(field => time)
       end
 
       def by_star_order(scope, order)
         scope.order_by(order)
-      end
-
-      def before_query(time, options={})
-        field = by_star_start_field(options)
-        by_star_scope(options).lte(field => time)
-      end
-
-      def after_query(time, options={})
-        field = by_star_start_field(options)
-        by_star_scope(options).gte(field => time)
       end
 
       def oldest_query(options={})
