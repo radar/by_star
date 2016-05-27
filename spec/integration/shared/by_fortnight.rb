@@ -42,7 +42,7 @@ shared_examples_for 'by fortnight' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.by_fortnight(:field => 'end_time').count).to eq 5
+      expect(Event.by_fortnight(field: 'end_time').count).to eq 5
     end
   end
 end

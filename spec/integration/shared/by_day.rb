@@ -17,11 +17,11 @@ shared_examples_for 'by day' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.by_day(:field => 'end_time').count).to eql(0)
+      expect(Event.by_day(field: 'end_time').count).to eql(0)
     end
 
     it 'should support :offset option' do
-      expect(Post.by_day('2014-01-01', :offset => -16.hours).count).to eq(1)
+      expect(Post.by_day('2014-01-01', offset: -16.hours).count).to eq(1)
     end
   end
 
@@ -40,11 +40,11 @@ shared_examples_for 'by day' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.today(:field => 'created_at').count).to eql(2)
+      expect(Event.today(field: 'created_at').count).to eql(2)
     end
 
     it 'should support :offset option' do
-      expect(Post.today(:offset => -24.hours).count).to eql(1)
+      expect(Post.today(offset: -24.hours).count).to eql(1)
     end
   end
 
@@ -63,11 +63,11 @@ shared_examples_for 'by day' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.yesterday(:field => 'created_at').count).to eql(1)
+      expect(Event.yesterday(field: 'created_at').count).to eql(1)
     end
 
     it 'should support :offset option' do
-      expect(Post.yesterday(:offset => 24.hours).count).to eql(2)
+      expect(Post.yesterday(offset: 24.hours).count).to eql(2)
     end
   end
 
@@ -86,11 +86,11 @@ shared_examples_for 'by day' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.tomorrow(:field => 'created_at').count).to eql(0)
+      expect(Event.tomorrow(field: 'created_at').count).to eql(0)
     end
 
     it 'should support :offset option' do
-      expect(Post.tomorrow(:offset => -24.hours).count).to eql(2)
+      expect(Post.tomorrow(offset: -24.hours).count).to eql(2)
     end
   end
 end

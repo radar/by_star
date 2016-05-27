@@ -42,13 +42,13 @@ describe ActiveRecord do
     context ':order option' do
 
       it 'should be able to order the result set asc' do
-        scope = Post.by_year(Time.zone.now.year, :order => 'created_at ASC')
+        scope = Post.by_year(Time.zone.now.year, order: 'created_at ASC')
         expect(scope.order_values).to eq ['created_at ASC']
         expect(scope.first.created_at).to eq Time.zone.parse('2014-01-01 17:00:00')
       end
 
       it 'should be able to order the result set desc' do
-        scope = Post.by_year(Time.zone.now.year, :order => 'created_at DESC')
+        scope = Post.by_year(Time.zone.now.year, order: 'created_at DESC')
         expect(scope.order_values).to eq ['created_at DESC']
         expect(scope.first.created_at).to eq Time.zone.parse('2014-04-15 17:00:00')
       end

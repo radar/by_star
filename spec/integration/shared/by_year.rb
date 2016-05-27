@@ -38,7 +38,7 @@ shared_examples_for 'by year' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.by_year(:field => 'end_time').count).to eq 14
+      expect(Event.by_year(field: 'end_time').count).to eq 14
     end
 
     it 'can use a 2-digit year' do

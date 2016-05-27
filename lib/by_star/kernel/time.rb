@@ -8,7 +8,7 @@ module ByStar
       # The weekend for a given date will be the the next weekend if the day Mon-Thurs,
       # otherwise the current weekend if the day is Fri-Sun.
       def beginning_of_weekend
-        beginning_of_week(:monday).advance(:days => 5)
+        beginning_of_week(:monday).advance(days: 5)
       end
 
       def end_of_weekend

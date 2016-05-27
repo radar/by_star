@@ -53,11 +53,11 @@ module ByStar
     # Wrapper function which extracts time and options for each by_star query.
     # Note the following syntax examples are valid:
     #
-    #   Post.by_month                      # defaults to current time
-    #   Post.by_month(2, :year => 2004)    # February, 2004
+    #   Post.by_month                   # defaults to current time
+    #   Post.by_month(2, year: 2004)    # February, 2004
     #   Post.by_month(Time.now)
-    #   Post.by_month(Time.now, :field => "published_at")
-    #   Post.by_month(:field => "published_at")
+    #   Post.by_month(Time.now, field: "published_at")
+    #   Post.by_month(field: "published_at")
     #
     def with_by_star_options(*args, &block)
       options = args.extract_options!.symbolize_keys!
