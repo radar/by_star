@@ -217,16 +217,16 @@ If you'd like to confine results to only those both starting and ending within t
 
 In order to ensure query performance on large dataset, you must add an index to the query field (e.g. "created_at") be indexed. ByStar does **not** define indexes automatically.
 
-Database indexes require querying a range ("double-sided") on a single field, i.e. `start_time >= X and start_time <= Y`.
-If we a single-sided query, the database will iterate through all items either from the beginning or until the end of time).
+Database indexes require querying a range query on a single field, i.e. `start_time >= X and start_time <= Y`.
+If we use a single-sided query, the database will iterate through all items either from the beginning or until the end of time.
 This poses a challenge for timespan-type objects which have two fields, i.e. `start_time` and `end_time`.
-There are two cases of timespans to consider:
+There are two cases to consider:
 
-1) Timespan queries with `:strict` option, e.g. "start_time >= X and end_time <= Y".
+1) Timespan with `:strict` option, e.g. "start_time >= X and end_time <= Y".
 
 Given that this gem requires start_time >= end_time, we add the converse constraint "start_time <= Y and end_time >= X" to ensure both fields are double-sided, i.e. an index can be used on either field.
 
-2) Timespan queries without `:strict` option, e.g. "start_time < Y and end_time > X".
+2) Timespan without `:strict` option, e.g. "start_time < Y and end_time > X".
 
 This is not yet supported but will be soon.
 
