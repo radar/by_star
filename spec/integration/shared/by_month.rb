@@ -44,7 +44,7 @@ shared_examples_for 'by month' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.by_month(:field => 'end_time').count).to eq 8
+      expect(Event.by_month(field: 'end_time').count).to eq 8
     end
   end
 end

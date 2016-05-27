@@ -20,7 +20,7 @@
    2014-03-15
    2014-04-01
    2014-04-15).map{|d| Time.zone.parse(d) + 17.hours }.each_with_index do |d, index|
-  Post.create!(:created_at => d, :updated_at=> d + index.days, day_of_month: d.day)
-  Appointment.create!(:created_at => d, day_of_month: d.day)
-  Event.create!(:created_at => d, :start_time => d - 5.days, :end_time => d + 5.days, day_of_month: d.day)
+  Post.create!(created_at: d, updated_at: d + index.days, day_of_month: d.day)
+  Appointment.create!(created_at: d, day_of_month: d.day)
+  Event.create!(created_at: d, start_time: d - 5.days, end_time: d + 5.days, day_of_month: d.day)
 end

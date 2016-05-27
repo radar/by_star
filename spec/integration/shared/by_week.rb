@@ -43,11 +43,11 @@ shared_examples_for 'by week' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.by_week(:field => 'end_time').count).to eq 3
+      expect(Event.by_week(field: 'end_time').count).to eq 3
     end
 
     context ':start_day option' do
-      subject { Post.by_week('2014-01-02', :start_day => :thursday) }
+      subject { Post.by_week('2014-01-02', start_day: :thursday) }
       it { expect(subject.count).to eql(1) }
     end
   end

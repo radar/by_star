@@ -44,11 +44,11 @@ shared_examples_for 'by calendar month' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.by_calendar_month(:field => 'end_time').count).to eql(9)
+      expect(Event.by_calendar_month(field: 'end_time').count).to eql(9)
     end
 
     context ':start_day option' do
-      subject { Post.by_calendar_month(1, :start_day => :wednesday) }
+      subject { Post.by_calendar_month(1, start_day: :wednesday) }
       it{ expect(subject.count).to eql(7) }
     end
   end

@@ -94,7 +94,7 @@ describe ByStar::Normalization do
     end
 
     context 'with year option' do
-      let(:options){ { :year => 2011 } }
+      let(:options){ { year: 2011 } }
 
       context 'Fixnum 0' do
         let(:input){ 0 }
@@ -134,7 +134,7 @@ describe ByStar::Normalization do
     end
 
     context 'with year option' do
-      let(:options){ { :year => 2011 } }
+      let(:options){ { year: 2011 } }
 
       context 'Fixnum 1' do
         let(:input){ 1 }
@@ -169,7 +169,7 @@ describe ByStar::Normalization do
     end
 
     context 'with year option' do
-      let(:options){ { :year => 2011 } }
+      let(:options){ { year: 2011 } }
 
       context 'Fixnum 0' do
         let(:input){ 0 }
@@ -213,7 +213,7 @@ describe ByStar::Normalization do
     end
 
     context 'with year option' do
-      let(:options){ { :year => 2011 } }
+      let(:options){ { year: 2011 } }
 
       context 'month abbr String' do
         let(:input){ 'Dec' }
@@ -253,7 +253,7 @@ describe ByStar::Normalization do
     end
 
     context 'with year option' do
-      let(:options){ { :year => 2011 } }
+      let(:options){ { year: 2011 } }
 
       context 'Fixnum 3' do
         let(:input){ 3 }

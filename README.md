@@ -21,7 +21,7 @@ ByStar (by_*) allows you easily and reliably query ActiveRecord and Mongoid obje
 Install this gem by adding this to your Gemfile:
 
 ```ruby
-gem 'by_star', :git => "git://github.com/radar/by_star"
+gem 'by_star', git: "git://github.com/radar/by_star"
 ```
 
 Then run `bundle install`
@@ -353,13 +353,13 @@ This will return all posts created in January of the current year.
 If you want to find all posts in January of last year just do
 
 ```ruby
-   Post.by_month(1, :year => 2007)
+   Post.by_month(1, year: 2007)
 ```
 
 or
 
 ```ruby
-   Post.by_month("January", :year => 2007)
+   Post.by_month("January", year: 2007)
 ```
 
 This will perform a find using the column you've specified.
@@ -401,7 +401,7 @@ To find records based on a fortnight, you can pass in a number (representing the
 This will return all posts in the 18th fortnight of the current year.
 
 ```ruby
-   Post.by_fortnight(18, :year => 2012)
+   Post.by_fortnight(18, year: 2012)
 ```
 
 This will return all posts in the 18th fortnight week of 2012.
@@ -433,8 +433,8 @@ This will return all posts in the 37th week of the current year (remember week n
 This will return all posts in the 37th week of 2012:
 
 ```ruby
-   Post.by_week(36, :year => 2012)
-   Post.by_cweek(37, :year => 2012)  # same result
+   Post.by_week(36, year: 2012)
+   Post.by_cweek(37, year: 2012)  # same result
 ```
 
 This will return all posts in the week which contains Jan 1, 2012:
@@ -496,7 +496,7 @@ To find records based on a quarter, you can pass in a number (representing the q
 This will return all posts in the 4th quarter of the current year.
 
 ```ruby
-   Post.by_quarter(2, :year => 2012)
+   Post.by_quarter(2, year: 2012)
 ```
 
 This will return all posts in the 2nd quarter of 2012.

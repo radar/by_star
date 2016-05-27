@@ -43,7 +43,7 @@ shared_examples_for 'by quarter' do
     end
 
     it 'should be able to use an alternative field' do
-      expect(Event.by_quarter(1, :field => 'end_time').count).to eq 12
+      expect(Event.by_quarter(1, field: 'end_time').count).to eq 12
     end
   end
 end
