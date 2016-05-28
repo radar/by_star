@@ -18,7 +18,9 @@ module ByStar
       end_field = by_star_end_field(options)
       scope = by_star_scope(options)
 
-      scope = if !end_time
+      scope = if !start_time && !end_time
+                scope # do nothing
+              elsif !end_time
                 by_star_after_query(scope, start_field, start_time)
               elsif !start_time
                 by_star_before_query(scope, start_field, end_time)
