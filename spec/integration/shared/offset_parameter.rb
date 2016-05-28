@@ -2,7 +2,8 @@ require 'spec_helper'
 
 shared_examples_for 'offset parameter' do
 
-  describe 'offset' do
+  describe ':offset' do
+
     it 'should memoize the offset variable' do
       expect(Event.instance_variable_get(:@by_star_offset)).to eq 3.hours
       expect(Post.instance_variable_get(:@by_star_offset)).to be_nil

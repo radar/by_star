@@ -9,13 +9,18 @@ shared_examples_for 'by direction' do
       it { expect(subject.count).to eql(12) }
     end
 
-    context 'timespan' do
+    context 'timespan default' do
       subject { Event.before(Time.zone.parse '2014-01-05') }
       it { expect(subject.count).to eql(13) }
     end
 
     context 'timespan strict' do
       subject { Event.before('2014-01-05', strict: true) }
+      it { expect(subject.count).to eql(13) }
+    end
+
+    context 'timespan not strict' do
+      subject { Event.before('2014-01-05', strict: false) }
       it { expect(subject.count).to eql(13) }
     end
 
@@ -47,13 +52,18 @@ shared_examples_for 'by direction' do
       it { expect(subject.count).to eql(10) }
     end
 
-    context 'timespan' do
+    context 'timespan default' do
       subject { Event.after(Date.parse '2014-01-05') }
       it { expect(subject.count).to eql(9) }
     end
 
     context 'timespan strict' do
       subject { Event.after('2014-01-05', strict: true) }
+      it { expect(subject.count).to eql(9) }
+    end
+
+    context 'timespan not strict' do
+      subject { Event.after('2014-01-05', strict: false) }
       it { expect(subject.count).to eql(9) }
     end
 
