@@ -25,6 +25,11 @@ shared_examples_for 'between_times' do
         context 'only end time' do
           subject { Post.between_times(nil, Time.zone.parse('2014-01-01')) }
           it { expect(subject.count).to eql(10) }
+
+          context 'neither start nor end time' do
+            subject { Post.between_times(nil, nil) }
+            it { expect(subject.count).to eql(22) }
+          end
         end
       end
 
@@ -38,6 +43,11 @@ shared_examples_for 'between_times' do
         context 'only end time' do
           subject { Event.between_times(nil, Time.zone.parse('2014-01-01'), strict: false) }
           it { expect(subject.count).to eql(13) }
+
+          context 'neither start nor end time' do
+            subject { Event.between_times(nil, nil) }
+            it { expect(subject.count).to eql(22) }
+          end
         end
       end
 
@@ -51,6 +61,11 @@ shared_examples_for 'between_times' do
         context 'only end time' do
           subject { Event.between_times(nil, Time.zone.parse('2014-01-01')) }
           it { expect(subject.count).to eql(13) }
+
+          context 'neither start nor end time' do
+            subject { Event.between_times(nil, nil) }
+            it { expect(subject.count).to eql(22) }
+          end
         end
       end
     end
