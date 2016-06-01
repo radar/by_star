@@ -7,7 +7,9 @@
 * BREAKING CHANGE - Drop support for option `:year` used as a standalone. Use `by_year` instead.
 * `#between_times` now accepts one-sided arguments, e.g. `Time, nil` or `nil, Time`.
 * `#between_times` now accepts `Range` or `Array` as an argument, while continuing to support existing `Time, Time` interface.
+* Add `#at_time` method for point-in-time query.
 * Timespan "strict" query now sets double-sided constraints on both fields to ensure database indexes are used properly.
+* Add optional `:index_scope` option for timespan "non-strict" queries to improve database performance.
 * Remove hash rocket syntax. Not considered breaking as Ruby 1.9.3 was already minimum supported version.
 
 ## v2.2.2 - Unreleased

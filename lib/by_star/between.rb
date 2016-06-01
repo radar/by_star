@@ -16,8 +16,8 @@ module ByStar
 
       start_field = by_star_start_field(options)
       end_field = by_star_end_field(options)
-      scope = by_star_scope(options)
 
+      scope = by_star_scope(options)
       scope = if !start_time && !end_time
                 scope # do nothing
               elsif !end_time
@@ -29,12 +29,27 @@ module ByStar
               elsif options[:strict]
                 by_star_span_strict_query(scope, start_field, end_field, start_time, end_time)
               else
-                by_star_span_overlap_query(scope, start_field, end_field, start_time, end_time, options)
+                by_star_span_loose_query(scope, start_field, end_field, start_time, end_time, options)
               end
 
       scope = by_star_order(scope, options[:order]) if options[:order]
-
       scope
+    end
+
+    def at_time(*args)
+      with_by_star_options(*args) do |time, options|
+        start_field = by_star_start_field(options)
+        end_field = by_star_end_field(options)
+
+        scope = by_star_scope(options)
+        scope = if start_field == end_field
+                  by_star_point_overlap_query(scope, start_field, time)
+                else
+                  by_star_span_overlap_query(scope, start_field, end_field, time, options)
+                end
+        scope = by_star_order(scope, options[:order]) if options[:order]
+        scope
+      end
     end
 
     def by_day(*args)

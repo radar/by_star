@@ -20,9 +20,11 @@ describe 'Mongoid' do
   end
 
   it_behaves_like 'between_times'
+  it_behaves_like 'at_time'
   it_behaves_like 'offset parameter'
   it_behaves_like 'order parameter'
   it_behaves_like 'scope parameter'
+  it_behaves_like 'index_scope parameter'
   it_behaves_like 'by day'
   it_behaves_like 'by direction'
   it_behaves_like 'by fortnight'
