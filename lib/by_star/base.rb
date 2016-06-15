@@ -71,8 +71,7 @@ module ByStar
       value = value.call(start_time, end_time, options) if value.is_a?(Proc)
       case value
         when nil, false then nil
-        when Time then value
-        when DateTime then value.to_time
+        when Time, DateTime then value
         when Date then value.in_time_zone
         when ActiveSupport::Duration then start_time - value
         when Numeric then start_time - value.seconds
