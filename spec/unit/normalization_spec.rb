@@ -73,22 +73,22 @@ describe ByStar::Normalization do
     it_behaves_like 'time normalization from string'
     it_behaves_like 'time normalization from date/time'
 
-    context 'Fixnum -1' do
+    context 'Integer -1' do
       let(:input){ -1 }
       it { expect{subject}.to raise_error(ByStar::ParseError, 'Week number must be between 0 and 52') }
     end
 
-    context 'Fixnum 0' do
+    context 'Integer 0' do
       let(:input){ 0 }
       it { expect eq Time.zone.parse('2014-01-01 00:00:00') }
     end
 
-    context 'Fixnum 20' do
+    context 'Integer 20' do
       let(:input){ 20 }
       it { expect eq Time.zone.parse('2014-05-21 00:00:00') }
     end
 
-    context 'Fixnum 53' do
+    context 'Integer 53' do
       let(:input){ 53 }
       it { expect{subject}.to raise_error(ByStar::ParseError, 'Week number must be between 0 and 52') }
     end
@@ -96,12 +96,12 @@ describe ByStar::Normalization do
     context 'with year option' do
       let(:options){ { year: 2011 } }
 
-      context 'Fixnum 0' do
+      context 'Integer 0' do
         let(:input){ 0 }
         it { expect eq Time.zone.parse('2011-01-01 00:00:00') }
       end
 
-      context 'Fixnum 20' do
+      context 'Integer 20' do
         let(:input){ 20 }
         it { expect eq Time.zone.parse('2011-05-21 00:00:00') }
       end
@@ -113,22 +113,22 @@ describe ByStar::Normalization do
     it_behaves_like 'time normalization from string'
     it_behaves_like 'time normalization from date/time'
 
-    context 'Fixnum 9' do
+    context 'Integer 9' do
       let(:input){ 0 }
       it { expect{subject}.to raise_error(ByStar::ParseError, 'cweek number must be between 1 and 53') }
     end
 
-    context 'Fixnum 1' do
+    context 'Integer 1' do
       let(:input){ 1 }
       it { expect eq Time.zone.parse('2014-01-01 00:00:00') }
     end
 
-    context 'Fixnum 21' do
+    context 'Integer 21' do
       let(:input){ 21 }
       it { expect eq Time.zone.parse('2014-05-21 00:00:00') }
     end
 
-    context 'Fixnum 54' do
+    context 'Integer 54' do
       let(:input){ 54 }
       it { expect{subject}.to raise_error(ByStar::ParseError, 'cweek number must be between 1 and 53') }
     end
@@ -136,12 +136,12 @@ describe ByStar::Normalization do
     context 'with year option' do
       let(:options){ { year: 2011 } }
 
-      context 'Fixnum 1' do
+      context 'Integer 1' do
         let(:input){ 1 }
         it { expect eq Time.zone.parse('2011-01-01 00:00:00') }
       end
 
-      context 'Fixnum 21' do
+      context 'Integer 21' do
         let(:input){ 21 }
         it { expect eq Time.zone.parse('2011-05-21 00:00:00') }
       end
@@ -153,12 +153,12 @@ describe ByStar::Normalization do
     it_behaves_like 'time normalization from string'
     it_behaves_like 'time normalization from date/time'
 
-    context 'Fixnum 0' do
+    context 'Integer 0' do
       let(:input){ 0 }
       it { expect eq Time.zone.parse('2014-01-01 00:00:00') }
     end
 
-    context 'Fixnum 26' do
+    context 'Integer 26' do
       let(:input){ 26 }
       it { expect eq Time.zone.parse('2014-12-31 00:00:00') }
     end
@@ -171,12 +171,12 @@ describe ByStar::Normalization do
     context 'with year option' do
       let(:options){ { year: 2011 } }
 
-      context 'Fixnum 0' do
+      context 'Integer 0' do
         let(:input){ 0 }
         it { expect eq Time.zone.parse('2011-01-01 00:00:00') }
       end
 
-      context 'Fixnum 26' do
+      context 'Integer 26' do
         let(:input){ 26 }
         it { expect eq Time.zone.parse('2011-12-31 00:00:00') }
       end
@@ -202,7 +202,7 @@ describe ByStar::Normalization do
       it { expect eq Time.zone.parse('2014-02-01 00:00:00') }
     end
 
-    context 'Fixnum' do
+    context 'Integer' do
       let(:input){ 2 }
       it { expect eq Time.zone.parse('2014-02-01 00:00:00') }
     end
@@ -220,7 +220,7 @@ describe ByStar::Normalization do
         it { expect eq Time.zone.parse('2011-12-01 00:00:00') }
       end
 
-      context 'Fixnum 12' do
+      context 'Integer 12' do
         let(:input){ 10 }
         it { expect eq Time.zone.parse('2011-10-01 00:00:00') }
       end
@@ -232,22 +232,22 @@ describe ByStar::Normalization do
     it_behaves_like 'time normalization from string'
     it_behaves_like 'time normalization from date/time'
 
-    context 'Fixnum 1' do
+    context 'Integer 1' do
       let(:input){ 1 }
       it { expect eq Time.zone.parse('2014-01-01 00:00:00') }
     end
 
-    context 'Fixnum 2' do
+    context 'Integer 2' do
       let(:input){ 2 }
       it { expect eq Time.zone.parse('2014-04-01 00:00:00') }
     end
 
-    context 'Fixnum 3' do
+    context 'Integer 3' do
       let(:input){ 3 }
       it { expect eq Time.zone.parse('2014-07-01 00:00:00') }
     end
 
-    context 'Fixnum 4' do
+    context 'Integer 4' do
       let(:input){ 4 }
       it { expect eq Time.zone.parse('2014-10-01 00:00:00') }
     end
@@ -255,7 +255,7 @@ describe ByStar::Normalization do
     context 'with year option' do
       let(:options){ { year: 2011 } }
 
-      context 'Fixnum 3' do
+      context 'Integer 3' do
         let(:input){ 3 }
         it { expect eq Time.zone.parse('2011-07-01 00:00:00') }
       end
@@ -272,17 +272,17 @@ describe ByStar::Normalization do
     it_behaves_like 'time normalization from string'
     it_behaves_like 'time normalization from date/time'
 
-    context 'Fixnum 69' do
+    context 'Integer 69' do
       let(:input){ 69 }
       it { expect eq Time.zone.parse('2069-01-01 00:00:00') }
     end
 
-    context 'Fixnum 99' do
+    context 'Integer 99' do
       let(:input){ 99 }
       it { expect eq Time.zone.parse('1999-01-01 00:00:00') }
     end
 
-    context 'Fixnum 2001' do
+    context 'Integer 2001' do
       let(:input){ 1 }
       it { expect eq Time.zone.parse('2001-01-01 00:00:00') }
     end

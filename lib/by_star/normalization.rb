@@ -31,12 +31,12 @@ module ByStar
       def week(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then week_fixnum(value, options)
+          when Integer then week_integer(value, options)
           else time(value)
         end
       end
 
-      def week_fixnum(value, options={})
+      def week_integer(value, options={})
         raise ParseError, 'Week number must be between 0 and 52' unless value.in?(0..52)
         time = Time.zone.local(options[:year] || Time.zone.now.year)
         time.beginning_of_year + value.to_i.weeks
@@ -44,7 +44,7 @@ module ByStar
 
       def cweek(value, options={})
         _value = value
-        if _value.is_a?(Fixnum)
+        if _value.is_a?(Integer)
           raise ParseError, 'cweek number must be between 1 and 53' unless value.in?(1..53)
           _value -= 1
         end
@@ -54,12 +54,12 @@ module ByStar
       def fortnight(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then fortnight_fixnum(value, options)
+          when Integer then fortnight_integer(value, options)
           else time(value)
         end
       end
 
-      def fortnight_fixnum(value, options={})
+      def fortnight_integer(value, options={})
         raise ParseError, 'Fortnight number must be between 0 and 26' unless value.in?(0..26)
         time = Time.zone.local(options[:year] || Time.zone.now.year)
         time + (value * 2).weeks
@@ -68,12 +68,12 @@ module ByStar
       def quarter(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then quarter_fixnum(value, options)
+          when Integer then quarter_integer(value, options)
           else time(value)
         end
       end
 
-      def quarter_fixnum(value, options={})
+      def quarter_integer(value, options={})
         raise ParseError, 'Quarter number must be between 1 and 4' unless value.in?(1..4)
         time = Time.zone.local(options[:year] || Time.zone.now.year)
         time.beginning_of_year + ((value - 1) * 3).months
@@ -82,12 +82,12 @@ module ByStar
       def month(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum, String then month_fixnum(value, options)
+          when Integer, String then month_integer(value, options)
           else time(value)
         end
       end
 
-      def month_fixnum(value, options={})
+      def month_integer(value, options={})
         year = options[:year] || Time.zone.now.year
         Time.zone.parse "#{year}-#{value}-01"
       rescue
@@ -97,12 +97,12 @@ module ByStar
       def year(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then year_fixnum(value)
+          when Integer then year_integer(value)
           else time(value)
         end
       end
 
-      def year_fixnum(value)
+      def year_integer(value)
         Time.zone.local(extrapolate_year(value))
       end
 
