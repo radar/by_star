@@ -31,7 +31,7 @@ module ByStar
       def week(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then week_fixnum(value, options)
+          when Integer then week_fixnum(value, options)
           else time(value)
         end
       end
@@ -44,7 +44,7 @@ module ByStar
 
       def cweek(value, options={})
         _value = value
-        if _value.is_a?(Fixnum)
+        if _value.is_a?(Integer)
           raise ParseError, 'cweek number must be between 1 and 53' unless value.in?(1..53)
           _value -= 1
         end
@@ -54,7 +54,7 @@ module ByStar
       def fortnight(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then fortnight_fixnum(value, options)
+          when Integer then fortnight_fixnum(value, options)
           else time(value)
         end
       end
@@ -68,7 +68,7 @@ module ByStar
       def quarter(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then quarter_fixnum(value, options)
+          when Integer then quarter_fixnum(value, options)
           else time(value)
         end
       end
@@ -82,7 +82,7 @@ module ByStar
       def month(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum, String then month_fixnum(value, options)
+          when Integer, String then month_fixnum(value, options)
           else time(value)
         end
       end
@@ -97,7 +97,7 @@ module ByStar
       def year(value, options={})
         value = try_string_to_int(value)
         case value
-          when Fixnum then year_fixnum(value)
+          when Integer then year_fixnum(value)
           else time(value)
         end
       end
