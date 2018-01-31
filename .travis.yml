@@ -35,13 +35,9 @@ rvm:
   - 2.3.1
   - 2.4.2
   - 2.5.0
-  - rbx
-  - jruby
 
 matrix:
   allow_failures:
-    - rvm: rbx
-    - rvm: jruby
     - gemfile: spec/gemfiles/Gemfile.master
 
 services: mongodb
