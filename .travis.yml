@@ -37,7 +37,25 @@ rvm:
   - 2.5.0
 
 matrix:
+  exclude:
+  - rvm: 2.0.0
+    gemfile: "spec/gemfiles/Gemfile.rails50"
+  - rvm: 2.0.0
+    gemfile: "spec/gemfiles/Gemfile.rails51"
+  - rvm: 2.0.0
+    gemfile: "spec/gemfiles/Gemfile.rails50"
+  - rvm: 2.1.0
+    gemfile: "spec/gemfiles/Gemfile.rails51"
+  - rvm: 2.4.2
+    gemfile: "spec/gemfiles/Gemfile.rails40"
+  - rvm: 2.5.0
+    gemfile: "spec/gemfiles/Gemfile.rails40"
+  - rvm: 2.4.2
+    gemfile: "spec/gemfiles/Gemfile.rails41"
+  - rvm: 2.5.0
+    gemfile: "spec/gemfiles/Gemfile.rails41"
   allow_failures:
     - gemfile: spec/gemfiles/Gemfile.master
+
 
 services: mongodb
