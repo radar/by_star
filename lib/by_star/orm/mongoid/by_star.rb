@@ -11,15 +11,13 @@ module Mongoid
 
       protected
 
-      def by_star_end_field_with_mongoid(options = {})
-        database_field_name by_star_end_field_without_mongoid(options)
+      def by_star_end_field(options = {})
+        database_field_name super(options)
       end
-      alias_method_chain :by_star_end_field, :mongoid
 
-      def by_star_start_field_with_mongoid(options = {})
-        database_field_name by_star_start_field_without_mongoid(options)
+      def by_star_start_field(options = {})
+        database_field_name super(options)
       end
-      alias_method_chain :by_star_start_field, :mongoid
 
       def by_star_default_field
         :created_at
