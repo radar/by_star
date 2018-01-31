@@ -17,6 +17,8 @@ gemfile:
   - spec/gemfiles/Gemfile.rails40
   - spec/gemfiles/Gemfile.rails41
   - spec/gemfiles/Gemfile.rails42
+  - spec/gemfiles/Gemfile.rails50
+  - spec/gemfiles/Gemfile.rails51
   - spec/gemfiles/Gemfile.master
 
 notifications:
@@ -32,6 +34,8 @@ rvm:
   - 2.1.9
   - 2.2.5
   - 2.3.1
+  - 2.4.2
+  - 2.5.0
   - rbx
   - jruby
 
