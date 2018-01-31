@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.post_install_message = File.read('UPGRADING') if File.exists?('UPGRADING')
 
-  s.add_dependency "activesupport"
+  s.add_dependency "activesupport", "> 3"
 
   s.add_development_dependency "chronic"
   s.add_development_dependency "bundler"
@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails", "~> 3.1"
   s.add_development_dependency "timecop", "~> 0.3"
   s.add_development_dependency "pry"
-  s.add_development_dependency "tzinfo-data"
 
   s.files         = `git ls-files`.split($/)
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
