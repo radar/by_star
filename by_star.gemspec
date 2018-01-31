@@ -10,6 +10,8 @@ Gem::Specification.new do |s|
   s.summary     = "ActiveRecord and Mongoid extension for easier date scopes and time ranges"
   s.description = "ActiveRecord and Mongoid extension for easier date scopes and time ranges"
 
+  s.required_ruby_version = '>= 2.0.0'
+
   s.post_install_message = File.read('UPGRADING') if File.exists?('UPGRADING')
 
   s.add_dependency "activesupport"
