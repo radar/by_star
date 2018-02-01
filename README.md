@@ -1,7 +1,7 @@
 # ByStar
 
-[![Build Status](https://travis-ci.org/radar/by_star.png)](https://travis-ci.org/radar/by_star)
-[![Code Climate](https://codeclimate.com/github/radar/by_star.png)](https://codeclimate.com/github/radar/by_star)
+[![Build Status](https://travis-ci.org/radar/by_star.svg)](https://travis-ci.org/radar/by_star)
+[![Code Climate](https://codeclimate.com/github/radar/by_star.svg)](https://codeclimate.com/github/radar/by_star)
 
 ByStar (by_*) allows you easily and reliably query ActiveRecord and Mongoid objects based on time.
 
