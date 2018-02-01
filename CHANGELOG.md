@@ -1,25 +1,13 @@
 # CHANGELOG
 
-## v3.0.0.rc1 - Unreleased
+## v3.0.0
 
-* BREAKING CHANGE - `#between` method has been removed for ActiveRecord (was deprecated in 2.2.0)
-* BREAKING CHANGE - Mongoid `:order` option now requires a Hash arguments in the form { field: direction }, i.e. the same as `Mongoid::Document#order_by`.
-* BREAKING CHANGE - Drop support for option `:year` used as a standalone. Use `by_year` instead.
-* `#between_times` now accepts one-sided arguments, e.g. `Time, nil` or `nil, Time`.
-* `#between_times` now accepts `Range` or `Array` as an argument, while continuing to support existing `Time, Time` interface.
-* Timespan "strict" query now sets double-sided constraints on both fields to ensure database indexes are used properly.
-* Remove hash rocket syntax. Not considered breaking as Ruby 1.9.3 was already minimum supported version.
-
-## v2.2.2 - Unreleased
-
-* Deprecate the `:order` option of ByStar queries, as the same can be achieved by using the order method of ActiveRecord - @johnnyshields
-* Remove arbitrarily silly logic of `#by_weekend` and make it just use Saturday and Sunday only - @johnnyshields
-* Add fortnight, weekend, and calendar_month kernel methods to Date class - @johnnyshields
-* Add `#by_cweek` scope - @johnnyshields
+* Upgrade Travis for broader coverage of Ruby, ActiveRecord, and Mongoid versions - @johnnyshields
+* Removed support for Ruby < 2.0 and Rails < 4.0. They are over 5 years old, and so it's time to upgrade. - @radar
+* Removed references to deprecated Fixnum constant - @rgioia - #78
 * Mongoid `newest`, `oldest`, `previous`, and `next` now use `reorder` to ignore any default scope, consistent with ActiveRecord - @johnnyshields
 * Mongoid 3.x: Add support for `Criteria#reorder` method from version 4+ - @johnnyshields
 * Upgrade Rspec tests to version 3.1 - @nhocki
-* Upgrade Travis for broader coverage of Ruby, ActiveRecord, and Mongoid versions - @johnnyshields
 
 ## v2.2.1 - 2014-04-21
 

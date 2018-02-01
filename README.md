@@ -242,7 +242,7 @@ This is not yet supported but will be soon.
 If [Chronic](https://github.com/mojombo/chronic) gem is present, it will be used to parse natural-language date/time
 strings in all ByStar finder methods. Otherwise, the Ruby `Time.parse` kernel method will be used as a fallback.
 
-As of ByStar 2.2.0, you must explicitly include `gem chronic` into your Gemfile in order to use Chronic.
+As of ByStar 2.2.0, you must explicitly include `gem 'chronic'` into your Gemfile in order to use Chronic.
 
 
 ## Advanced Usage
