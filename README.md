@@ -562,7 +562,7 @@ Note that the timezone is randomized on each run to shake-out timezone related q
 
 ## Collaborators
 
-ByStar is actively maintained by Ryan Biggs (radar) and Johnny Shields (johnnyshields)
+ByStar is actively maintained by Ryan Bigg (radar) and Johnny Shields (johnnyshields)
 
 Thank you to the following people:
 
