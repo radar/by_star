@@ -42,9 +42,9 @@ matrix:
     gemfile: "spec/gemfiles/Gemfile.rails50"
   - rvm: 2.0.0
     gemfile: "spec/gemfiles/Gemfile.rails51"
-  - rvm: 2.0.0
+  - rvm: 2.1.9
     gemfile: "spec/gemfiles/Gemfile.rails50"
-  - rvm: 2.1.0
+  - rvm: 2.1.9
     gemfile: "spec/gemfiles/Gemfile.rails51"
   - rvm: 2.4.2
     gemfile: "spec/gemfiles/Gemfile.rails40"
