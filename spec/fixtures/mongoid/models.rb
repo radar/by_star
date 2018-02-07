@@ -12,8 +12,6 @@ class Appointment
   include Mongoid::ByStar
 
   field :day_of_month,        type: Integer
-
-  by_star_field scope: ->{ where(day_of_month: 1) }
 end
 
 class Event

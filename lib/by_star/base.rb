@@ -33,21 +33,6 @@ module ByStar
       field.to_s
     end
 
-    def by_star_scope(options={})
-      scope = options[:scope] || @by_star_scope || self
-      if scope.is_a?(Proc)
-        if scope.arity == 0
-          return instance_exec(&scope)
-        elsif options[:scope_args]
-          return instance_exec(*Array(options[:scope_args]), &scope)
-        else
-          raise 'ByStar :scope Proc requires :scope_args to be specified.'
-        end
-      else
-        return scope
-      end
-    end
-
     protected
 
     # Wrapper function which extracts time and options for each by_star query.

@@ -153,32 +153,6 @@ Want to count records? Simple:
    Post.by_month.count
 ```
 
-### :scope Option
-
-You may pass a `:scope` option as a Relation or Proc to all ByStar methods like so:
-
-```ruby
-   @post.next(scope: Post.where(category: @post.category))
-   @post.next(scope: ->{ where(category: 'blog') })
-```
-
-This is particularly useful for `oldest`, `newest`, `previous`, `next` which return a model instance rather than
-a Relation and hence cannot be daisy-chained with other scopes.
-
-`previous` and `next` support a special feature that the `:scope` option may take the subject record as an argument:
-
-```ruby
-   @post.next(scope: ->(record){ where(category: record.category) })
-```
-
-You may also set a default scope in the `by_star_field` macro. (It is recommended this be a Proc):
-
-```ruby
-   class Post < ActiveRecord::Base
-     by_star_field scope: ->{ where(category: 'blog') }
-   end
-```
-
 ### `:offset` Option
 
 All ByStar finders support an `:offset` option which is applied to time period of the query condition.

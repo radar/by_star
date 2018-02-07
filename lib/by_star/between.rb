@@ -16,7 +16,7 @@ module ByStar
 
       start_field = by_star_start_field(options)
       end_field = by_star_end_field(options)
-      scope = by_star_scope(options)
+      scope = self
 
       scope = if !start_time && !end_time
                 scope # do nothing
