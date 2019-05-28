@@ -11,7 +11,7 @@ module ByStar
                              end
 
       offset = options[:offset] || 0
-      if start_time.is_a?(Date)
+      if start_time.is_a?(Date) || end_time.is_a?(Date)
         start_time = ByStar::Normalization.offset_changed_start(start_time.in_time_zone, offset) if start_time
         end_time = ByStar::Normalization.offset_changed_end(end_time.in_time_zone, offset) if end_time
       else
