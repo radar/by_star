@@ -37,7 +37,7 @@ shared_examples_for 'between_times' do
 
         context 'only start time' do
           subject { Event.between_times(Time.zone.parse('2014-01-01'), nil, strict: false) }
-          it { expect(subject.count).to eql(9) }
+          it { expect(subject.count).to eql(17) }
         end
 
         context 'only end time' do
@@ -46,7 +46,7 @@ shared_examples_for 'between_times' do
 
           context 'neither start nor end time' do
             subject { Event.between_times(nil, nil) }
-            it { expect(subject.count).to eql(22) }
+            it { expect(subject.count).to eql(30) }
           end
         end
       end
@@ -55,7 +55,7 @@ shared_examples_for 'between_times' do
 
         context 'only start time' do
           subject { Event.between_times(Time.zone.parse('2014-01-01'), nil) }
-          it { expect(subject.count).to eql(9) }
+          it { expect(subject.count).to eql(17) }
         end
 
         context 'only end time' do
@@ -64,8 +64,34 @@ shared_examples_for 'between_times' do
 
           context 'neither start nor end time' do
             subject { Event.between_times(nil, nil) }
-            it { expect(subject.count).to eql(22) }
+            it { expect(subject.count).to eql(30) }
           end
+        end
+      end
+    end
+
+    context 'two-sided query' do
+      context 'DST starts (Sydney)', sydney: true do
+        context 'day before' do
+          subject { Event.between_times(Date.parse('2020-04-04'), Date.parse('2020-04-04'), offset: 5.hours) }
+          it { expect(subject.count).to eql(3) }
+        end
+
+        context 'same day' do
+          subject { Event.between_times(Date.parse('2020-04-05'), Date.parse('2020-04-05'), offset: 5.hours) }
+          it { expect(subject.count).to eql(1) }
+        end
+      end
+
+      context 'when DST ends (Sydney)', sydney: true do
+        context 'day before' do
+          subject { Event.between_times(Date.parse('2020-10-03'), Date.parse('2020-10-03'), offset: 5.hours) }
+          it { expect(subject.count).to eql(1) }
+        end
+
+        context 'same day' do
+          subject { Event.between_times(Date.parse('2020-10-04'), Date.parse('2020-10-04'), offset: 5.hours) }
+          it { expect(subject.count).to eql(3) }
         end
       end
     end

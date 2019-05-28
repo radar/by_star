@@ -20,6 +20,10 @@ puts "Running specs in #{Time.zone} timezone..."
 # Set Rails time to 2014-01-01 00:00:00
 Timecop.travel(Time.zone.local(2014))
 
+RSpec.configure do |c|
+  c.filter_run_excluding sydney: true unless Time.zone.name == 'Australia/Sydney'
+end
+
 def testing_mongoid?
   ENV['DB'] == 'mongodb'
 end
