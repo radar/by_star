@@ -122,6 +122,24 @@ module ByStar
       rescue
         value
       end
+
+      def time_in_units(seconds)
+        days = seconds / 1.day
+        time = Time.at(seconds).utc
+        { days: days, hour: time.hour, min: time.min, sec: time.sec }
+      end
+
+      def offset_changed_start(time, offset)
+        units = time_in_units(offset)
+        time += units.delete(:days).days
+        time.change(units)
+      end
+
+      def offset_changed_end(time, offset)
+        units = time_in_units(offset)
+        time += units.delete(:days).days
+        (time + 1.day).change(units) - 1.second
+      end
     end
   end
 end

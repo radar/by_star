@@ -302,4 +302,32 @@ describe ByStar::Normalization do
       it { expect eq Time.zone.parse('2001-01-01 00:00:00') }
     end
   end
+
+  describe '#time_in_units' do
+    subject { ByStar::Normalization.time_in_units(input) }
+
+    context 'when less than a day' do
+      let(:input) { 34876 }
+      it { is_expected.to eq(days: 0, hour: 9, min: 41, sec: 16) }
+    end
+
+    context 'when more than a day' do
+      let(:input) { 97532 }
+      it { is_expected.to eq(days: 1, hour: 3, min: 5, sec: 32) }
+    end
+  end
+
+  describe '#offset_changed_start' do
+    subject { ByStar::Normalization.offset_changed_start(input, offset) }
+    let(:input) { Time.zone.parse('2020-04-05 00:00:00') }
+    let(:offset) { 5.hours }
+    it { is_expected.to eq Time.zone.parse('2020-04-05 05:00:00') }
+  end
+
+  describe '#offset_changed_end' do
+    subject { ByStar::Normalization.offset_changed_end(input, offset) }
+    let(:input) { Time.zone.parse('2020-10-04 00:00:00') }
+    let(:offset) { 5.hours }
+    it { is_expected.to eq Time.zone.parse('2020-10-05 04:59:59') }
+  end
 end

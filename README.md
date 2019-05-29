@@ -191,6 +191,17 @@ For example, if you'd like to find all Posts from 9:00 on 2014-03-05 until 8:59:
 
     Post.by_day('2014-03-05', offset: 9.hours)
 
+**Note:** When passing `offset` in `by_day`, it will set the hour, minute, and second on the queried date. Generally, adding the offset means the same thing, but on the dates of DST starting or ending, simply adding offset may give unexpected results:
+
+```ruby
+Time.zone = 'Australia/Sydney'
+Post.by_day('2020-04-05', offset: 9.hours)
+```
+
+It will correctly search the records from Apr 5th, 09:00 until Apr 6th, 08:59.
+
+When using `offset` with `between_times`, if you query on `Date` objects, then it sets hour, minute, and second on them. Else, it adds offset to queried times.
+
 You may also set a offset scope in the `by_star_field` macro:
 
 ```ruby
@@ -307,6 +318,8 @@ Also works with dates - WARNING: there are currently some caveats see [Issue #49
 ```ruby
    Post.between_times(date1, date2)
 ```
+
+It will query records from `date1` (00:00:00 Hrs) until `date2` (23:59:59 Hrs).
 
 ### before and after
 

@@ -26,7 +26,7 @@ shared_examples_for 'by direction' do
 
     context 'alternative field' do
       subject { Event.before('2014-01-05', field: 'created_at') }
-      it { expect(subject.count).to eql(12) }
+      it { expect(subject.count).to eql(20) }
     end
 
     context 'with default scope' do
@@ -54,17 +54,17 @@ shared_examples_for 'by direction' do
 
     context 'timespan default' do
       subject { Event.after(Date.parse '2014-01-05') }
-      it { expect(subject.count).to eql(9) }
+      it { expect(subject.count).to eql(17) }
     end
 
     context 'timespan strict' do
       subject { Event.after('2014-01-05', strict: true) }
-      it { expect(subject.count).to eql(9) }
+      it { expect(subject.count).to eql(17) }
     end
 
     context 'timespan not strict' do
       subject { Event.after('2014-01-05', strict: false) }
-      it { expect(subject.count).to eql(9) }
+      it { expect(subject.count).to eql(17) }
     end
 
     context 'alternative field' do
@@ -96,18 +96,18 @@ shared_examples_for 'by direction' do
     end
 
     context 'timespan' do
-      it { expect(Event.newest.created_at).to eq Time.zone.parse('2014-04-15 17:00:00') }
+      it { expect(Event.newest.created_at).to eq Time.zone.parse('2011-01-01 00:00:00') }
       it { expect(Event.oldest.created_at).to eq Time.zone.parse('2013-11-01 17:00:00') }
     end
 
     context 'timespan strict' do
-      it { expect(Event.newest(strict: true).created_at).to eq Time.zone.parse('2014-04-15 17:00:00') }
+      it { expect(Event.newest(strict: true).created_at).to eq Time.zone.parse('2011-01-01 00:00:00') }
       it { expect(Event.oldest(strict: true).created_at).to eq Time.zone.parse('2013-11-01 17:00:00') }
     end
 
     context 'alternative field' do
       it { expect(Event.newest(field: 'created_at').created_at).to eq Time.zone.parse('2014-04-15 17:00:00') }
-      it { expect(Event.oldest(field: 'created_at').created_at).to eq Time.zone.parse('2013-11-01 17:00:00') }
+      it { expect(Event.oldest(field: 'created_at').created_at).to eq Time.zone.parse('2011-01-01 00:00:00') }
     end
 
     context 'with default scope' do

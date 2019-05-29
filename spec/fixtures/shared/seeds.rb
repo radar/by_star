@@ -24,3 +24,13 @@
   Appointment.create!(created_at: d, day_of_month: d.day)
   Event.create!(created_at: d, start_time: d - 5.days, end_time: d + 5.days, day_of_month: d.day)
 end
+
+# Sydney timezone specific records
+%w(
+  2020-04-05
+  2020-10-04
+).map{|d| Date.parse(d) }.each do |d|
+  [1, 4, 5, 10].each do |h|
+    Event.create!(start_time: d + h.hour, end_time: d + h.hour + 30.minutes, created_at: Date.parse('2011-01-01'))
+  end
+end

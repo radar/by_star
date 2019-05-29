@@ -71,8 +71,7 @@ module ByStar
       value = value.call(start_time, end_time, options) if value.is_a?(Proc)
       case value
         when nil, false then nil
-        when Time, DateTime then value
-        when Date then value.in_time_zone
+        when Time, DateTime, Date then value.in_time_zone
         when ActiveSupport::Duration then start_time - value
         when Numeric then start_time - value.seconds
         when :beginning_of_day
@@ -80,6 +79,12 @@ module ByStar
           (start_time - offset).beginning_of_day + offset
         else raise 'ByStar :index_scope option value is not a supported type.'
       end
+    end
+
+    def with_offset_change(start_time, end_time, offset, &block)
+      start_time = ByStar::Normalization.offset_changed_start(start_time, offset)
+      end_time = ByStar::Normalization.offset_changed_end(end_time, offset)
+      block.call(start_time, end_time)
     end
   end
 end

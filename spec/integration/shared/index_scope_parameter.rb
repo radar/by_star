@@ -13,47 +13,47 @@ shared_examples_for 'index_scope parameter' do
     context 'between_times with index_scope' do
 
       context 'nil' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: nil) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: nil) }
         it { expect(subject.count).to eql(16) }
       end
 
       context 'false' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: false) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: false) }
         it { expect(subject.count).to eql(16) }
       end
 
       context 'Time' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: Time.zone.parse('2013-11-30 17:00:00')) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: Time.zone.parse('2013-11-30 17:00:00')) }
         it { expect(subject.count).to eql(14) }
       end
 
       context 'DateTime' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: Time.zone.parse('2013-11-30 17:00:00').to_datetime) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: Time.zone.parse('2013-11-30 17:00:00').to_datetime) }
         it { expect(subject.count).to eql(14) }
       end
 
       context 'Date' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: Date.parse('2013-11-30')) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: Date.parse('2013-11-30')) }
         it { expect(subject.count).to eql(14) }
       end
 
       context 'ActiveSupport::Duration' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: 3.hours) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: 3.hours) }
         it { expect(subject.count).to eql(13) }
       end
 
       context 'Numeric' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: 3600) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: 3600) }
         it { expect(subject.count).to eql(13) }
       end
 
       context ':beginning_of_day' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: :beginning_of_day) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: :beginning_of_day) }
         it { expect(subject.count).to eql(13) }
       end
 
       context 'unsupported type' do
-        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), index_scope: Integer) }
+        subject { Event.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), index_scope: Integer) }
         it { expect{subject.count}.to raise_error(RuntimeError) }
       end
     end

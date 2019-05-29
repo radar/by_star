@@ -11,32 +11,32 @@ shared_examples_for 'scope parameter' do
     end
 
     context 'between_times with default scope' do
-      subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01')) }
+      subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31')) }
       it { expect(subject.count).to eql(3) }
     end
 
     context 'between_times with scope override as a query criteria' do
-      subject { Appointment.between_times(Date.parse('2013-12-01')..Date.parse('2014-02-01'), scope: Appointment.unscoped) }
+      subject { Appointment.between_times(Date.parse('2013-12-01')..Date.parse('2014-01-31'), scope: Appointment.unscoped) }
       it { expect(subject.count).to eql(14) }
     end
 
     context 'between_times with scope override as a Lambda' do
-      subject { Appointment.between_times([Date.parse('2013-12-01'), Date.parse('2014-02-01')], scope: ->{ unscoped }) }
+      subject { Appointment.between_times([Date.parse('2013-12-01'), Date.parse('2014-01-31')], scope: ->{ unscoped }) }
       it { expect(subject.count).to eql(14) }
     end
 
     context 'between_times with scope override as a Lambda' do
-      subject { Appointment.between_times(Date.parse('2013-12-01')..Date.parse('2014-02-01'), scope: ->(x){ unscoped }) }
+      subject { Appointment.between_times(Date.parse('2013-12-01')..Date.parse('2014-01-31'), scope: ->(x){ unscoped }) }
       it{ expect{ subject }.to raise_error(RuntimeError, 'ByStar :scope Proc requires :scope_args to be specified.') }
     end
 
     context 'between_times with scope override as a Proc with arguments' do
-      subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-02-01'), scope: Proc.new{ unscoped }) }
+      subject { Appointment.between_times(Date.parse('2013-12-01'), Date.parse('2014-01-31'), scope: Proc.new{ unscoped }) }
       it { expect(subject.count).to eql(14) }
     end
 
     context 'between_times with scope override as a Proc with arguments' do
-      subject { Appointment.between_times([Date.parse('2013-12-01'), Date.parse('2014-02-01')], scope: Proc.new{|x,y| unscoped }) }
+      subject { Appointment.between_times([Date.parse('2013-12-01'), Date.parse('2014-01-31')], scope: Proc.new{|x,y| unscoped }) }
       it{ expect{ subject }.to raise_error(RuntimeError, 'ByStar :scope Proc requires :scope_args to be specified.') }
     end
 
