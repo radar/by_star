@@ -7,29 +7,13 @@ module ByStar
     class << self
 
       def date(value)
-        time(value).to_date
+        value = parse_time(value) if value.is_a?(String)
+        value.try(:to_date)
       end
 
       def time(value)
-        case value
-          when String   then time_string(value)
-          when DateTime then value.to_time
-          when Date     then value.in_time_zone
-          else value
-        end
-      end
-
-      def time_string(value)
-        defined?(Chronic) ? time_string_chronic(value) : time_string_fallback(value)
-      end
-
-      def time_string_chronic(value)
-        Chronic.time_class = Time.zone
-        Chronic.parse(value) || raise(ByStar::ParseError, "Chronic could not parse String #{value.inspect}")
-      end
-
-      def time_string_fallback(value)
-        Time.zone.parse(value) || raise(ByStar::ParseError, "Cannot parse String #{value.inspect}")
+        value = parse_time(value) if value.is_a?(String)
+        value.try(:in_time_zone)
       end
 
       def week(value, options={})
@@ -143,6 +127,21 @@ module ByStar
         units = time_in_units(offset)
         time += units.delete(:days).days
         (time + 1.day).change(units) - 1.second
+      end
+
+      private
+
+      def parse_time(value)
+        defined?(Chronic) ? parse_time_chronic(value) : parse_time_fallback(value)
+      end
+
+      def parse_time_chronic(value)
+        Chronic.time_class = Time.zone
+        Chronic.parse(value) || raise(ByStar::ParseError, "Chronic could not parse String #{value.inspect}")
+      end
+
+      def parse_time_fallback(value)
+        Time.zone.parse(value) || raise(ByStar::ParseError, "Cannot parse String #{value.inspect}")
       end
     end
   end

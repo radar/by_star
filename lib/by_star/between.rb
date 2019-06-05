@@ -41,6 +41,17 @@ module ByStar
       scope
     end
 
+    def between_dates(*args)
+      options = args.extract_options!
+      start_date, end_date = case args[0]
+                             when Array, Range then [args[0].first, args[0].last]
+                             else args[0..1]
+                             end
+      start_date = ByStar::Normalization.date(start_date)
+      end_date   = ByStar::Normalization.date(end_date)
+      between_times(start_date, end_date, options)
+    end
+
     def at_time(*args)
       with_by_star_options(*args) do |time, options|
         start_field = by_star_start_field(options)
@@ -121,55 +132,55 @@ module ByStar
       end
     end
 
-    def today(options={})
+    def today(options = {})
       by_day(Date.current, options)
     end
 
-    def yesterday(options={})
+    def yesterday(options = {})
       by_day(Date.yesterday, options)
     end
 
-    def tomorrow(options={})
+    def tomorrow(options = {})
       by_day(Date.tomorrow, options)
     end
 
-    def past_day(options={})
+    def past_day(options = {})
       between_times(Time.current - 1.day, Time.current, options)
     end
 
-    def past_week(options={})
+    def past_week(options = {})
       between_times(Time.current - 1.week, Time.current, options)
     end
 
-    def past_fortnight(options={})
+    def past_fortnight(options = {})
       between_times(Time.current - 2.weeks, Time.current, options)
     end
 
-    def past_month(options={})
+    def past_month(options = {})
       between_times(Time.current - 1.month, Time.current, options)
     end
 
-    def past_year(options={})
+    def past_year(options = {})
       between_times(Time.current - 1.year, Time.current, options)
     end
 
-    def next_day(options={})
+    def next_day(options = {})
       between_times(Time.current, Time.current + 1.day, options)
     end
 
-    def next_week(options={})
+    def next_week(options = {})
       between_times(Time.current, Time.current  + 1.week, options)
     end
 
-    def next_fortnight(options={})
+    def next_fortnight(options = {})
       between_times(Time.current, Time.current + 2.weeks, options)
     end
 
-    def next_month(options={})
+    def next_month(options = {})
       between_times(Time.current, Time.current + 1.month, options)
     end
 
-    def next_year(options={})
+    def next_year(options = {})
       between_times(Time.current, Time.current + 1.year, options)
     end
   end

@@ -1,3 +1,4 @@
+require 'by_star/kernel/in_time_zone'
 require 'by_star/kernel/time'
 require 'by_star/kernel/date'
 require 'by_star/normalization'
