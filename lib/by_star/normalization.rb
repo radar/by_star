@@ -8,6 +8,7 @@ module ByStar
 
       def date(value)
         value = parse_time(value) if value.is_a?(String)
+        value = value.try(:in_time_zone) unless value.is_a?(Date)
         value.try(:to_date)
       end
 

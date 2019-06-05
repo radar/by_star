@@ -11,12 +11,17 @@ module ByStar
                              end
 
       offset = options[:offset] || 0
-      if start_time.is_a?(Date) || end_time.is_a?(Date)
-        start_time = ByStar::Normalization.apply_offset_start(start_time.in_time_zone, offset) if start_time
-        end_time = ByStar::Normalization.apply_offset_end(end_time.in_time_zone, offset) if end_time
-      else
-        start_time += offset.seconds if start_time
-        end_time   += offset.seconds if end_time
+
+      if start_time.is_a?(Date)
+        start_time = ByStar::Normalization.apply_offset_start(start_time.in_time_zone, offset)
+      elsif start_time
+        start_time += offset.seconds
+      end
+
+      if end_time.is_a?(Date)
+        end_time = ByStar::Normalization.apply_offset_end(end_time.in_time_zone, offset)
+      elsif end_time
+        end_time += offset.seconds
       end
 
       start_field = by_star_start_field(options)
