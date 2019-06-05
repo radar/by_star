@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v3.0.0.rc1 - Unreleased
+## v4.0.0 - Unreleased
 
 * BREAKING CHANGE - `#between` method has been removed for ActiveRecord (was deprecated in 2.2.0)
 * BREAKING CHANGE - Mongoid `:order` option now requires a Hash arguments in the form { field: direction }, i.e. the same as `Mongoid::Document#order_by`.
@@ -11,19 +11,17 @@
 * Add `#at_time` method for point-in-time query.
 * Timespan "strict" query now sets double-sided constraints on both fields to ensure database indexes are used properly.
 * Add optional `:index_scope` option for timespan "non-strict" queries to improve database performance.
-* Remove hash rocket syntax. Not considered breaking as Ruby 1.9.3 was already minimum supported version.
 * Fixes `offset` option to set hour, min, and sec of day for queries on dates.
+* Re-add test coverage for Rails 3.2. This will be removed when we upgrade to Ruby 2.2+ as minimum version.
 
-## v2.2.2 - Unreleased
+## v3.0.0
 
-* Deprecate the `:order` option of ByStar queries, as the same can be achieved by using the order method of ActiveRecord - @johnnyshields
-* Remove arbitrarily silly logic of `#by_weekend` and make it just use Saturday and Sunday only - @johnnyshields
-* Add fortnight, weekend, and calendar_month kernel methods to Date class - @johnnyshields
-* Add `#by_cweek` scope - @johnnyshields
+* Upgrade Travis for broader coverage of Ruby, ActiveRecord, and Mongoid versions - @johnnyshields
+* Removed support for Ruby < 2.0 and Rails < 4.0. They are over 5 years old, and so it's time to upgrade. - @radar
+* Removed references to deprecated Fixnum constant - @rgioia - #78
 * Mongoid `newest`, `oldest`, `previous`, and `next` now use `reorder` to ignore any default scope, consistent with ActiveRecord - @johnnyshields
 * Mongoid 3.x: Add support for `Criteria#reorder` method from version 4+ - @johnnyshields
 * Upgrade Rspec tests to version 3.1 - @nhocki
-* Upgrade Travis for broader coverage of Ruby, ActiveRecord, and Mongoid versions - @johnnyshields
 
 ## v2.2.1 - 2014-04-21
 

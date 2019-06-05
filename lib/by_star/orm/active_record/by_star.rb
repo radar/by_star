@@ -51,25 +51,25 @@ module ByStar
 
       def oldest_query(options={})
         field = by_star_start_field(options)
-        by_star_scope(options).reorder("#{field} ASC").first
+        reorder("#{field} ASC").first
       end
 
       def newest_query(options={})
         field = by_star_start_field(options)
-        by_star_scope(options).reorder("#{field} DESC").first
+        reorder("#{field} DESC").first
       end
     end
 
     def previous(options={})
       field = self.class.by_star_start_field(options)
       value = self.send(field.split(".").last)
-      self.class.by_star_scope(options.merge(scope_args: self)).where("#{field} < ?", value).reorder("#{field} DESC").first
+      self.class.where("#{field} < ?", value).reorder("#{field} DESC").first
     end
 
     def next(options={})
       field = self.class.by_star_start_field(options)
       value = self.send(field.split(".").last)
-      self.class.by_star_scope(options.merge(scope_args: self)).where("#{field} > ?", value).reorder("#{field} ASC").first
+      self.class.where("#{field} > ?", value).reorder("#{field} ASC").first
     end
   end
 end

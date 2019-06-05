@@ -1,7 +1,7 @@
 # ByStar
 
-[![Build Status](https://travis-ci.org/radar/by_star.png)](https://travis-ci.org/radar/by_star)
-[![Code Climate](https://codeclimate.com/github/radar/by_star.png)](https://codeclimate.com/github/radar/by_star)
+[![Build Status](https://travis-ci.org/radar/by_star.svg)](https://travis-ci.org/radar/by_star)
+[![Code Climate](https://codeclimate.com/github/radar/by_star.svg)](https://codeclimate.com/github/radar/by_star)
 
 ByStar (by_*) allows you easily and reliably query ActiveRecord and Mongoid objects based on time.
 
@@ -156,32 +156,6 @@ Want to count records? Simple:
    Post.by_month.count
 ```
 
-### :scope Option
-
-You may pass a `:scope` option as a Relation or Proc to all ByStar methods like so:
-
-```ruby
-   @post.next(scope: Post.where(category: @post.category))
-   @post.next(scope: ->{ where(category: 'blog') })
-```
-
-This is particularly useful for `oldest`, `newest`, `previous`, `next` which return a model instance rather than
-a Relation and hence cannot be daisy-chained with other scopes.
-
-`previous` and `next` support a special feature that the `:scope` option may take the subject record as an argument:
-
-```ruby
-   @post.next(scope: ->(record){ where(category: record.category) })
-```
-
-You may also set a default scope in the `by_star_field` macro. (It is recommended this be a Proc):
-
-```ruby
-   class Post < ActiveRecord::Base
-     by_star_field scope: ->{ where(category: 'blog') }
-   end
-```
-
 ### `:offset` Option
 
 All ByStar finders support an `:offset` option which is applied to time period of the query condition.
@@ -294,7 +268,7 @@ by_star index_scope: ->(start_time, end_time, options){ ((start_time - end_time)
 If [Chronic](https://github.com/mojombo/chronic) gem is present, it will be used to parse natural-language date/time
 strings in all ByStar finder methods. Otherwise, the Ruby `Time.parse` kernel method will be used as a fallback.
 
-As of ByStar 2.2.0, you must explicitly include `gem chronic` into your Gemfile in order to use Chronic.
+As of ByStar 2.2.0, you must explicitly include `gem 'chronic'` into your Gemfile in order to use Chronic.
 
 
 ## Advanced Usage
@@ -616,7 +590,7 @@ Note that the timezone is randomized on each run to shake-out timezone related q
 
 ## Collaborators
 
-ByStar is actively maintained by Ryan Biggs (radar) and Johnny Shields (johnnyshields)
+ByStar is actively maintained by Ryan Bigg (radar) and Johnny Shields (johnnyshields)
 
 Thank you to the following people:
 

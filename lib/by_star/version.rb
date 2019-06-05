@@ -1,3 +1,3 @@
 module ByStar
-  VERSION = '2.2.1'
+  VERSION = '4.0.0'
 end

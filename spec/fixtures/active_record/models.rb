@@ -2,7 +2,7 @@ class Post < ActiveRecord::Base
 end
 
 class Appointment < ActiveRecord::Base
-  by_star_field scope: ->{ where(day_of_month: 1) }, index_scope: ->(start){ start - 5.days }
+  by_star_field index_scope: ->(start){ start - 5.days }
 end
 
 class Event < ActiveRecord::Base

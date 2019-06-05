@@ -17,6 +17,8 @@ gemfile:
   - spec/gemfiles/Gemfile.rails40
   - spec/gemfiles/Gemfile.rails41
   - spec/gemfiles/Gemfile.rails42
+  - spec/gemfiles/Gemfile.rails50
+  - spec/gemfiles/Gemfile.rails51
   - spec/gemfiles/Gemfile.master
 
 notifications:
@@ -28,21 +30,40 @@ branches:
     - master
 
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.9
   - 2.2.5
   - 2.3.1
-  - rbx
-  - jruby
+  - 2.4.2
+  - 2.5.0
 
 matrix:
+  exclude:
+  - rvm: 2.0.0
+    gemfile: "spec/gemfiles/Gemfile.rails50"
+  - rvm: 2.0.0
+    gemfile: "spec/gemfiles/Gemfile.rails51"
+  - rvm: 2.1.9
+    gemfile: "spec/gemfiles/Gemfile.rails50"
+  - rvm: 2.1.9
+    gemfile: "spec/gemfiles/Gemfile.rails51"
+  - rvm: 2.4.2
+    gemfile: "spec/gemfiles/Gemfile.rails40"
+  - rvm: 2.5.0
+    gemfile: "spec/gemfiles/Gemfile.rails40"
+  - rvm: 2.4.2
+    gemfile: "spec/gemfiles/Gemfile.rails41"
+  - rvm: 2.5.0
+    gemfile: "spec/gemfiles/Gemfile.rails41"
+  - rvm: 2.2.5
+    gemfile: "spec/gemfiles/Gemfile.rails32"
+  - rvm: 2.3.1
+    gemfile: "spec/gemfiles/Gemfile.rails32"
+  - rvm: 2.4.2
+    gemfile: "spec/gemfiles/Gemfile.rails32"
+  - rvm: 2.5.0
+    gemfile: "spec/gemfiles/Gemfile.rails32"
   allow_failures:
-    - rvm: rbx
-    - rvm: jruby
     - gemfile: spec/gemfiles/Gemfile.master
-    # `previous/next` with `default_scope` fails on Postgres Rails 3.2
-    - env: DB=postgres
-      gemfile: spec/gemfiles/Gemfile.rails32
 
 services: mongodb
