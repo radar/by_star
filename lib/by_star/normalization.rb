@@ -6,6 +6,10 @@ module ByStar
 
     class << self
 
+      def date(value)
+        time(value).to_date
+      end
+
       def time(value)
         case value
           when String   then time_string(value)
@@ -32,7 +36,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer then week_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -55,7 +59,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer then fortnight_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -69,7 +73,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer then quarter_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -83,7 +87,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer, String then month_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -98,7 +102,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer then year_integer(value)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -129,13 +133,13 @@ module ByStar
         { days: days, hour: time.hour, min: time.min, sec: time.sec }
       end
 
-      def offset_changed_start(time, offset)
+      def apply_offset_start(time, offset)
         units = time_in_units(offset)
         time += units.delete(:days).days
         time.change(units)
       end
 
-      def offset_changed_end(time, offset)
+      def apply_offset_end(time, offset)
         units = time_in_units(offset)
         time += units.delete(:days).days
         (time + 1.day).change(units) - 1.second

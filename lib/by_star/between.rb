@@ -12,8 +12,8 @@ module ByStar
 
       offset = options[:offset] || 0
       if start_time.is_a?(Date) || end_time.is_a?(Date)
-        start_time = ByStar::Normalization.offset_changed_start(start_time.in_time_zone, offset) if start_time
-        end_time = ByStar::Normalization.offset_changed_end(end_time.in_time_zone, offset) if end_time
+        start_time = ByStar::Normalization.apply_offset_start(start_time.in_time_zone, offset) if start_time
+        end_time = ByStar::Normalization.apply_offset_end(end_time.in_time_zone, offset) if end_time
       else
         start_time += offset.seconds if start_time
         end_time   += offset.seconds if end_time
@@ -59,23 +59,16 @@ module ByStar
 
     def by_day(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.time(time)
-        with_offset_change(time, time, (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        date = ByStar::Normalization.date(time)
+        between_times(date, date, options)
       end
     end
 
     def by_week(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.week(time, options)
+        date = ByStar::Normalization.week(time, options)
         start_day = Array(options[:start_day])
-        with_offset_change(
-          time.beginning_of_week(*start_day),
-          time.end_of_week(*start_day),
-          (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        between_times(date.beginning_of_week(*start_day), date.end_of_week(*start_day), options)
       end
     end
 
@@ -87,127 +80,97 @@ module ByStar
 
     def by_weekend(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.week(time, options)
-        with_offset_change(
-          time.beginning_of_weekend,
-          time.end_of_weekend,
-          (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        date = ByStar::Normalization.week(time, options)
+        between_times(date.beginning_of_weekend, date.end_of_weekend, options)
       end
     end
 
     def by_fortnight(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.fortnight(time, options)
-        with_offset_change(
-          time.beginning_of_fortnight,
-          time.end_of_fortnight,
-          (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        date = ByStar::Normalization.fortnight(time, options)
+        between_times(date.beginning_of_fortnight, date.end_of_fortnight, options)
       end
     end
 
     def by_month(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.month(time, options)
-        with_offset_change(
-          time.beginning_of_month,
-          time.end_of_month,
-          (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        date = ByStar::Normalization.month(time, options)
+        between_times(date.beginning_of_month, date.end_of_month, options)
       end
     end
 
     def by_calendar_month(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.month(time, options)
+        date = ByStar::Normalization.month(time, options)
         start_day = Array(options[:start_day])
-        with_offset_change(
-          time.beginning_of_calendar_month(*start_day),
-          time.end_of_calendar_month(*start_day),
-          (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        between_times(date.beginning_of_calendar_month(*start_day), date.end_of_calendar_month(*start_day), options)
       end
     end
 
     def by_quarter(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.quarter(time, options)
-        with_offset_change(
-          time.beginning_of_quarter,
-          time.end_of_quarter,
-          (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        date = ByStar::Normalization.quarter(time, options)
+        between_times(date.beginning_of_quarter, date.end_of_quarter, options)
       end
     end
 
     def by_year(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.year(time, options)
-        with_offset_change(
-          time.beginning_of_year,
-          time.end_of_year,
-          (options.delete(:offset) || 0)) do |start_time, end_time|
-          between_times(start_time, end_time, options)
-        end
+        date = ByStar::Normalization.year(time, options)
+        between_times(date.beginning_of_year, date.to_date.end_of_year, options)
       end
     end
 
     def today(options={})
-      by_day(Time.zone.now, options)
+      by_day(Date.current, options)
     end
 
     def yesterday(options={})
-      by_day(Time.zone.now.yesterday, options)
+      by_day(Date.yesterday, options)
     end
 
     def tomorrow(options={})
-      by_day(Time.zone.now.tomorrow, options)
+      by_day(Date.tomorrow, options)
     end
 
     def past_day(options={})
-      between_times(Time.zone.now - 1.day, Time.zone.now, options)
+      between_times(Time.current - 1.day, Time.current, options)
     end
 
     def past_week(options={})
-      between_times(Time.zone.now - 1.week, Time.zone.now, options)
+      between_times(Time.current - 1.week, Time.current, options)
     end
 
     def past_fortnight(options={})
-      between_times(Time.zone.now - 2.weeks, Time.zone.now, options)
+      between_times(Time.current - 2.weeks, Time.current, options)
     end
 
     def past_month(options={})
-      between_times(Time.zone.now - 1.month, Time.zone.now, options)
+      between_times(Time.current - 1.month, Time.current, options)
     end
 
     def past_year(options={})
-      between_times(Time.zone.now - 1.year, Time.zone.now, options)
+      between_times(Time.current - 1.year, Time.current, options)
     end
 
     def next_day(options={})
-      between_times(Time.zone.now, Time.zone.now + 1.day, options)
+      between_times(Time.current, Time.current + 1.day, options)
     end
 
     def next_week(options={})
-      between_times(Time.zone.now, Time.zone.now  + 1.week, options)
+      between_times(Time.current, Time.current  + 1.week, options)
     end
 
     def next_fortnight(options={})
-      between_times(Time.zone.now, Time.zone.now + 2.weeks, options)
+      between_times(Time.current, Time.current + 2.weeks, options)
     end
 
     def next_month(options={})
-      between_times(Time.zone.now, Time.zone.now + 1.month, options)
+      between_times(Time.current, Time.current + 1.month, options)
     end
 
     def next_year(options={})
-      between_times(Time.zone.now, Time.zone.now + 1.year, options)
+      between_times(Time.current, Time.current + 1.year, options)
     end
   end
 end

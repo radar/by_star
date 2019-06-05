@@ -317,15 +317,15 @@ describe ByStar::Normalization do
     end
   end
 
-  describe '#offset_changed_start' do
-    subject { ByStar::Normalization.offset_changed_start(input, offset) }
+  describe '#apply_offset_start' do
+    subject { ByStar::Normalization.apply_offset_start(input, offset) }
     let(:input) { Time.zone.parse('2020-04-05 00:00:00') }
     let(:offset) { 5.hours }
     it { is_expected.to eq Time.zone.parse('2020-04-05 05:00:00') }
   end
 
-  describe '#offset_changed_end' do
-    subject { ByStar::Normalization.offset_changed_end(input, offset) }
+  describe '#apply_offset_end' do
+    subject { ByStar::Normalization.apply_offset_end(input, offset) }
     let(:input) { Time.zone.parse('2020-10-04 00:00:00') }
     let(:offset) { 5.hours }
     it { is_expected.to eq Time.zone.parse('2020-10-05 04:59:59') }

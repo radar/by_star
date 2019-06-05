@@ -65,11 +65,5 @@ module ByStar
         else raise 'ByStar :index_scope option value is not a supported type.'
       end
     end
-
-    def with_offset_change(start_time, end_time, offset, &block)
-      start_time = ByStar::Normalization.offset_changed_start(start_time, offset)
-      end_time = ByStar::Normalization.offset_changed_end(end_time, offset)
-      block.call(start_time, end_time)
-    end
   end
 end
