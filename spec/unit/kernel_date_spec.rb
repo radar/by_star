@@ -18,7 +18,7 @@ describe Date do
 
       context 'when ByStar::Kernel::Date included' do
         before do
-          ::Date.__send__(:include, ByStar::Kernel::Date)
+          ::Date.__send__(:include, ByStar::Kernel::InTimeZone)
         end
 
         it 'should not be aliased to #to_time_in_current_zone' do
@@ -40,7 +40,7 @@ describe Date do
 
       context 'when ByStar::Kernel::Date included' do
         before do
-          ::Date.__send__(:include, ByStar::Kernel::Date)
+          ::Date.__send__(:include, ByStar::Kernel::InTimeZone)
         end
 
         it 'should be aliased to #to_time_in_current_zone' do
