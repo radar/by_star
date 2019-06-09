@@ -30,6 +30,8 @@ rvm:
   - 2.6.3
 
 matrix:
+  fast_finish: true
+
   exclude:
     - gemfile: 'spec/gemfiles/Gemfile.rails32'
       rvm: 2.2.10
