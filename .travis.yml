@@ -1,3 +1,5 @@
+services: mongodb
+
 before_script:
   - "mysql -e 'create database by_star_test;'"
   - "psql -c 'create database by_star_test;' -U postgres"
@@ -17,14 +19,6 @@ gemfile:
   - spec/gemfiles/Gemfile.rails51
   - spec/gemfiles/Gemfile.master
 
-notifications:
-  email:
-    - radarlistener@gmail.com
-
-branches:
-  only:
-    - master
-
 rvm:
   - 2.0.0
   - 2.1.9
@@ -35,31 +29,42 @@ rvm:
 
 matrix:
   exclude:
-  - rvm: 2.0.0
-    gemfile: "spec/gemfiles/Gemfile.rails50"
-  - rvm: 2.0.0
-    gemfile: "spec/gemfiles/Gemfile.rails51"
-  - rvm: 2.1.9
-    gemfile: "spec/gemfiles/Gemfile.rails50"
-  - rvm: 2.1.9
-    gemfile: "spec/gemfiles/Gemfile.rails51"
-  - rvm: 2.4.2
-    gemfile: "spec/gemfiles/Gemfile.rails40"
-  - rvm: 2.5.0
-    gemfile: "spec/gemfiles/Gemfile.rails40"
-  - rvm: 2.4.2
-    gemfile: "spec/gemfiles/Gemfile.rails41"
-  - rvm: 2.5.0
-    gemfile: "spec/gemfiles/Gemfile.rails41"
-  - rvm: 2.2.5
-    gemfile: "spec/gemfiles/Gemfile.rails32"
-  - rvm: 2.3.1
-    gemfile: "spec/gemfiles/Gemfile.rails32"
-  - rvm: 2.4.2
-    gemfile: "spec/gemfiles/Gemfile.rails32"
-  - rvm: 2.5.0
-    gemfile: "spec/gemfiles/Gemfile.rails32"
-  allow_failures:
-    - gemfile: spec/gemfiles/Gemfile.master
+    - gemfile: 'spec/gemfiles/Gemfile.rails32'
+      rvm: 2.2.5
+    - gemfile: 'spec/gemfiles/Gemfile.rails32'
+      rvm: 2.3.1
+    - gemfile: 'spec/gemfiles/Gemfile.rails32'
+      rvm: 2.4.2
+    - gemfile: 'spec/gemfiles/Gemfile.rails32'
+      rvm: 2.5.0
+    - gemfile: 'spec/gemfiles/Gemfile.rails40'
+      rvm: 2.4.2
+    - gemfile: 'spec/gemfiles/Gemfile.rails40'
+      rvm: 2.5.0
+    - gemfile: 'spec/gemfiles/Gemfile.rails41'
+      rvm: 2.4.2
+    - gemfile: 'spec/gemfiles/Gemfile.rails41'
+      rvm: 2.5.0
+    - gemfile: 'spec/gemfiles/Gemfile.rails50'
+      rvm: 2.0.0
+    - gemfile: 'spec/gemfiles/Gemfile.rails50'
+      rvm: 2.1.9
+    - gemfile: 'spec/gemfiles/Gemfile.rails51'
+      rvm: 2.0.0
+    - gemfile: 'spec/gemfiles/Gemfile.rails51'
+      rvm: 2.1.9
 
-services: mongodb
+  allow_failures:
+    - gemfile: 'spec/gemfiles/Gemfile.master'
+    - gemfile: 'spec/gemfiles/Gemfile.rails32'
+      env: 'DB=sqlite'
+    - gemfile: 'spec/gemfiles/Gemfile.rails32'
+      env: 'DB=mysql'
+    - gemfile: 'spec/gemfiles/Gemfile.rails40'
+      env: 'DB=sqlite'
+    - gemfile: 'spec/gemfiles/Gemfile.rails40'
+      env: 'DB=mysql'
+    - gemfile: 'spec/gemfiles/Gemfile.rails41'
+      env: 'DB=sqlite'
+    - gemfile: 'spec/gemfiles/Gemfile.rails41'
+      env: 'DB=mysql'
