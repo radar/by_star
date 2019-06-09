@@ -2,16 +2,17 @@
 
 ## v4.0.0 - Unreleased
 
-* BREAKING CHANGE - `#between` method has been removed for ActiveRecord (was deprecated in 2.2.0)
-* BREAKING CHANGE - Mongoid `:order` option now requires a Hash arguments in the form { field: direction }, i.e. the same as `Mongoid::Document#order_by`.
+* BREAKING CHANGE - `#between` method has been removed (was deprecated in 2.2.0)
+* BREAKING CHANGE - `:order` arg for `#between_times` has been removed.
 * BREAKING CHANGE - Drop support for option `:year` used as a standalone. Use `by_year` instead.
-* BREAKING CHANGE - `between_times` now queries on records until end of day on `end_time`, if it is a date.
+* BREAKING CHANGE - `#between_times` now queries on records until end of day on `end_time`, if it is a date.
 * `#between_times` now accepts one-sided arguments, e.g. `Time, nil` or `nil, Time`.
 * `#between_times` now accepts `Range` or `Array` as an argument, while continuing to support existing `Time, Time` interface.
 * Add `#at_time` method for point-in-time query.
 * Timespan "strict" query now sets double-sided constraints on both fields to ensure database indexes are used properly.
 * Add optional `:index_scope` option for timespan "non-strict" queries to improve database performance.
-* Fixes `offset` option to set hour, min, and sec of day for queries on dates.
+* Fixes `offset` option to set hour, min, and sec of day for queries on dates for better DST support.
+* More consistent application of `Time.zone`.
 * Re-add test coverage for Rails 3.2. This will be removed when we upgrade to Ruby 2.2+ as minimum version.
 
 ## v3.0.0

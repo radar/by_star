@@ -130,6 +130,13 @@ module ByStar
         (time + 1.day).change(units) - 1.second
       end
 
+      def extract_range(args)
+        case args[0]
+        when Array, Range then [args[0].first, args[0].last]
+        else args[0..1]
+        end
+      end
+
       private
 
       def parse_time(value)

@@ -8,12 +8,12 @@ ByStar (by_*) allows you easily and reliably query ActiveRecord and Mongoid obje
 ### Examples
 
 ```ruby
-   Post.by_year(2013)                           # all posts in 2013
-   Post.before(Date.today)                      # all posts for before today
-   Post.yesterday                               # all posts for yesterday
-   Post.between_times(Time.zone.now - 3.hours,  # all posts in last 3 hours
-                      Time.zone.now)
-   @post.next                                   # next post after a given post
+Post.by_year(2013)                           # all posts in 2013
+Post.before(Date.today)                      # all posts for before today
+Post.yesterday                               # all posts for yesterday
+Post.between_times(Time.zone.now - 3.hours,  # all posts in last 3 hours
+                   Time.zone.now)
+@post.next                                   # next post after a given post
 ```
 
 ## Installation
@@ -44,33 +44,34 @@ class MyModel
 ByStar adds the following finder scopes (class methods) to your model to query time ranges.
 These accept a `Date`, `Time`, or `DateTime` object as an argument, which defaults to `Time.zone.now` if not specified:
 
-| Method | Result |
 | --- | --- |
-| `between_times(start_time, end_time)` | Finds all records occurring between the two given times. |
+| `between_times(start_time, end_time)` | Finds all records occurring between two given times. |
+| `between_dates(start_date, end_date)` | Finds all records occurring between two given dates, from beginning of start_date until end of end_date. |
 | `before(end_time)` | Finds all records occurring before the given time. |
 | `after(start_time)` | Finds all records occurring after the given time. |
 | `at_time(time)` | Finds all records occurring exactly at the given time, or which overlap the time in the case of "timespan"-type object (see below) |
 
-`between_times` supports alternate argument forms:
-   * `between_times(Range)`
-   * `between_times(Array)`
-   * `between_times(start_time, nil)` - same as `after(start_time)`
-   * `between_times(nil, end_time)` - same as `before(end_time)`
+`between_times` and `between_dates` supports alternate argument forms:
+* `between_times(Range)`
+* `between_times(Array)`
+* `between_times(start_time, nil)` - same as `after(start_time)`
+* `between_times(nil, end_time)` - same as `before(end_time)`
 
 ### Time Range Scopes
 
 ByStar adds additional shortcut scopes based on commonly used time ranges.
 See sections below for detailed argument usage of each:
 
-* `by_day`
-* `by_week` Allows zero-based week value from 0 to 52
-* `by_cweek` Allows one-based week value from 1 to 53
-* `by_weekend` Saturday and Sunday only of the given week
-* `by_fortnight` A two-week period, with the first fortnight of the year beginning on 1st January
-* `by_month`
-* `by_calendar_month` Month as it appears on a calendar; days form previous/following months which are part of the first/last weeks of the given month
-* `by_quarter` 3-month intervals of the year
-* `by_year`
+| --- | --- |
+| `by_day` | Query by a given date. |
+| `by_week` | Allows zero-based week value from 0 to 52. |
+| `by_cweek` | Allows one-based week value from 1 to 53. |
+| `by_weekend` | Saturday and Sunday only of the given week. |
+| `by_fortnight` | A two-week period, with the first fortnight of the year beginning on 1st January. |
+| `by_month` | Query by month. Allows integer arg, e.g. `11` for November. |
+| `by_calendar_month` | Month as it appears on a calendar; days form previous/following months which are part of the first/last weeks of the given month. |
+| `by_quarter` | 3-month intervals of the year. |
+| `by_year` | Query by year. Allows integer arg, e.g. `2017`. |
 
 ### Relative Scopes
 
@@ -78,19 +79,20 @@ ByStar also adds scopes which are relative to the current time.
 Note the `past_*` and `next_*` methods represent a time distance from current time (`Time.zone.now`),
 and do not strictly end/begin evenly on a calendar week/month/year (unlike `by_*` methods which do.)
 
-* `today` Finds all occurrences on today's date
-* `yesterday` Finds all occurrences on yesterday's date
-* `tomorrow` Finds all occurrences on tomorrow's date
-* `past_day` Prior 24-hour period from current time
-* `past_week` Prior 7-day period from current time
-* `past_fortnight` Prior 14-day period from current time
-* `past_month` Prior 30-day period from current time
-* `past_year` Prior 365-day period from current time
-* `next_day` Subsequent 24-hour period from current time
-* `next_week` Subsequent 7-day period from current time
-* `next_fortnight` Subsequent 14-day period from current time
-* `next_month` Subsequent 30-day period from current time
-* `next_year` Subsequent 365-day period from current time
+| --- | --- |
+| `today` | Finds all occurrences on today's date. |
+| `yesterday` | Finds all occurrences on yesterday's date. |
+| `tomorrow` | Finds all occurrences on tomorrow's date. |
+| `past_day` | Prior 24-hour period from current time. |
+| `past_week` | Prior 7-day period from current time. |
+| `past_fortnight` | Prior 14-day period from current time. |
+| `past_month` | Prior 30-day period from current time. |
+| `past_year` | Prior 365-day period from current time. |
+| `next_day` | Subsequent 24-hour period from current time. |
+| `next_week` | Subsequent 7-day period from current time. |
+| `next_fortnight` | Subsequent 14-day period from current time. |
+| `next_month` | Subsequent 30-day period from current time. |
+| `next_year` | Subsequent 365-day period from current time. |
 
 ### Superlative Finders
 
@@ -129,31 +131,42 @@ By default, ByStar assumes you will use the `created_at` field to query objects 
 You may specify an alternate field on all query methods as follows:
 
 ```ruby
-   Post.by_month("January", field: :updated_at)
+Post.by_month("January", field: :updated_at)
 ```
 
 Alternatively, you may set a default in your model using the `by_star_field` macro:
 
 ```ruby
-   class Post < ActiveRecord::Base
-     by_star_field :updated_at
-   end
+class Post < ActiveRecord::Base
+  by_star_field :updated_at
+end
 ```
 
 ### Scoping the Query
 
-All ByStar methods (except `oldest`, `newest`, `previous`, `next`) return `ActiveRecord::Relation` and/or
-`Mongoid::Criteria` objects, which can be daisy-chained with other scopes/finder methods:
+All ByStar methods (except `oldest`, `newest`, `previous`, `next`) return an `ActiveRecord::Relation`
+(or `Mongoid::Criteria`) which can be daisy-chained with other scopes/finder methods:
 
 ```ruby
-   Post.by_month.your_scope
-   Post.by_month(1).include(:tags).where("tags.name" => "ruby")
+Post.by_month.your_scope
+Post.by_month(1).include(:tags).where("tags.name" => "ruby")
 ```
 
 Want to count records? Simple:
 
 ```ruby
-   Post.by_month.count
+Post.by_month.count
+```
+
+### Timezone Handling
+
+ByStar date-range finders will use value of `Time.zone` to evaluate the args.
+This may cause unexpected behavior when use Time values in timezones other than `Time.zone`.
+
+```ruby
+Time.zone = 'Australia/Sydney'
+Post.by_day('2020-04-05 18:00:00 EST')
+#=> Returns Apr 6th, 0:00 until Apr 6th, 23:59 in Sydney timezone.
 ```
 
 ### `:offset` Option
@@ -163,25 +176,16 @@ This is useful in cases where the daily cycle occurs at a time other than midnig
 
 For example, if you'd like to find all Posts from 9:00 on 2014-03-05 until 8:59:59.999 on 2014-03-06, you can do:
 
-    Post.by_day('2014-03-05', offset: 9.hours)
+```ruby
+Post.by_day('2014-03-05', offset: 9.hours)
+```
 
-**Note:** When passing `offset` in `by_day`, it will set the hour, minute, and second on the queried date. Generally, adding the offset means the same thing, but on the dates of DST starting or ending, simply adding offset may give unexpected results:
+**Note:** When passing `offset` in date finders, it will set the hour, minute, and second on the queried date in order to properly handle DST transitions. Example:
 
 ```ruby
 Time.zone = 'Australia/Sydney'
 Post.by_day('2020-04-05', offset: 9.hours)
-```
-
-It will correctly search the records from Apr 5th, 09:00 until Apr 6th, 08:59.
-
-When using `offset` with `between_times`, if you query on `Date` objects, then it sets hour, minute, and second on them. Else, it adds offset to queried times.
-
-You may also set a offset scope in the `by_star_field` macro:
-
-```ruby
-   class Post < ActiveRecord::Base
-     by_star_field offset: 9.hours
-   end
+#=> Returns Apr 5th, 09:00 until Apr 6th, 08:59
 ```
 
 ### Timespan Objects
@@ -189,14 +193,15 @@ You may also set a offset scope in the `by_star_field` macro:
 If your object has both a start and end time, you may pass both params to `by_star_field`:
 
 ```ruby
-   by_star_field :start_time, :end_time
+by_star_field :start_time, :end_time
 ```
 
 By default, ByStar queries will return all objects whose range has any overlap within the desired period (permissive):
 
 ```ruby
-   MultiDayEvent.by_month("January")  #=> returns MultiDayEvents that overlap in January,
-                                          even if they start in December and/or end in February
+MultiDayEvent.by_month("January")
+#=> returns MultiDayEvents that overlap in January,
+#   even if they start in December and/or end in February
 ```
 
 ### Timespan Objects: `#at_time`
@@ -204,7 +209,7 @@ By default, ByStar queries will return all objects whose range has any overlap w
 To find all instances of a timespan object which contain a specific time:
 
 ```ruby
-   Post.at_time(time)
+Post.at_time(time)
 ```
 
 This can be useful to find all currently active instances. Note that object instances which start
@@ -216,7 +221,8 @@ exactly at the given `time` will be included in the result, but instances that e
 If you'd like to confine results to only those both starting and ending within the given range, use the `:strict` option:
 
 ```ruby
-   MultiDayEvent.by_month("January", :strict => true)  #=> returns MultiDayEvents that both start AND end in January
+MultiDayEvent.by_month("January", :strict => true)
+#=> returns MultiDayEvents that both start AND end in January
 ```
 
 ### Timespan Objects: Database Indexing and `:index_scope` Option
@@ -270,7 +276,6 @@ strings in all ByStar finder methods. Otherwise, the Ruby `Time.parse` kernel me
 
 As of ByStar 2.2.0, you must explicitly include `gem 'chronic'` into your Gemfile in order to use Chronic.
 
-
 ## Advanced Usage
 
 ### between_times
@@ -278,19 +283,19 @@ As of ByStar 2.2.0, you must explicitly include `gem 'chronic'` into your Gemfil
 To find records between two times:
 
 ```ruby
-   Post.between_times(time1, time2)
+Post.between_times(time1, time2)
 ```
 
 You use a Range like so:
 
 ```ruby
-   Post.between_times(time1..time2)
+Post.between_times(time1..time2)
 ```
 
 Also works with dates - WARNING: there are currently some caveats see [Issue #49](https://github.com/radar/by_star/issues/49):
 
 ```ruby
-   Post.between_times(date1, date2)
+Post.between_times(date1, date2)
 ```
 
 It will query records from `date1` (00:00:00 Hrs) until `date2` (23:59:59 Hrs).
@@ -300,21 +305,21 @@ It will query records from `date1` (00:00:00 Hrs) until `date2` (23:59:59 Hrs).
 To find all posts before / after the current time:
 
 ```ruby
-   Post.before
-   Post.after
+Post.before
+Post.after
 ```
 
 To find all posts before certain time or date:
 
 ```ruby
-   Post.before(Date.today + 2)
-   Post.after(Time.now + 5.days)
+Post.before(Date.today + 2)
+Post.after(Time.now + 5.days)
 ```
 
 You can also pass a string:
 
 ```ruby
-   Post.before("next tuesday")
+Post.before("next tuesday")
 ```
 
 For Time-Range type objects, only the start time is considered for `before` and `after`.
@@ -324,15 +329,15 @@ For Time-Range type objects, only the start time is considered for `before` and 
 To find the prior/subsequent record to a model instance, `previous`/`next` on it:
 
 ```ruby
-   Post.last.previous
-   Post.first.next
+Post.last.previous
+Post.first.next
 ```
 
 You can specify a field also:
 
 ```ruby
-   Post.last.previous(field: "published_at")
-   Post.first.next(field: "published_at")
+Post.last.previous(field: "published_at")
+Post.first.next(field: "published_at")
 ```
 
 For Time-Range type objects, only the start time is considered for `previous` and `next`.
@@ -342,19 +347,19 @@ For Time-Range type objects, only the start time is considered for `previous` an
 To find records from the current year, simply call the method without any arguments:
 
 ```ruby
-   Post.by_year
+Post.by_year
 ```
 
 To find records based on a year you can pass it a two or four digit number:
 
 ```ruby
-   Post.by_year(09)
+Post.by_year(09)
 ```
 
 This will return all posts in 2009, whereas:
 
 ```ruby
-   Post.by_year(99)
+Post.by_year(99)
 ```
 
 will return all the posts in the year 1999.
@@ -362,8 +367,8 @@ will return all the posts in the year 1999.
 You can also specify the full year:
 
 ```ruby
-   Post.by_year(2009)
-   Post.by_year(1999)
+Post.by_year(2009)
+Post.by_year(1999)
 ```
 
 ### by_month
@@ -371,7 +376,7 @@ You can also specify the full year:
 If you know the number of the month you want:
 
 ```ruby
-   Post.by_month(1)
+Post.by_month(1)
 ```
 
 This will return all posts in the first month (January) of the current year.
@@ -379,7 +384,7 @@ This will return all posts in the first month (January) of the current year.
 If you like being verbose:
 
 ```ruby
-   Post.by_month("January")
+Post.by_month("January")
 ```
 
 This will return all posts created in January of the current year.
@@ -387,13 +392,13 @@ This will return all posts created in January of the current year.
 If you want to find all posts in January of last year just do
 
 ```ruby
-   Post.by_month(1, year: 2007)
+Post.by_month(1, year: 2007)
 ```
 
 or
 
 ```ruby
-   Post.by_month("January", year: 2007)
+Post.by_month("January", year: 2007)
 ```
 
 This will perform a find using the column you've specified.
@@ -401,7 +406,7 @@ This will perform a find using the column you've specified.
 If you have a Time object you can use it to find the posts:
 
 ```ruby
-   Post.by_month(Time.local(2012, 11, 24))
+Post.by_month(Time.local(2012, 11, 24))
 ```
 
 This will find all the posts in November 2012.
@@ -411,7 +416,7 @@ This will find all the posts in November 2012.
 Finds records for a given month as shown on a calendar. Includes all the results of `by_month`, plus any results which fall in the same week as the first and last of the month. Useful for working with UI calendars which show rows of weeks.
 
 ```ruby
-   Post.by_calendar_month
+Post.by_calendar_month
 ```
 
 Parameter behavior is otherwise the same as `by_month`. Also, `:start_day` option is supported to specify the start day of the week (`:monday`, `:tuesday`, etc.)
@@ -423,25 +428,25 @@ Fortnight numbering starts at 0. The beginning of a fortnight is Monday, 12am.
 To find records from the current fortnight:
 
 ```ruby
-   Post.by_fortnight
+Post.by_fortnight
 ```
 
 To find records based on a fortnight, you can pass in a number (representing the fortnight number) or a time object:
 
 ```ruby
-   Post.by_fortnight(18)
+Post.by_fortnight(18)
 ```
 
 This will return all posts in the 18th fortnight of the current year.
 
 ```ruby
-   Post.by_fortnight(18, year: 2012)
+Post.by_fortnight(18, year: 2012)
 ```
 
 This will return all posts in the 18th fortnight week of 2012.
 
 ```ruby
-   Post.by_fortnight(Time.local(2012,1,1))
+Post.by_fortnight(Time.local(2012,1,1))
 ```
 
 This will return all posts from the first fortnight of 2012.
@@ -453,29 +458,29 @@ Week numbering starts at 0, and cweek numbering starts at 1 (same as `Date#cweek
 To find records from the current week:
 
 ```ruby
-   Post.by_week
-   Post.by_cweek  # same result
+Post.by_week
+Post.by_cweek  # same result
 ```
 
 This will return all posts in the 37th week of the current year (remember week numbering starts at 0):
 
 ```ruby
-   Post.by_week(36)
-   Post.by_cweek(37)  # same result
+Post.by_week(36)
+Post.by_cweek(37)  # same result
 ```
 
 This will return all posts in the 37th week of 2012:
 
 ```ruby
-   Post.by_week(36, year: 2012)
-   Post.by_cweek(37, year: 2012)  # same result
+Post.by_week(36, year: 2012)
+Post.by_cweek(37, year: 2012)  # same result
 ```
 
 This will return all posts in the week which contains Jan 1, 2012:
 
 ```ruby
-   Post.by_week(Time.local(2012,1,1))
-   Post.by_cweek(Time.local(2012,1,1))  # same result
+Post.by_week(Time.local(2012,1,1))
+Post.by_cweek(Time.local(2012,1,1))  # same result
 ```
 
 You may pass in a `:start_day` option (`:monday`, `:tuesday`, etc.) to specify the starting day of the week. This may also be configured in Rails.
@@ -485,7 +490,7 @@ You may pass in a `:start_day` option (`:monday`, `:tuesday`, etc.) to specify t
 If the time passed in (or the time now is a weekend) it will return posts from 0:00 Saturday to 23:59:59 Sunday. If the time is a week day, it will show all posts for the coming weekend.
 
 ```ruby
-   Post.by_weekend(Time.now)
+Post.by_weekend(Time.now)
 ```
 
 ### by_day and today
@@ -493,20 +498,20 @@ If the time passed in (or the time now is a weekend) it will return posts from 0
 To find records for today:
 
 ```ruby
-   Post.by_day
-   Post.today
+Post.by_day
+Post.today
 ```
 
 To find records for a certain day:
 
 ```ruby
-   Post.by_day(Time.local(2012, 1, 1))
+Post.by_day(Time.local(2012, 1, 1))
 ```
 
 You can also pass a string:
 
 ```ruby
-   Post.by_day("next tuesday")
+Post.by_day("next tuesday")
 ```
 
 This will return all posts for the given day.
@@ -518,42 +523,41 @@ Finds records by 3-month quarterly period of year. Quarter numbering starts at 1
 To find records from the current quarter:
 
 ```ruby
-   Post.by_quarter
+Post.by_quarter
 ```
 
 To find records based on a quarter, you can pass in a number (representing the quarter number) or a time object:
 
 ```ruby
-   Post.by_quarter(4)
+Post.by_quarter(4)
 ```
 
 This will return all posts in the 4th quarter of the current year.
 
 ```ruby
-   Post.by_quarter(2, year: 2012)
+Post.by_quarter(2, year: 2012)
 ```
 
 This will return all posts in the 2nd quarter of 2012.
 
 ```ruby
-   Post.by_week(Time.local(2012,1,1))
+Post.by_week(Time.local(2012,1,1))
 ```
 
 This will return all posts from the first quarter of 2012.
-
 
 ## Version Support
 
 ByStar is tested against the following versions:
 
-* Ruby 1.9.3+
-* Rails/ActiveRecord 3.0+
-* Mongoid 3.0+
+* Ruby 2.0.0+
+* Rails/ActiveRecord 3.2+
+* Mongoid 3.1+
 
 Note that ByStar automatically adds the following version compatibility shims:
 
-* ActiveSupport 3.x: `Date#to_time_in_current_zone` is aliased to `Date#in_time_zone` from version 4+
-* Mongoid 3.x: Adds support for `Criteria#reorder` method from version 4+
+* ActiveSupport 3.x: Add `Time/Date/DateTime#in_time_zone` (as an alias to `#to_time_in_current_zone`) for compatibility with Rails 4+.
+* Mongoid 3.x: Adds `Criteria#reorder` method from Mongoid 4.
 
 
 ## Testing
@@ -562,11 +566,15 @@ Note that ByStar automatically adds the following version compatibility shims:
 
 Specify a database by supplying a `DB` environmental variable:
 
-`bundle exec rake spec DB=sqlite`
+```bash
+bundle exec rake spec DB=sqlite
+```
 
 You can also take an ORM-specific test task for a ride:
 
-`bundle exec rake spec:active_record`
+```bash
+bundle exec rake spec:active_record
+```
 
 Have an Active Record or Mongoid version in mind? Set the environment variables
 `ACTIVE_RECORD_VERSION` and `MONGOID_VERSION` to a version of your choice. A

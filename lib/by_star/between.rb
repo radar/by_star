@@ -5,11 +5,7 @@ module ByStar
     def between_times(*args)
       options = args.extract_options!.symbolize_keys!
 
-      start_time, end_time = case args[0]
-                               when Array, Range then [args[0].first, args[0].last]
-                               else args[0..1]
-                             end
-
+      start_time, end_time = ByStar::Normalization.extract_range(args)
       offset = options[:offset] || 0
 
       if start_time.is_a?(Date)
@@ -48,10 +44,7 @@ module ByStar
 
     def between_dates(*args)
       options = args.extract_options!
-      start_date, end_date = case args[0]
-                             when Array, Range then [args[0].first, args[0].last]
-                             else args[0..1]
-                             end
+      start_date, end_date = ByStar::Normalization.extract_range(args)
       start_date = ByStar::Normalization.date(start_date)
       end_date   = ByStar::Normalization.date(end_date)
       between_times(start_date, end_date, options)
@@ -76,7 +69,7 @@ module ByStar
     def by_day(*args)
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.date(time)
-        between_times(date, date, options)
+        between_dates(date, date, options)
       end
     end
 
@@ -84,7 +77,7 @@ module ByStar
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.week(time, options)
         start_day = Array(options[:start_day])
-        between_times(date.beginning_of_week(*start_day), date.end_of_week(*start_day), options)
+        between_dates(date.beginning_of_week(*start_day), date.end_of_week(*start_day), options)
       end
     end
 
@@ -97,21 +90,21 @@ module ByStar
     def by_weekend(*args)
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.week(time, options)
-        between_times(date.beginning_of_weekend, date.end_of_weekend, options)
+        between_dates(date.beginning_of_weekend, date.end_of_weekend, options)
       end
     end
 
     def by_fortnight(*args)
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.fortnight(time, options)
-        between_times(date.beginning_of_fortnight, date.end_of_fortnight, options)
+        between_dates(date.beginning_of_fortnight, date.end_of_fortnight, options)
       end
     end
 
     def by_month(*args)
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.month(time, options)
-        between_times(date.beginning_of_month, date.end_of_month, options)
+        between_dates(date.beginning_of_month, date.end_of_month, options)
       end
     end
 
@@ -119,21 +112,21 @@ module ByStar
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.month(time, options)
         start_day = Array(options[:start_day])
-        between_times(date.beginning_of_calendar_month(*start_day), date.end_of_calendar_month(*start_day), options)
+        between_dates(date.beginning_of_calendar_month(*start_day), date.end_of_calendar_month(*start_day), options)
       end
     end
 
     def by_quarter(*args)
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.quarter(time, options)
-        between_times(date.beginning_of_quarter, date.end_of_quarter, options)
+        between_dates(date.beginning_of_quarter, date.end_of_quarter, options)
       end
     end
 
     def by_year(*args)
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.year(time, options)
-        between_times(date.beginning_of_year, date.to_date.end_of_year, options)
+        between_dates(date.beginning_of_year, date.to_date.end_of_year, options)
       end
     end
 
