@@ -31,6 +31,6 @@ end
   2020-10-04
 ).map{|d| Date.parse(d) }.each do |d|
   [1, 4, 5, 10].each do |h|
-    Event.create!(start_time: d + h.hour, end_time: d + h.hour + 30.minutes, created_at: Date.parse('2011-01-01'))
+    Event.create!(start_time: d + h.hour, end_time: d + h.hour + 30.minutes, created_at: Date.parse('2011-01-01').in_time_zone)
   end
 end
