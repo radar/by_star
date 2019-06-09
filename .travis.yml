@@ -17,6 +17,7 @@ gemfile:
   - spec/gemfiles/Gemfile.rails42
   - spec/gemfiles/Gemfile.rails50
   - spec/gemfiles/Gemfile.rails51
+  - spec/gemfiles/Gemfile.rails52
   - spec/gemfiles/Gemfile.master
 
 rvm:
