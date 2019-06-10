@@ -23,7 +23,6 @@ describe 'Mongoid' do
   it_behaves_like 'between_dates'
   it_behaves_like 'at_time'
   it_behaves_like 'offset parameter'
-  it_behaves_like 'order parameter'
   it_behaves_like 'index_scope parameter'
   it_behaves_like 'by day'
   it_behaves_like 'by direction'

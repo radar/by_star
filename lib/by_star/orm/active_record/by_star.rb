@@ -45,10 +45,6 @@ module ByStar
         scope.where("#{field} >= ?", time)
       end
 
-      def by_star_order(scope, order)
-        scope.order(order)
-      end
-
       def oldest_query(options={})
         field = by_star_start_field(options)
         reorder("#{field} ASC").first
