@@ -1,6 +1,4 @@
 Upgrading ByStar
 ----------------
 
-* Chronic gem (used for time string parsing) has been removed as a hard dependency for ByStar,
-however it is still supported. If you would like to use Chronic with ByStar, please explicitly
-include `gem chronic` into your Gemfile.
+* As of version 4.0.0, ByStar changes the way it handles `Date` arg to the `#between_times` method. If a `Date` is given as the second (end) arg, the query will use `Date.end_of_day` to include all time values which fall inside that date.

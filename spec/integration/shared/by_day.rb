@@ -23,6 +23,30 @@ shared_examples_for 'by day' do
     it 'should support :offset option' do
       expect(Post.by_day('2014-01-01', offset: -16.hours).count).to eq(1)
     end
+
+    context 'when DST starts (Sydney)', sydney: true do
+      context 'day before' do
+        subject { Event.by_day('2020-04-04', offset: 5.hours) }
+        it { expect(subject.count).to eq(3) }
+      end
+
+      context 'same day' do
+        subject { Event.by_day('2020-04-05', offset: 5.hours) }
+        it { expect(subject.count).to eq(1) }
+      end
+    end
+
+    context 'when DST ends (Sydney)', sydney: true do
+      context 'day before' do
+        subject { Event.by_day('2020-10-03', offset: 5.hours) }
+        it { expect(subject.count).to eq(1) }
+      end
+
+      context 'same day' do
+        subject { Event.by_day('2020-10-04', offset: 5.hours) }
+        it { expect(subject.count).to eq(3) }
+      end
+    end
   end
 
   describe '#today' do # 2014-01-01

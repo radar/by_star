@@ -6,33 +6,22 @@ module ByStar
 
     class << self
 
+      def date(value)
+        value = parse_time(value) if value.is_a?(String)
+        value = value.try(:in_time_zone) unless value.is_a?(Date)
+        value.try(:to_date)
+      end
+
       def time(value)
-        case value
-          when String   then time_string(value)
-          when DateTime then value.to_time
-          when Date     then value.in_time_zone
-          else value
-        end
-      end
-
-      def time_string(value)
-        defined?(Chronic) ? time_string_chronic(value) : time_string_fallback(value)
-      end
-
-      def time_string_chronic(value)
-        Chronic.time_class = Time.zone
-        Chronic.parse(value) || raise(ByStar::ParseError, "Chronic could not parse String #{value.inspect}")
-      end
-
-      def time_string_fallback(value)
-        Time.zone.parse(value) || raise(ByStar::ParseError, "Cannot parse String #{value.inspect}")
+        value = parse_time(value) if value.is_a?(String)
+        value.try(:in_time_zone)
       end
 
       def week(value, options={})
         value = try_string_to_int(value)
         case value
           when Integer then week_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -55,7 +44,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer then fortnight_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -69,7 +58,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer then quarter_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -83,7 +72,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer, String then month_integer(value, options)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -98,7 +87,7 @@ module ByStar
         value = try_string_to_int(value)
         case value
           when Integer then year_integer(value)
-          else time(value)
+          else date(value)
         end
       end
 
@@ -121,6 +110,46 @@ module ByStar
         value.is_a?(String) ? Integer(value) : value
       rescue
         value
+      end
+
+      def time_in_units(seconds)
+        days = seconds / 1.day
+        time = Time.at(seconds).utc
+        { days: days, hour: time.hour, min: time.min, sec: time.sec }
+      end
+
+      def apply_offset_start(time, offset)
+        units = time_in_units(offset)
+        time += units.delete(:days).days
+        time.change(units)
+      end
+
+      def apply_offset_end(time, offset)
+        units = time_in_units(offset)
+        time += units.delete(:days).days
+        (time + 1.day).change(units) - 1.second
+      end
+
+      def extract_range(args)
+        case args[0]
+        when Array, Range then [args[0].first, args[0].last]
+        else args[0..1]
+        end
+      end
+
+      private
+
+      def parse_time(value)
+        defined?(Chronic) ? parse_time_chronic(value) : parse_time_fallback(value)
+      end
+
+      def parse_time_chronic(value)
+        Chronic.time_class = Time.zone
+        Chronic.parse(value) || raise(ByStar::ParseError, "Chronic could not parse String #{value.inspect}")
+      end
+
+      def parse_time_fallback(value)
+        Time.zone.parse(value) || raise(ByStar::ParseError, "Cannot parse String #{value.inspect}")
       end
     end
   end

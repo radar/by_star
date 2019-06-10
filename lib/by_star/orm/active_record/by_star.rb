@@ -19,8 +19,22 @@ module ByStar
         scope.where("#{start_field} >= ? AND #{start_field} <= ? AND #{end_field} >= ? AND #{end_field} <= ?", start_time, end_time, start_time, end_time)
       end
 
-      def by_star_span_overlap_query(scope, start_field, end_field, start_time, end_time, options)
-        scope.where("#{end_field} > ? AND #{start_field} < ?", start_time, end_time)
+      def by_star_span_loose_query(scope, start_field, end_field, start_time, end_time, options)
+        index_scope = by_star_eval_index_scope(start_time, end_time, options)
+        scope = scope.where("#{end_field} > ? AND #{start_field} < ?", start_time, end_time)
+        scope = scope.where("#{start_field} >= ?", index_scope) if index_scope
+        scope
+      end
+
+      def by_star_point_overlap_query(scope, field, time)
+        scope.where("#{field} = ?", time)
+      end
+
+      def by_star_span_overlap_query(scope, start_field, end_field, time, options)
+        index_scope = by_star_eval_index_scope(time, time, options)
+        scope = scope.where("#{end_field} > ? AND #{start_field} <= ?", time, time)
+        scope = scope.where("#{start_field} >= ?", index_scope) if index_scope
+        scope
       end
 
       def by_star_before_query(scope, field, time)

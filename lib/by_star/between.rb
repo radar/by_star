@@ -5,19 +5,25 @@ module ByStar
     def between_times(*args)
       options = args.extract_options!.symbolize_keys!
 
-      start_time, end_time = case args[0]
-                               when Array, Range then [args[0].first, args[0].last]
-                               else args[0..1]
-                             end
+      start_time, end_time = ByStar::Normalization.extract_range(args)
+      offset = options[:offset] || 0
 
-      offset = (options[:offset] || 0).seconds
-      start_time += offset if start_time
-      end_time   += offset if end_time
+      if start_time.is_a?(Date)
+        start_time = ByStar::Normalization.apply_offset_start(start_time.in_time_zone, offset)
+      elsif start_time
+        start_time += offset.seconds
+      end
+
+      if end_time.is_a?(Date)
+        end_time = ByStar::Normalization.apply_offset_end(end_time.in_time_zone, offset)
+      elsif end_time
+        end_time += offset.seconds
+      end
 
       start_field = by_star_start_field(options)
       end_field = by_star_end_field(options)
-      scope = self
 
+      scope = self
       scope = if !start_time && !end_time
                 scope # do nothing
               elsif !end_time
@@ -29,26 +35,49 @@ module ByStar
               elsif options[:strict]
                 by_star_span_strict_query(scope, start_field, end_field, start_time, end_time)
               else
-                by_star_span_overlap_query(scope, start_field, end_field, start_time, end_time, options)
+                by_star_span_loose_query(scope, start_field, end_field, start_time, end_time, options)
               end
 
       scope = by_star_order(scope, options[:order]) if options[:order]
-
       scope
+    end
+
+    def between_dates(*args)
+      options = args.extract_options!
+      start_date, end_date = ByStar::Normalization.extract_range(args)
+      start_date = ByStar::Normalization.date(start_date)
+      end_date   = ByStar::Normalization.date(end_date)
+      between_times(start_date, end_date, options)
+    end
+
+    def at_time(*args)
+      with_by_star_options(*args) do |time, options|
+        start_field = by_star_start_field(options)
+        end_field = by_star_end_field(options)
+
+        scope = self
+        scope = if start_field == end_field
+                  by_star_point_overlap_query(scope, start_field, time)
+                else
+                  by_star_span_overlap_query(scope, start_field, end_field, time, options)
+                end
+        scope = by_star_order(scope, options[:order]) if options[:order]
+        scope
+      end
     end
 
     def by_day(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.time(time)
-        between_times(time.beginning_of_day, time.end_of_day, options)
+        date = ByStar::Normalization.date(time)
+        between_dates(date, date, options)
       end
     end
 
     def by_week(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.week(time, options)
+        date = ByStar::Normalization.week(time, options)
         start_day = Array(options[:start_day])
-        between_times(time.beginning_of_week(*start_day), time.end_of_week(*start_day), options)
+        between_dates(date.beginning_of_week(*start_day), date.end_of_week(*start_day), options)
       end
     end
 
@@ -60,97 +89,97 @@ module ByStar
 
     def by_weekend(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.week(time, options)
-        between_times(time.beginning_of_weekend, time.end_of_weekend, options)
+        date = ByStar::Normalization.week(time, options)
+        between_dates(date.beginning_of_weekend, date.end_of_weekend, options)
       end
     end
 
     def by_fortnight(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.fortnight(time, options)
-        between_times(time.beginning_of_fortnight, time.end_of_fortnight, options)
+        date = ByStar::Normalization.fortnight(time, options)
+        between_dates(date.beginning_of_fortnight, date.end_of_fortnight, options)
       end
     end
 
     def by_month(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.month(time, options)
-        between_times(time.beginning_of_month, time.end_of_month, options)
+        date = ByStar::Normalization.month(time, options)
+        between_dates(date.beginning_of_month, date.end_of_month, options)
       end
     end
 
     def by_calendar_month(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.month(time, options)
+        date = ByStar::Normalization.month(time, options)
         start_day = Array(options[:start_day])
-        between_times(time.beginning_of_calendar_month(*start_day), time.end_of_calendar_month(*start_day), options)
+        between_dates(date.beginning_of_calendar_month(*start_day), date.end_of_calendar_month(*start_day), options)
       end
     end
 
     def by_quarter(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.quarter(time, options)
-        between_times(time.beginning_of_quarter, time.end_of_quarter, options)
+        date = ByStar::Normalization.quarter(time, options)
+        between_dates(date.beginning_of_quarter, date.end_of_quarter, options)
       end
     end
 
     def by_year(*args)
       with_by_star_options(*args) do |time, options|
-        time = ByStar::Normalization.year(time, options)
-        between_times(time.beginning_of_year, time.end_of_year, options)
+        date = ByStar::Normalization.year(time, options)
+        between_dates(date.beginning_of_year, date.to_date.end_of_year, options)
       end
     end
 
-    def today(options={})
-      by_day(Time.zone.now, options)
+    def today(options = {})
+      by_day(Date.current, options)
     end
 
-    def yesterday(options={})
-      by_day(Time.zone.now.yesterday, options)
+    def yesterday(options = {})
+      by_day(Date.yesterday, options)
     end
 
-    def tomorrow(options={})
-      by_day(Time.zone.now.tomorrow, options)
+    def tomorrow(options = {})
+      by_day(Date.tomorrow, options)
     end
 
-    def past_day(options={})
-      between_times(Time.zone.now - 1.day, Time.zone.now, options)
+    def past_day(options = {})
+      between_times(Time.current - 1.day, Time.current, options)
     end
 
-    def past_week(options={})
-      between_times(Time.zone.now - 1.week, Time.zone.now, options)
+    def past_week(options = {})
+      between_times(Time.current - 1.week, Time.current, options)
     end
 
-    def past_fortnight(options={})
-      between_times(Time.zone.now - 2.weeks, Time.zone.now, options)
+    def past_fortnight(options = {})
+      between_times(Time.current - 2.weeks, Time.current, options)
     end
 
-    def past_month(options={})
-      between_times(Time.zone.now - 1.month, Time.zone.now, options)
+    def past_month(options = {})
+      between_times(Time.current - 1.month, Time.current, options)
     end
 
-    def past_year(options={})
-      between_times(Time.zone.now - 1.year, Time.zone.now, options)
+    def past_year(options = {})
+      between_times(Time.current - 1.year, Time.current, options)
     end
 
-    def next_day(options={})
-      between_times(Time.zone.now, Time.zone.now + 1.day, options)
+    def next_day(options = {})
+      between_times(Time.current, Time.current + 1.day, options)
     end
 
-    def next_week(options={})
-      between_times(Time.zone.now, Time.zone.now  + 1.week, options)
+    def next_week(options = {})
+      between_times(Time.current, Time.current  + 1.week, options)
     end
 
-    def next_fortnight(options={})
-      between_times(Time.zone.now, Time.zone.now + 2.weeks, options)
+    def next_fortnight(options = {})
+      between_times(Time.current, Time.current + 2.weeks, options)
     end
 
-    def next_month(options={})
-      between_times(Time.zone.now, Time.zone.now + 1.month, options)
+    def next_month(options = {})
+      between_times(Time.current, Time.current + 1.month, options)
     end
 
-    def next_year(options={})
-      between_times(Time.zone.now, Time.zone.now + 1.year, options)
+    def next_year(options = {})
+      between_times(Time.current, Time.current + 1.year, options)
     end
   end
 end

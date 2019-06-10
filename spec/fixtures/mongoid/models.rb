@@ -12,6 +12,8 @@ class Appointment
   include Mongoid::ByStar
 
   field :day_of_month,        type: Integer
+
+  by_star_field index_scope: ->(start){ start - 5.days }
 end
 
 class Event

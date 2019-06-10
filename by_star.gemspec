@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.post_install_message = File.read('UPGRADING') if File.exists?('UPGRADING')
 
-  s.add_dependency "activesupport", "> 3"
+  s.add_dependency "activesupport", ">= 3.2.0"
 
   s.add_development_dependency "chronic"
   s.add_development_dependency "bundler"
@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "activerecord"
   s.add_development_dependency "mongoid"
   s.add_development_dependency "pg"
-  s.add_development_dependency "mysql2", "~> 0.3.10"
+  s.add_development_dependency "mysql2"
   s.add_development_dependency "rspec-rails", "~> 3.1"
   s.add_development_dependency "timecop", "~> 0.3"
   s.add_development_dependency "pry"

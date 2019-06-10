@@ -16,9 +16,9 @@ describe Date do
         expect_any_instance_of(Date).to receive(:in_time_zone)
       end
 
-      context 'when ByStar::Kernel::Date included' do
+      context 'when ByStar::Kernel::InTimeZone included' do
         before do
-          ::Date.__send__(:include, ByStar::Kernel::Date)
+          ::Date.__send__(:include, ByStar::Kernel::InTimeZone)
         end
 
         it 'should not be aliased to #to_time_in_current_zone' do
@@ -27,7 +27,7 @@ describe Date do
         end
       end
 
-      context 'when ByStar::Kernel::Date not included' do
+      context 'when ByStar::Kernel::InTimeZone not included' do
 
         it 'should not be aliased to #to_time_in_current_zone' do
           expect(subject).not_to receive(:to_time_in_current_zone)
@@ -38,9 +38,9 @@ describe Date do
 
     context 'when #in_time_zone is not defined' do
 
-      context 'when ByStar::Kernel::Date included' do
+      context 'when ByStar::Kernel::InTimeZone included' do
         before do
-          ::Date.__send__(:include, ByStar::Kernel::Date)
+          ::Date.__send__(:include, ByStar::Kernel::InTimeZone)
         end
 
         it 'should be aliased to #to_time_in_current_zone' do
@@ -49,7 +49,7 @@ describe Date do
         end
       end
 
-      context 'when ByStar::Kernel::Date not included' do
+      context 'when ByStar::Kernel::InTimeZone not included' do
 
         it 'should raise NoMethodError' do
           expect{ subject.in_time_zone }.to raise_error(NoMethodError)
