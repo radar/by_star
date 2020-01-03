@@ -44,6 +44,7 @@ class MyModel
 ByStar adds the following finder scopes (class methods) to your model to query time ranges.
 These accept a `Date`, `Time`, or `DateTime` object as an argument, which defaults to `Time.zone.now` if not specified:
 
+| Scope | Meaning |
 | --- | --- |
 | `between_times(start_time, end_time)` | Finds all records occurring between two given times. |
 | `between_dates(start_date, end_date)` | Finds all records occurring between two given dates, from beginning of start_date until end of end_date. |
@@ -62,6 +63,7 @@ These accept a `Date`, `Time`, or `DateTime` object as an argument, which defaul
 ByStar adds additional shortcut scopes based on commonly used time ranges.
 See sections below for detailed argument usage of each:
 
+| Scope | Meaning |
 | --- | --- |
 | `by_day` | Query by a given date. |
 | `by_week` | Allows zero-based week value from 0 to 52. |
@@ -79,6 +81,7 @@ ByStar also adds scopes which are relative to the current time.
 Note the `past_*` and `next_*` methods represent a time distance from current time (`Time.zone.now`),
 and do not strictly end/begin evenly on a calendar week/month/year (unlike `by_*` methods which do.)
 
+| Scope | Meaning |
 | --- | --- |
 | `today` | Finds all occurrences on today's date. |
 | `yesterday` | Finds all occurrences on yesterday's date. |
