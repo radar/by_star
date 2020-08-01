@@ -1,4 +1,7 @@
-services: mongodb
+services:
+  - mongodb
+  - mysql
+  - postgresql
 
 before_script:
   - "mysql -e 'create database by_star_test;'"
