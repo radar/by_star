@@ -123,6 +123,20 @@ module ByStar
       end
     end
 
+    def by_semester(*args)
+      with_by_star_options(*args) do |time, options|
+        date = ByStar::Normalization.semester(time, options)
+
+        first_semester_month = date.month - (5 + date.month) % 6
+        beginning_of_semester = date.beginning_of_month.change(month: first_semester_month)
+
+        last_semester_month = date.month + (12 - date.month) % 6
+        end_of_semester = date.beginning_of_month.change(month: last_semester_month).end_of_month
+
+        between_dates(beginning_of_semester, end_of_semester, options)
+      end
+    end
+
     def by_year(*args)
       with_by_star_options(*args) do |time, options|
         date = ByStar::Normalization.year(time, options)

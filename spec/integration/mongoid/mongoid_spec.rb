@@ -31,6 +31,7 @@ describe 'Mongoid' do
   it_behaves_like 'by month'
   it_behaves_like 'by calendar month'
   it_behaves_like 'by quarter'
+  it_behaves_like 'by semester'
   it_behaves_like 'by week'
   it_behaves_like 'by cweek'
   it_behaves_like 'by weekend'
