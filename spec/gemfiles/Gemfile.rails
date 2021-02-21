@@ -2,5 +2,5 @@ source 'http://rubygems.org'
 
 gemspec path: '../../'
 
-gem 'activerecord', github: 'rails'
+gem 'activerecord', github: 'rails', branch: "main"
 gem 'mongoid',      github: 'mongoid'
