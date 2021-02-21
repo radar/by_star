@@ -1,0 +1,96 @@
+name: PostgreSQL tests
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby_version: [3.0, 2.7, 2.6, 2.5, 2.4, 2.3, jruby]
+        gemfile:
+          [
+            spec/gemfiles/Gemfile.rails32,
+            spec/gemfiles/Gemfile.rails40,
+            spec/gemfiles/Gemfile.rails41,
+            spec/gemfiles/Gemfile.rails42,
+            spec/gemfiles/Gemfile.rails50,
+            spec/gemfiles/Gemfile.rails51,
+            spec/gemfiles/Gemfile.rails52,
+            spec/gemfiles/Gemfile.rails60,
+            spec/gemfiles/Gemfile.rails61,
+            spec/gemfiles/Gemfile.rails-main,
+          ]
+        exclude:
+          # Ruby 3.x is not supported by Rails 5.2.x
+          - ruby_version: 3.0
+            gemfile: gemfiles/Gemfile.rails52
+          # Ruby 3.x is not supported by Rails 5.1.x
+          - ruby_version: 3.0
+            gemfile: gemfiles/Gemfile.rails51
+          # Ruby 3.x is not supported by Rails 5.0.x
+          - ruby_version: 3.0
+            gemfile: gemfiles/Gemfile.rails50
+          # Ruby 2.6.x is not supported by Rails main
+          - ruby_version: 2.6
+            gemfile: gemfiles/Gemfile.rails
+          # Ruby 2.5.x is not supported by Rails main
+          - ruby_version: 2.5
+            gemfile: gemfiles/Gemfile.rails
+          # Ruby 2.4.x is not supported by Rails main
+          - ruby_version: 2.4
+            gemfile: gemfiles/Gemfile.rails
+          # Ruby 2.4.x is not supported by Rails 6.1.x
+          - ruby_version: 2.4
+            gemfile: gemfiles/Gemfile.rails61
+          # Ruby 2.4.x is not supported by Rails 6.0.x
+          - ruby_version: 2.4
+            gemfile: gemfiles/Gemfile.rails60
+          # Ruby 2.3.x is not supported by Rails 6.1.x
+          - ruby_version: 2.3
+            gemfile: gemfiles/Gemfile.rails61
+          # Ruby 2.3.x is not supported by Rails main
+          - ruby_version: 2.3
+            gemfile: gemfiles/Gemfile.rails
+          # Ruby 2.3.x is not supported by Rails 6.0.x
+          - ruby_version: 2.3
+            gemfile: gemfiles/Gemfile.rails60
+          # JRuby is not supported by Rails main
+          - ruby_version: jruby
+            gemfile: gemfiles/Gemfile.rails
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: eregon/use-ruby-action@master
+        with:
+          ruby-version: ${{ matrix.ruby_version }}
+
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '11'
+
+      - name: Start PostgreSQL
+        run: |
+          sudo service postgresql start
+          sudo -u postgres createuser --superuser "$USER"
+
+      - name: Build and test with Rake
+        env:
+          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+          DB: "postgres"
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rake
