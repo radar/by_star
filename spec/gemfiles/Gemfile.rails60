@@ -3,5 +3,5 @@ source 'http://rubygems.org'
 gemspec path: '../../'
 
 gem 'activerecord', '~> 6.0'
-gem 'pg',           ''
+gem 'pg'
 gem 'mongoid',      '~> 7.0'
