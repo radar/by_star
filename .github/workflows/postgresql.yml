@@ -27,7 +27,7 @@ jobs:
             spec/gemfiles/Gemfile.rails52,
             spec/gemfiles/Gemfile.rails60,
             spec/gemfiles/Gemfile.rails61,
-            spec/gemfiles/Gemfile.rails-main,
+            spec/gemfiles/Gemfile.rails,
           ]
         exclude:
           # Ruby 3.x is not supported by Rails 5.2.x
