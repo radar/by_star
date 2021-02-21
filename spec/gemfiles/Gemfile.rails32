@@ -4,4 +4,4 @@ gemspec path: '../../'
 
 gem 'activerecord', '~> 3.2.0'
 gem 'pg',           '~> 0.11'
-gem 'mongoid',      '~> 3.0'
+gem 'mongoid'
