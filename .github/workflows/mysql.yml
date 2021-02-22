@@ -80,8 +80,7 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
 
       - name: Start MySQL
-      - run: |
-          sudo /etc/init.d/mysql start
+      - run: sudo /etc/init.d/mysql start
 
       - name: Build and test with Rake
         env:
