@@ -51,6 +51,17 @@ jobs:
           # Ruby 3.x is not supported by Rails 3.2.x
           - ruby_version: 3.0
             gemfile: spec/gemfiles/Gemfile.rails32
+
+          - ruby_version: 2.7
+            gemfile: spec/gemfiles/Gemfile.rails32
+          - ruby_version: 2.7
+            gemfile: spec/gemfiles/Gemfile.rails40
+          - ruby_version: 2.7
+            gemfile: spec/gemfiles/Gemfile.rails41
+          - ruby_version: 2.7
+            gemfile: spec/gemfiles/Gemfile.rails42
+
+
           # Ruby 2.6.x is not supported by Rails main
           - ruby_version: 2.6
             gemfile: spec/gemfiles/Gemfile.rails
