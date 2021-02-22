@@ -5,7 +5,7 @@ sqlite:
 postgres:
   adapter: postgresql
   database: by_star_test
-  username: postgres
+  username: <%= ENV.fetch("USER") || "postgres" %>
   min_messages: warning
 
 mysql:
