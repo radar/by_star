@@ -97,6 +97,7 @@ jobs:
         run: |
           sudo service postgresql start
           sudo -u postgres createuser --superuser "$USER"
+          createdb by_star_test
 
       - name: Build and test with Rake
         env:

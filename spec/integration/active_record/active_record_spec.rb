@@ -5,7 +5,9 @@ describe ActiveRecord do
   before(:all) do
     ActiveRecord::Base.default_timezone = :utc
     # ActiveRecord::Base.logger = Logger.new(STDOUT)
-    db_config = YAML::load_file(ERB.new(File.dirname(__FILE__) + '/../../database.yml').result)
+    database_file = File.dirname(__FILE__) + '/../../database.yml'
+    parsed_config = ERB.new(File.read(database_file)).result
+    db_config = YAML.safe_load(parsed_config)
     if db_config.has_key?('sqlite') && db_config['sqlite'].has_key?('database')
       db_config['sqlite']['database'] = File.dirname(__FILE__) + '/../../tmp/' + db_config['sqlite']['database']
     end
