@@ -15,13 +15,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: [3.0, 2.7, 2.6, 2.5, 2.4, 2.3, jruby]
+        ruby_version: [3.0, 2.7, 2.6, 2.5, jruby]
         gemfile:
           [
-            spec/gemfiles/Gemfile.rails32,
-            spec/gemfiles/Gemfile.rails40,
-            spec/gemfiles/Gemfile.rails41,
-            spec/gemfiles/Gemfile.rails42,
             spec/gemfiles/Gemfile.rails50,
             spec/gemfiles/Gemfile.rails51,
             spec/gemfiles/Gemfile.rails52,
@@ -39,35 +35,18 @@ jobs:
           # Ruby 3.x is not supported by Rails 5.0.x
           - ruby_version: 3.0
             gemfile: spec/gemfiles/Gemfile.rails50
-          # Ruby 3.x is not supported by Rails 4.2.x
-          - ruby_version: 3.0
-            gemfile: spec/gemfiles/Gemfile.rails42
-          # Ruby 3.x is not supported by Rails 4.1.x
-          - ruby_version: 3.0
-            gemfile: spec/gemfiles/Gemfile.rails41
-          # Ruby 3.x is not supported by Rails 4.0.x
-          - ruby_version: 3.0
-            gemfile: spec/gemfiles/Gemfile.rails40
-          # Ruby 3.x is not supported by Rails 3.2.x
-          - ruby_version: 3.0
-            gemfile: spec/gemfiles/Gemfile.rails32
 
-          - ruby_version: 2.7
+          - ruby_version: 2.6
             gemfile: spec/gemfiles/Gemfile.rails32
-          - ruby_version: 2.7
-            gemfile: spec/gemfiles/Gemfile.rails40
-          - ruby_version: 2.7
-            gemfile: spec/gemfiles/Gemfile.rails41
-          - ruby_version: 2.7
-            gemfile: spec/gemfiles/Gemfile.rails42
-
 
           # Ruby 2.6.x is not supported by Rails main
           - ruby_version: 2.6
             gemfile: spec/gemfiles/Gemfile.rails
+
           # Ruby 2.5.x is not supported by Rails main
           - ruby_version: 2.5
             gemfile: spec/gemfiles/Gemfile.rails
+
           # Ruby 2.4.x is not supported by Rails main
           - ruby_version: 2.4
             gemfile: spec/gemfiles/Gemfile.rails
