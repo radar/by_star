@@ -81,7 +81,7 @@ jobs:
 
       - name: Start MySQL
       - run: |
-        sudo /etc/init.d/mysql start
+          sudo /etc/init.d/mysql start
 
       - name: Build and test with Rake
         env:
