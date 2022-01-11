@@ -21,7 +21,7 @@ Post.between_times(Time.zone.now - 3.hours,  # all posts in last 3 hours
 Install this gem by adding this to your Gemfile:
 
 ```ruby
-gem 'by_star', git: "git://github.com/radar/by_star"
+gem 'by_star', git: 'https://github.com/radar/by_star'
 ```
 
 Then run `bundle install`
