@@ -33,14 +33,9 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
 
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '11'
-
       - name: Start PostgreSQL
         run: |
-          sudo service postgresql start
-          sudo -u postgres createuser --superuser "$USER"
+          sudo systemctl start postgresql.service
           createdb by_star_test
 
       - name: Build and test with Rake
