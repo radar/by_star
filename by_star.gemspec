@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.0.0'
 
-  s.post_install_message = File.read('UPGRADING') if File.exists?('UPGRADING')
+  s.post_install_message = File.read('UPGRADING') if File.exist?('UPGRADING')
 
   s.add_dependency "activesupport", ">= 3.2.0"
 
