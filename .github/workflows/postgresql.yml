@@ -32,6 +32,7 @@ jobs:
         uses: ruby/setup-ruby@master
         with:
           ruby-version: ${{ matrix.ruby_version }}
+          bundler-cache: true
 
       - name: Start PostgreSQL
         run: |
