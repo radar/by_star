@@ -1,4 +1,4 @@
-name: PostgreSQL tests
+name: MySQL tests
 
 on:
   # Trigger the workflow on push or pull request,
@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  postgresql:
+  mysql:
     strategy:
       fail-fast: false
       matrix:
