@@ -45,6 +45,4 @@ jobs:
           BUNDLE_GEMFILE: ${{ matrix.gemfile }}
           DB: "postgres"
         run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
           bundle exec rake
