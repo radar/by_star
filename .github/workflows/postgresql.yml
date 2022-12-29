@@ -35,8 +35,8 @@ jobs:
 
       - name: Start PostgreSQL
         run: |
-          sudo -u postgres createuser --superuser "$USER"
           sudo systemctl start postgresql.service
+          sudo -u postgres createuser --superuser "$USER"
           createdb by_star_test
 
       - name: Build and test with Rake
