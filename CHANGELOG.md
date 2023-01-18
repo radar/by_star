@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## v4.0.0 - Unreleased
+## v4.0.1 - 2023-01-18
+
+* Change `File.exists?` to `File.exist?` to support Ruby 3.2.0 - @JNajera
+
+## v4.0.0 - 2022-03-07
 
 * BREAKING CHANGE - `#between` method has been removed (was deprecated in 2.2.0)
 * BREAKING CHANGE - `:order` arg for `#between_times` has been removed.
