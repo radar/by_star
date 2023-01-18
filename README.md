@@ -73,6 +73,7 @@ See sections below for detailed argument usage of each:
 | `by_month` | Query by month. Allows integer arg, e.g. `11` for November. |
 | `by_calendar_month` | Month as it appears on a calendar; days form previous/following months which are part of the first/last weeks of the given month. |
 | `by_quarter` | 3-month intervals of the year. |
+| `by_semester` | 6-month intervals of the year. |
 | `by_year` | Query by year. Allows integer arg, e.g. `2017`. |
 
 ### Relative Scopes
@@ -544,10 +545,40 @@ Post.by_quarter(2, year: 2012)
 This will return all posts in the 2nd quarter of 2012.
 
 ```ruby
-Post.by_week(Time.local(2012,1,1))
+Post.by_quarter(Time.local(2012,1,1))
 ```
 
 This will return all posts from the first quarter of 2012.
+
+### by_semester
+
+Finds records by 6-month biannual period of year. Semester numbering starts at 1. The two semesters of the year begin on Jan 1 and Jul 1 respectively.
+
+To find records from the current semester:
+
+```ruby
+Post.by_semester
+```
+
+To find records based on a semester, you can pass in a number (representing the semester number) or a time object:
+
+```ruby
+Post.by_semester(1)
+```
+
+This will return all posts in the 1st semester of the current year.
+
+```ruby
+Post.by_semester(2, year: 2012)
+```
+
+This will return all posts in the 2nd semester of 2012.
+
+```ruby
+Post.by_semester(Time.local(2012,1,1))
+```
+
+This will return all posts from the first semester of 2012.
 
 ## Version Support
 

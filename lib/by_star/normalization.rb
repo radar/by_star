@@ -68,6 +68,20 @@ module ByStar
         time.beginning_of_year + ((value - 1) * 3).months
       end
 
+      def semester(value, options={})
+        value = try_string_to_int(value)
+        case value
+          when Integer then semester_integer(value, options)
+          else date(value)
+        end
+      end
+
+      def semester_integer(value, options={})
+        raise ParseError, 'Semester number must be between 1 and 2' unless value.in?(1..2)
+        time = Time.zone.local(options[:year] || Time.zone.now.year)
+        time.beginning_of_year + ((value - 1) * 6).months
+      end
+
       def month(value, options={})
         value = try_string_to_int(value)
         case value

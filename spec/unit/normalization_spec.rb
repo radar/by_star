@@ -317,6 +317,36 @@ describe ByStar::Normalization do
       specify { expect{ ByStar::Normalization.quarter(5) }.to raise_error(ByStar::ParseError, 'Quarter number must be between 1 and 4') }
     end
   end
+  
+  describe '#semester' do
+    subject { ByStar::Normalization.semester(input, options) }
+    it_behaves_like 'date normalization from string'
+    it_behaves_like 'date normalization from time value'
+
+    context 'Integer 1' do
+      let(:input){ 1 }
+      it { expect eq Date.parse('2014-01-01') }
+    end
+
+    context 'Integer 2' do
+      let(:input){ 2 }
+      it { expect eq Date.parse('2014-07-01') }
+    end
+
+    context 'with year option' do
+      let(:options){ { year: 2011 } }
+
+      context 'Integer 2' do
+        let(:input){ 2 }
+        it { expect eq Date.parse('2011-07-01') }
+      end
+    end
+
+    context 'out of range' do
+      specify { expect{ ByStar::Normalization.semester(0) }.to raise_error(ByStar::ParseError, 'Semester number must be between 1 and 2') }
+      specify { expect{ ByStar::Normalization.semester(5) }.to raise_error(ByStar::ParseError, 'Semester number must be between 1 and 2') }
+    end
+  end
 
   describe '#year' do
     subject { ByStar::Normalization.year(input, options) }
