@@ -62,10 +62,6 @@ module Mongoid
         scope.gte(field => time)
       end
 
-      def by_star_order(scope, order)
-        scope.order_by(order)
-      end
-
       def oldest_query(options={})
         field = by_star_start_field(options)
         all.reorder(field => :asc).first

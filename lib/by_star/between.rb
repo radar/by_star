@@ -23,23 +23,19 @@ module ByStar
       start_field = by_star_start_field(options)
       end_field = by_star_end_field(options)
 
-      scope = self
-      scope = if !start_time && !end_time
-                scope # do nothing
-              elsif !end_time
-                by_star_after_query(scope, start_field, start_time)
-              elsif !start_time
-                by_star_before_query(scope, start_field, end_time)
-              elsif start_field == end_field
-                by_star_point_query(scope, start_field, start_time, end_time)
-              elsif options[:strict]
-                by_star_span_strict_query(scope, start_field, end_field, start_time, end_time)
-              else
-                by_star_span_loose_query(scope, start_field, end_field, start_time, end_time, options)
-              end
-
-      scope = by_star_order(scope, options[:order]) if options[:order]
-      scope
+      if !start_time && !end_time
+        self # do nothing
+      elsif !end_time
+        by_star_after_query(self, start_field, start_time)
+      elsif !start_time
+        by_star_before_query(self, start_field, end_time)
+      elsif start_field == end_field
+        by_star_point_query(self, start_field, start_time, end_time)
+      elsif options[:strict]
+        by_star_span_strict_query(self, start_field, end_field, start_time, end_time)
+      else
+        by_star_span_loose_query(self, start_field, end_field, start_time, end_time, options)
+      end
     end
 
     def between_dates(*args)
@@ -55,14 +51,11 @@ module ByStar
         start_field = by_star_start_field(options)
         end_field = by_star_end_field(options)
 
-        scope = self
-        scope = if start_field == end_field
-                  by_star_point_overlap_query(scope, start_field, time)
-                else
-                  by_star_span_overlap_query(scope, start_field, end_field, time, options)
-                end
-        scope = by_star_order(scope, options[:order]) if options[:order]
-        scope
+        if start_field == end_field
+          by_star_point_overlap_query(self, start_field, time)
+        else
+          by_star_span_overlap_query(self, start_field, end_field, time, options)
+        end
       end
     end
 
